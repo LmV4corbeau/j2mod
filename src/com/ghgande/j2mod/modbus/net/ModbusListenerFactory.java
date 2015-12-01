@@ -19,82 +19,93 @@ public class ModbusListenerFactory {
             throw new IllegalArgumentException("missing connection information");
         }
 
-        if (parts[0].toLowerCase().equals("device")) {
-            /*
-             * Create a ModbusSerialListener with the default Modbus
-             * values of 19200 baud, no parity, using the specified
-             * device.  If there is an additional part after the
-             * device name, it will be used as the Modbus unit number.
-             */
-            SerialParameters parms = new SerialParameters();
-            parms.setPortName(parts[1]);
-            parms.setBaudRate(Modbus.DEFAULT_BAUD_RATE);
-            parms.setDatabits(8);
-            parms.setEcho(false);
-            parms.setParity(SerialPort.PARITY_NONE);
-            parms.setFlowControlIn(SerialPort.FLOWCONTROL_NONE);
-
-            ModbusSerialListener listener = new ModbusSerialListener(parms);
-            if (parts.length > 2) {
-                int unit = Integer.parseInt(parts[2]);
-                if (unit < 0 || unit > 248) {
-                    throw new IllegalArgumentException("illegal unit number");
+        String protocol = parts[0].toLowerCase();
+        switch (protocol) {
+            case "device":
+            case "rtu":
+            case "ascii": {
+                /*
+                 * Create a ModbusSerialListener with the default Modbus
+                 * values of 19200 baud, no parity, using the specified
+                 * device.  If there is an additional part after the
+                 * device name, it will be used as the Modbus unit number.
+                 */
+                int baudrate = Modbus.DEFAULT_BAUD_RATE;
+                if (parts.length > 2) {
+                    baudrate = Integer.parseInt(parts[2]);
                 }
+                SerialParameters parms = new SerialParameters();
+                parms.setPortName(parts[1]);
+                parms.setBaudRate(baudrate);
+                parms.setDatabits(8);
+                parms.setEcho(false);
+                parms.setParity(SerialPort.PARITY_NONE);
+                parms.setFlowControlIn(SerialPort.FLOWCONTROL_NONE);
 
-                listener.setUnit(unit);
-            }
-            listener.setListening(true);
+                ModbusSerialListener listener = new ModbusSerialListener(parms);
+                if (parts.length > 2) {
+                    int unit = Integer.parseInt(parts[2]);
+                    if (unit < 0 || unit > 248) {
+                        throw new IllegalArgumentException("illegal unit number");
+                    }
 
-            Thread result = new Thread(listener);
-            result.start();
-
-            return listener;
-        } else if (parts[0].toLowerCase().equals("tcp")) {
-            /*
-             * Create a ModbusTCPListener with the default interface
-             * value.  The second optional value is the TCP port number
-             * and the third optional value is the Modbus unit number.
-             */
-            ModbusTCPListener listener = new ModbusTCPListener(5);
-            if (parts.length > 2) {
-                int port = Integer.parseInt(parts[2]);
-                listener.setPort(port);
-
-                if (parts.length > 3) {
-                    int unit = Integer.parseInt(parts[3]);
                     listener.setUnit(unit);
                 }
+                listener.setListening(true);
+
+                Thread result = new Thread(listener);
+                result.start();
+
+                return listener;
             }
-            listener.setListening(true);
+            case "tcp": {
+                /*
+                 * Create a ModbusTCPListener with the default interface
+                 * value.  The second optional value is the TCP port number
+                 * and the third optional value is the Modbus unit number.
+                 */
+                ModbusTCPListener listener = new ModbusTCPListener(5);
+                if (parts.length > 2) {
+                    int port = Integer.parseInt(parts[2]);
+                    listener.setPort(port);
 
-            Thread result = new Thread(listener);
-            result.start();
-
-            return listener;
-        } else if (parts[0].toLowerCase().equals("udp")) {
-            /*
-             * Create a ModbusUDPListener with the default interface
-             * value.  The second optional value is the TCP port number
-             * and the third optional value is the Modbus unit number.
-             */
-            ModbusUDPListener listener = new ModbusUDPListener();
-            if (parts.length > 2) {
-                int port = Integer.parseInt(parts[2]);
-                listener.setPort(port);
-
-                if (parts.length > 3) {
-                    int unit = Integer.parseInt(parts[3]);
-                    listener.setUnit(unit);
+                    if (parts.length > 3) {
+                        int unit = Integer.parseInt(parts[3]);
+                        listener.setUnit(unit);
+                    }
                 }
+                listener.setListening(true);
+
+                Thread result = new Thread(listener);
+                result.start();
+
+                return listener;
             }
-            listener.setListening(true);
+            case "udp": {
+                /*
+                 * Create a ModbusUDPListener with the default interface
+                 * value.  The second optional value is the TCP port number
+                 * and the third optional value is the Modbus unit number.
+                 */
+                ModbusUDPListener listener = new ModbusUDPListener();
+                if (parts.length > 2) {
+                    int port = Integer.parseInt(parts[2]);
+                    listener.setPort(port);
 
-            Thread result = new Thread(listener);
-            result.start();
+                    if (parts.length > 3) {
+                        int unit = Integer.parseInt(parts[3]);
+                        listener.setUnit(unit);
+                    }
+                }
+                listener.setListening(true);
 
-            return listener;
-        } else {
-            throw new IllegalArgumentException("unknown type " + parts[0]);
+                Thread result = new Thread(listener);
+                result.start();
+
+                return listener;
+            }
+            default:
+                throw new IllegalArgumentException("unknown type " + parts[0]);
         }
     }
 }
