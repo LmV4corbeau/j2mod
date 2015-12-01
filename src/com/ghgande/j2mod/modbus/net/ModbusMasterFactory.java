@@ -5,7 +5,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import gnu.io.CommPort;
-import gnu.io.PortInUseException;
 import gnu.io.RXTXPort;
 import gnu.io.SerialPort;
 
@@ -17,8 +16,6 @@ import com.ghgande.j2mod.modbus.io.ModbusTCPTransport;
 import com.ghgande.j2mod.modbus.io.ModbusTransport;
 import com.ghgande.j2mod.modbus.io.ModbusUDPTransport;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Create a <tt>ModbusListener</tt> from an URI-like specifier.
@@ -28,7 +25,7 @@ import java.util.logging.Logger;
  */
 public class ModbusMasterFactory {
 
-    public static ModbusTransport createModbusMaster(String address) {
+    public static ModbusTransport createModbusMaster(String address) throws IOException, Exception {
         String parts[] = address.split(":");
         if (parts == null || parts.length < 2) {
             throw new IllegalArgumentException("missing connection information");
@@ -38,7 +35,7 @@ public class ModbusMasterFactory {
         switch (protocol) {
             case "device":
             case "rtu":
-            case "ascii":
+            case "ascii": {
                 /*
                  * Create a ModbusSerialListener with the default Modbus values of
                  * 19200 baud, no parity, using the specified device. If there is an
@@ -58,24 +55,20 @@ public class ModbusMasterFactory {
                 parms.setParity(SerialPort.PARITY_NONE);
                 parms.setFlowControlIn(SerialPort.FLOWCONTROL_NONE);
 
-                try {
-                    ModbusSerialTransport transport;
-                    if (protocol.equals("ascii")) {
-                        transport = new ModbusASCIITransport();
-                    } else {
-                        transport = new ModbusRTUTransport();
-                    }
-                    CommPort port = new RXTXPort(parms.getPortName());
-
-                    transport.setCommPort(port);
-                    transport.setEcho(false);
-                    transport.setReceiveTimeout(500);
-
-                    return transport;
-                } catch (PortInUseException | IOException ex) {
-                    Logger.getLogger(ModbusMasterFactory.class.getName()).log(Level.SEVERE, null, ex);
-                    return null;
+                ModbusSerialTransport transport;
+                if (protocol.equals("ascii")) {
+                    transport = new ModbusASCIITransport();
+                } else {
+                    transport = new ModbusRTUTransport();
                 }
+                CommPort port = new RXTXPort(parms.getPortName());
+
+                transport.setCommPort(port);
+                transport.setEcho(false);
+                transport.setReceiveTimeout(500);
+
+                return transport;
+            }
             case "tcp": {
                 /*
                  * Create a ModbusTCPListener with the default interface value. The
@@ -89,19 +82,14 @@ public class ModbusMasterFactory {
                     port = Integer.parseInt(parts[2]);
                 }
 
-                try {
-                    Socket socket = new Socket(hostName, port);
-                    if (Modbus.debug) {
-                        System.err.println("connecting to " + socket);
-                    }
-
-                    ModbusTCPTransport transport = new ModbusTCPTransport(socket);
-
-                    return transport;
-                } catch (IOException ex) {
-                    Logger.getLogger(ModbusMasterFactory.class.getName()).log(Level.SEVERE, null, ex);
-                    return null;
+                Socket socket = new Socket(hostName, port);
+                if (Modbus.debug) {
+                    System.err.println("connecting to " + socket);
                 }
+
+                ModbusTCPTransport transport = new ModbusTCPTransport(socket);
+
+                return transport;
             }
             case "udp": {
                 /*
@@ -117,15 +105,10 @@ public class ModbusMasterFactory {
                 }
 
                 UDPMasterTerminal terminal;
-                try {
-                    terminal = new UDPMasterTerminal(
-                            InetAddress.getByName(hostName));
-                    terminal.setRemotePort(port);
-                    terminal.activate();
-                } catch (Exception ex) {
-                    Logger.getLogger(ModbusMasterFactory.class.getName()).log(Level.SEVERE, null, ex);
-                    return null;
-                }
+                terminal = new UDPMasterTerminal(
+                        InetAddress.getByName(hostName));
+                terminal.setRemotePort(port);
+                terminal.activate();
 
                 ModbusUDPTransport transport = terminal.getModbusTransport();
 

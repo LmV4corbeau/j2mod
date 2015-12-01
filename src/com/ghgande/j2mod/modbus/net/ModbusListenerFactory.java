@@ -31,8 +31,8 @@ public class ModbusListenerFactory {
                  * device name, it will be used as the Modbus unit number.
                  */
                 int baudrate = Modbus.DEFAULT_BAUD_RATE;
-                if (parts.length > 2) {
-                    baudrate = Integer.parseInt(parts[2]);
+                if (parts.length > 3) {
+                    baudrate = Integer.parseInt(parts[3]);
                 }
                 SerialParameters parms = new SerialParameters();
                 parms.setPortName(parts[1]);
@@ -43,7 +43,7 @@ public class ModbusListenerFactory {
                 parms.setFlowControlIn(SerialPort.FLOWCONTROL_NONE);
 
                 ModbusSerialListener listener = new ModbusSerialListener(parms);
-                if (parts.length > 2) {
+                if ((parts.length > 2) && (parts[2].length() > 0)) {
                     int unit = Integer.parseInt(parts[2]);
                     if (unit < 0 || unit > 248) {
                         throw new IllegalArgumentException("illegal unit number");
