@@ -162,6 +162,7 @@ public class TCPMasterConnection {
     /**
      * Set the <tt>ModbusTransport</tt> associated with this
      * <tt>TCPMasterConnection</tt>
+     * @param trans
      */
     public void setModbusTransport(ModbusTCPTransport trans) {
         m_ModbusTransport = trans;

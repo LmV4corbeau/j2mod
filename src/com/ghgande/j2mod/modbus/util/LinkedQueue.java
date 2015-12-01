@@ -75,6 +75,7 @@ public class LinkedQueue {
 
     /**
      * Main mechanics for put/offer *
+     * @param x
      */
     protected void insert(Object x) {
         synchronized (m_PutLock) {
@@ -91,6 +92,7 @@ public class LinkedQueue {
 
     /**
      * Main mechanics for take/poll *
+     * @return 
      */
     protected synchronized Object extract() {
         synchronized (m_Head) {

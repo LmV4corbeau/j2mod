@@ -82,6 +82,7 @@ public final class WriteCoilRequest extends ModbusRequest {
         setCoil(b);
     }
 
+    @Override
     public ModbusResponse getResponse() {
         WriteCoilResponse response = new WriteCoilResponse();
 
@@ -96,6 +97,7 @@ public final class WriteCoilRequest extends ModbusRequest {
         return response;
     }
 
+    @Override
     public ModbusResponse createResponse() {
         WriteCoilResponse response = null;
         DigitalOut dout = null;
@@ -158,6 +160,7 @@ public final class WriteCoilRequest extends ModbusRequest {
         return m_Coil;
     }
 
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.writeShort(m_Reference);
 
@@ -168,14 +171,11 @@ public final class WriteCoilRequest extends ModbusRequest {
         }
     }
 
+    @Override
     public void readData(DataInput din) throws IOException {
         m_Reference = din.readUnsignedShort();
 
-        if (din.readByte() == Modbus.COIL_ON) {
-            m_Coil = true;
-        } else {
-            m_Coil = false;
-        }
+        m_Coil = din.readByte() == Modbus.COIL_ON;
 
         /*
          * discard the next byte.
@@ -183,6 +183,7 @@ public final class WriteCoilRequest extends ModbusRequest {
         din.readByte();
     }
 
+    @Override
     public byte[] getMessage() {
         byte result[] = new byte[4];
 

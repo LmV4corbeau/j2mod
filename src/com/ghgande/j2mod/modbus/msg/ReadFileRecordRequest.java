@@ -84,9 +84,9 @@ public final class ReadFileRecordRequest extends ModbusRequest {
 
     public class RecordRequest {
 
-        private int m_FileNumber;
-        private int m_RecordNumber;
-        private int m_WordCount;
+        private final int m_FileNumber;
+        private final int m_RecordNumber;
+        private final int m_WordCount;
 
         public int getFileNumber() {
             return m_FileNumber;
@@ -102,6 +102,7 @@ public final class ReadFileRecordRequest extends ModbusRequest {
 
         /**
          * getRequestSize -- return the size of the response in bytes.
+         * @return 
          */
         public int getRequestSize() {
             return 7 + m_WordCount * 2;
@@ -139,6 +140,7 @@ public final class ReadFileRecordRequest extends ModbusRequest {
      * getRequestSize -- return the total request size. This is useful for
      * determining if a new record can be added.
      *
+     * @return 
      * @returns size in bytes of response.
      */
     public int getRequestSize() {
@@ -147,8 +149,8 @@ public final class ReadFileRecordRequest extends ModbusRequest {
         }
 
         int size = 1;
-        for (int i = 0; i < m_Records.length; i++) {
-            size += m_Records[i].getRequestSize();
+        for (RecordRequest m_Record : m_Records) {
+            size += m_Record.getRequestSize();
         }
 
         return size;
@@ -156,6 +158,7 @@ public final class ReadFileRecordRequest extends ModbusRequest {
 
     /**
      * getRequestCount -- return the number of record requests in this message.
+     * @return 
      */
     public int getRequestCount() {
         if (m_Records == null) {
@@ -167,6 +170,8 @@ public final class ReadFileRecordRequest extends ModbusRequest {
 
     /**
      * getRecord -- return the record request indicated by the reference
+     * @param index
+     * @return 
      */
     public RecordRequest getRecord(int index) {
         return m_Records[index];
@@ -195,11 +200,11 @@ public final class ReadFileRecordRequest extends ModbusRequest {
 
     /**
      * getResponse -- get an empty response for this message.
+     * @return 
      */
+    @Override
     public ModbusResponse getResponse() {
-        ReadFileRecordResponse response = null;
-
-        response = new ReadFileRecordResponse();
+        ReadFileRecordResponse response = new ReadFileRecordResponse();
 
         /*
          * Copy any header data from the request.
@@ -222,10 +227,11 @@ public final class ReadFileRecordRequest extends ModbusRequest {
     /**
      * The ModbusCoupler doesn't have a means of reporting the slave state or ID
      * information.
+     * @return 
      */
+    @Override
     public ModbusResponse createResponse() {
-        ReadFileRecordResponse response = null;
-        response = (ReadFileRecordResponse) getResponse();
+        ReadFileRecordResponse response = (ReadFileRecordResponse) getResponse();
 
         /*
          * Get the process image.
@@ -280,14 +286,18 @@ public final class ReadFileRecordRequest extends ModbusRequest {
 
     /**
      * writeData -- output this Modbus message to dout.
+     * @throws java.io.IOException
      */
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.write(getMessage());
     }
 
     /**
      * readData -- read all the data for this request.
+     * @throws java.io.IOException
      */
+    @Override
     public void readData(DataInput din) throws IOException {
         m_ByteCount = din.readUnsignedByte();
 
@@ -313,15 +323,17 @@ public final class ReadFileRecordRequest extends ModbusRequest {
 
     /**
      * getMessage -- return the PDU message.
+     * @return 
      */
+    @Override
     public byte[] getMessage() {
         byte request[] = new byte[1 + 7 * m_Records.length];
 
         int offset = 0;
         request[offset++] = (byte) (request.length - 1);
 
-        for (int i = 0; i < m_Records.length; i++) {
-            m_Records[i].getRequest(request, offset);
+        for (RecordRequest m_Record : m_Records) {
+            m_Record.getRequest(request, offset);
             offset += 7;
         }
         return request;

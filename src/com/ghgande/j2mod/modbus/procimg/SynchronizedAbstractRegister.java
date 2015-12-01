@@ -77,6 +77,7 @@ public abstract class SynchronizedAbstractRegister implements Register {
      */
     protected byte[] m_Register = new byte[2];
 
+    @Override
     public int getValue() {
         if (m_Register == null) {
             throw new IllegalAddressException();
@@ -85,10 +86,12 @@ public abstract class SynchronizedAbstractRegister implements Register {
         return ((m_Register[0] & 0xff) << 8 | (m_Register[1] & 0xff));
     }
 
+    @Override
     public byte[] toBytes() {
         return m_Register;
     }
 
+    @Override
     public final short toShort() {
         if (m_Register == null) {
             throw new IllegalAddressException();
@@ -97,6 +100,7 @@ public abstract class SynchronizedAbstractRegister implements Register {
         return (short) ((m_Register[0] << 8) | (m_Register[1] & 0xff));
     }
 
+    @Override
     public final int toUnsignedShort() {
         if (m_Register == null) {
             throw new IllegalAddressException();
@@ -105,6 +109,7 @@ public abstract class SynchronizedAbstractRegister implements Register {
         return ((m_Register[0] & 0xff) << 8 | (m_Register[1] & 0xff));
     }
 
+    @Override
     public final synchronized void setValue(int v) {
         if (m_Register == null) {
             throw new IllegalAddressException();
@@ -114,6 +119,7 @@ public abstract class SynchronizedAbstractRegister implements Register {
         m_Register[1] = (byte) (0xff & v);
     }
 
+    @Override
     public final synchronized void setValue(short s) {
         if (m_Register == null) {
             throw new IllegalAddressException();
@@ -123,6 +129,7 @@ public abstract class SynchronizedAbstractRegister implements Register {
         m_Register[1] = (byte) (0xff & s);
     }
 
+    @Override
     public final synchronized void setValue(byte[] bytes) {
         if (bytes.length < 2) {
             throw new IllegalArgumentException();

@@ -48,8 +48,7 @@ import java.io.FilterOutputStream;
  * @see ModbusBINTransport#FRAME_START
  * @see ModbusBINTransport#FRAME_END
  */
-public class BINOutputStream
-        extends FilterOutputStream {
+public class BINOutputStream extends FilterOutputStream {
 
     /**
      * Constructs a new <tt>BINOutputStream</tt> instance writing to the given
@@ -68,13 +67,12 @@ public class BINOutputStream
      * @param b the byte to be written as <tt>int</tt>.
      * @throws java.io.IOException if an I/O error occurs.
      */
+    @Override
     public void write(int b) throws IOException {
         if (b == ModbusASCIITransport.FRAME_START) {
             out.write(ModbusBINTransport.FRAME_START_TOKEN);
-            return;
         } else if (b == ModbusASCIITransport.FRAME_END) {
             out.write(ModbusBINTransport.FRAME_END_TOKEN);
-            return;
         } else if (b == ModbusBINTransport.FRAME_START_TOKEN || b == ModbusBINTransport.FRAME_END_TOKEN) {
             out.write(b);
             out.write(b);
@@ -88,6 +86,7 @@ public class BINOutputStream
      * @param data the <tt>byte[]</tt> to be written.
      * @throws java.io.IOException if an I/O error occurs.
      */
+    @Override
     public void write(byte[] data) throws IOException {
         for (int i = 0; i < data.length; i++) {
             write(data[i]);
@@ -104,6 +103,7 @@ public class BINOutputStream
      *
      * @throws java.io.IOException if an I/O error occurs.
      */
+    @Override
     public void write(byte[] data, int off, int len) throws IOException {
         for (int i = off; i < len; i++) {
             write(data[i]);

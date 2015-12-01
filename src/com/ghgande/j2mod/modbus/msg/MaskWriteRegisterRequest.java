@@ -142,9 +142,7 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
      */
     @Override
     public ModbusResponse getResponse() {
-        MaskWriteRegisterResponse response = null;
-
-        response = new MaskWriteRegisterResponse();
+        MaskWriteRegisterResponse response = new MaskWriteRegisterResponse();
 
         /*
          * Copy any header data from the request.

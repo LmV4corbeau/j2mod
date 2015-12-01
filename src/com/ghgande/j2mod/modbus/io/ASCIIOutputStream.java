@@ -69,16 +69,13 @@ public class ASCIIOutputStream
      * @param b the byte to be written as <tt>int</tt>.
      * @throws IOException if an I/O error occurs.
      */
+    @Override
     public void write(int b) throws IOException {
         if (b == ModbusASCIITransport.FRAME_START) {
             out.write(58);
-            //System.out.println("Wrote FRAME_START");
-            return;
         } else if (b == ModbusASCIITransport.FRAME_END) {
             out.write(13);
             out.write(10);
-            //System.out.println("Wrote FRAME_END");
-            return;
         } else {
             out.write(ModbusUtil.toHex(b));
             //System.out.println("Wrote byte "+b+"="+new String(ModbusUtil.toHex(b)));
@@ -92,6 +89,7 @@ public class ASCIIOutputStream
      * @param data the <tt>byte[]</tt> to be written.
      * @throws IOException if an I/O error occurs.
      */
+    @Override
     public void write(byte[] data) throws IOException {
         for (int i = 0; i < data.length; i++) {
             write(data[i]);
@@ -108,6 +106,7 @@ public class ASCIIOutputStream
      *
      * @throws IOException if an I/O error occurs.
      */
+    @Override
     public void write(byte[] data, int off, int len) throws IOException {
         for (int i = off; i < len; i++) {
             write(data[i]);

@@ -103,6 +103,7 @@ public final class ReadSerialDiagnosticsRequest extends ModbusRequest {
 
     /**
      * getWordCount -- get the number of words in m_Data.
+     * @return 
      */
     public int getWordCount() {
         return 1;
@@ -110,6 +111,7 @@ public final class ReadSerialDiagnosticsRequest extends ModbusRequest {
 
     /**
      * getData -- return the first data item.
+     * @return 
      */
     public int getData() {
         return m_Data;
@@ -119,6 +121,7 @@ public final class ReadSerialDiagnosticsRequest extends ModbusRequest {
      * getData -- Get the data item at the index.
      *
      * @param index - Unused, must be 0.
+     * @return 
      *
      * @deprecated
      */
@@ -132,6 +135,7 @@ public final class ReadSerialDiagnosticsRequest extends ModbusRequest {
 
     /**
      * setData -- Set the optional data value
+     * @param value
      */
     public void setData(int value) {
         m_Data = (short) value;
@@ -155,9 +159,11 @@ public final class ReadSerialDiagnosticsRequest extends ModbusRequest {
 
     /**
      * createResponse -- create an empty response for this request.
+     * @return 
      */
+    @Override
     public ModbusResponse getResponse() {
-        ReadSerialDiagnosticsResponse response = null;
+        ReadSerialDiagnosticsResponse response;
 
         response = new ReadSerialDiagnosticsResponse();
 
@@ -187,21 +193,27 @@ public final class ReadSerialDiagnosticsRequest extends ModbusRequest {
     /**
      * The ModbusCoupler doesn't have a means of reporting the slave state or ID
      * information.
+     * @return 
      */
+    @Override
     public ModbusResponse createResponse() {
         return createExceptionResponse(Modbus.ILLEGAL_FUNCTION_EXCEPTION);
     }
 
     /**
      * writeData -- output the completed Modbus message to dout
+     * @throws java.io.IOException
      */
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.write(getMessage());
     }
 
     /**
      * readData -- Read the function code and data value
+     * @throws java.io.IOException
      */
+    @Override
     public void readData(DataInput din) throws IOException {
         m_Function = din.readShort() & 0xFFFF;
         m_Data = (short) (din.readShort() & 0xFFFF);
@@ -209,7 +221,9 @@ public final class ReadSerialDiagnosticsRequest extends ModbusRequest {
 
     /**
      * getMessage -- Create the DIAGNOSTICS message paylaod.
+     * @return 
      */
+    @Override
     public byte[] getMessage() {
         byte result[] = new byte[4];
 

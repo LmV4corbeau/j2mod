@@ -67,6 +67,7 @@ public class BINInputStream
      * @return int the byte read from the stream.
      * @throws java.io.IOException if an I/O error occurs.
      */
+    @Override
     public int read() throws IOException {
         int ch = in.read();
         if (ch == -1) {

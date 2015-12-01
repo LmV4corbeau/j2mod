@@ -111,7 +111,9 @@ public final class ReadExceptionStatusResponse extends ModbusResponse {
 
     /**
      * writeData -- output the completed Modbus message to dout
+     * @throws java.io.IOException
      */
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.write(getMessage());
     }
@@ -119,14 +121,18 @@ public final class ReadExceptionStatusResponse extends ModbusResponse {
     /**
      * readData -- input the Modbus message from din. If there was a header,
      * such as for Modbus/TCP, it will have been read already.
+     * @throws java.io.IOException
      */
+    @Override
     public void readData(DataInput din) throws IOException {
         m_Status = din.readByte() & 0xFF;
     }
 
     /**
      * getMessage -- format the message into a byte array.
+     * @return 
      */
+    @Override
     public byte[] getMessage() {
         byte result[] = new byte[1];
 

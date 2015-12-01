@@ -91,8 +91,7 @@ public final class ReadCoilsRequest extends ModbusRequest {
 
     @Override
     public ReadCoilsResponse getResponse() {
-        ReadCoilsResponse response = null;
-        response = new ReadCoilsResponse(m_BitCount);
+        ReadCoilsResponse response = new ReadCoilsResponse(m_BitCount);
 
         // transfer header data
         if (!isHeadless()) {

@@ -80,9 +80,11 @@ public final class ReportSlaveIDRequest extends ModbusRequest {
 
     /**
      * createResponse -- create an empty response for this request.
+     * @return 
      */
+    @Override
     public ModbusResponse getResponse() {
-        ReportSlaveIDResponse response = null;
+        ReportSlaveIDResponse response;
 
         response = new ReportSlaveIDResponse();
 
@@ -107,27 +109,35 @@ public final class ReportSlaveIDRequest extends ModbusRequest {
     /**
      * The ModbusCoupler doesn't have a means of reporting the slave state or ID
      * information.
+     * @return 
      */
+    @Override
     public ModbusResponse createResponse() {
         return createExceptionResponse(Modbus.ILLEGAL_FUNCTION_EXCEPTION);
     }
 
     /**
      * writeData -- output this Modbus message to dout.
+     * @throws java.io.IOException
      */
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.write(getMessage());
     }
 
     /**
      * readData -- dummy function. There is no data with the request.
+     * @throws java.io.IOException
      */
+    @Override
     public void readData(DataInput din) throws IOException {
     }
 
     /**
      * getMessage -- return an empty array as there is no data for this request.
+     * @return 
      */
+    @Override
     public byte[] getMessage() {
         byte results[] = new byte[0];
 

@@ -68,7 +68,6 @@ public final class ReadInputDiscretesResponse
     /**
      * Constructs a new <tt>ReadInputDiscretesResponse</tt>
      * instance with a given count of input discretes (i.e. bits).
-     * <b>
      *
      * @param count the number of bits to be read.
      */
@@ -80,7 +79,7 @@ public final class ReadInputDiscretesResponse
 
     /**
      * Returns the number of bits (i.e. input discretes) read with the request.
-     * <p>
+     *
      * @return the number of bits that have been read.
      */
     public int getBitCount() {
@@ -137,12 +136,14 @@ public final class ReadInputDiscretesResponse
         m_Discretes.setBit(index, b);
     }//setDiscreteStatus
 
+    @Override
     public void writeData(DataOutput dout)
             throws IOException {
         dout.writeByte(m_Discretes.byteSize());
         dout.write(m_Discretes.getBytes(), 0, m_Discretes.byteSize());
     }//writeData
 
+    @Override
     public void readData(DataInput din)
             throws IOException {
 
@@ -159,11 +160,11 @@ public final class ReadInputDiscretesResponse
         setDataLength(count + 1);
     }//readData
 
+    @Override
     public byte[] getMessage() {
-        byte result[] = null;
         int len = 1 + m_Discretes.byteSize();
+        byte result[] = new byte[len];
 
-        result = new byte[len];
         result[0] = (byte) m_Discretes.byteSize();
         System.arraycopy(m_Discretes.getBytes(), 0,
                 result, 1, m_Discretes.byteSize());

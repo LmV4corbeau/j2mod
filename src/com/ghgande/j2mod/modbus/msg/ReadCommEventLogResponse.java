@@ -105,6 +105,7 @@ public final class ReadCommEventLogResponse extends ModbusResponse {
 
     /**
      * getEvents -- get device's event counter.
+     * @return 
      */
     public int getEventCount() {
         return m_EventCount;
@@ -112,6 +113,7 @@ public final class ReadCommEventLogResponse extends ModbusResponse {
 
     /**
      * setEventCount -- set the device's event counter.
+     * @param count
      */
     public void setEventCount(int count) {
         m_EventCount = count;
@@ -119,6 +121,7 @@ public final class ReadCommEventLogResponse extends ModbusResponse {
 
     /**
      * getMessageCount -- get device's message counter.
+     * @return 
      */
     public int getMessageCount() {
         return m_MessageCount;
@@ -126,6 +129,7 @@ public final class ReadCommEventLogResponse extends ModbusResponse {
 
     /**
      * setMessageCount -- set device's message counter.
+     * @param count
      */
     public void setMessageCount(int count) {
         m_MessageCount = count;
@@ -133,6 +137,8 @@ public final class ReadCommEventLogResponse extends ModbusResponse {
 
     /**
      * getEvent -- get an event from the event log.
+     * @param index
+     * @return 
      */
     public int getEvent(int index) {
         if (m_Events == null || index < 0 || index >= m_Events.length) {
@@ -156,6 +162,8 @@ public final class ReadCommEventLogResponse extends ModbusResponse {
 
     /**
      * setEvent -- store an event number in the event log
+     * @param index
+     * @param event
      */
     public void setEvent(int index, int event) {
         if (m_Events == null || index < 0 || index >= m_Events.length) {
@@ -187,7 +195,9 @@ public final class ReadCommEventLogResponse extends ModbusResponse {
 
     /**
      * writeData -- output the completed Modbus message to dout
+     * @throws java.io.IOException
      */
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.write(getMessage());
     }
@@ -195,7 +205,9 @@ public final class ReadCommEventLogResponse extends ModbusResponse {
     /**
      * readData -- input the Modbus message from din. If there was a header,
      * such as for Modbus/TCP, it will have been read already.
+     * @throws java.io.IOException
      */
+    @Override
     public void readData(DataInput din) throws IOException {
         m_ByteCount = din.readByte();
         m_Status = din.readShort();
@@ -211,7 +223,9 @@ public final class ReadCommEventLogResponse extends ModbusResponse {
 
     /**
      * getMessage -- format the message into a byte array.
+     * @return 
      */
+    @Override
     public byte[] getMessage() {
         byte result[] = new byte[m_Events.length + 7];
 
@@ -223,9 +237,7 @@ public final class ReadCommEventLogResponse extends ModbusResponse {
         result[5] = (byte) (m_MessageCount >> 8);
         result[6] = (byte) (m_MessageCount & 0xFF);
 
-        for (int i = 0; i < m_Events.length; i++) {
-            result[7 + i] = m_Events[i];
-        }
+        System.arraycopy(m_Events, 0, result, 7, m_Events.length);
 
         return result;
     }

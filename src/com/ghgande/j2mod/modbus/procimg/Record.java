@@ -38,9 +38,9 @@ package com.ghgande.j2mod.modbus.procimg;
  */
 public class Record {
 
-    private int m_Record_Number;
-    private int m_Register_Count;
-    private Register m_Registers[];
+    private final int m_Record_Number;
+    private final int m_Register_Count;
+    private final Register m_Registers[];
 
     public int getRecordNumber() {
         return m_Record_Number;

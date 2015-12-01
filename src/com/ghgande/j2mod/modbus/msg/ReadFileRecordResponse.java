@@ -77,8 +77,8 @@ public final class ReadFileRecordResponse extends ModbusResponse {
 
     public class RecordResponse {
 
-        private int m_WordCount;
-        private byte[] m_Data;
+        private final int m_WordCount;
+        private final byte[] m_Data;
 
         public int getWordCount() {
             return m_WordCount;
@@ -101,6 +101,7 @@ public final class ReadFileRecordResponse extends ModbusResponse {
          *
          * The response is a byte count, a function code, then wordCount words
          * (2 bytes).
+         * @return 
          */
         public int getResponseSize() {
             return 2 + (m_WordCount * 2);
@@ -160,8 +161,8 @@ public final class ReadFileRecordResponse extends ModbusResponse {
         }
 
         int size = 1;
-        for (int i = 0; i < m_Records.length; i++) {
-            size += m_Records[i].getResponseSize();
+        for (RecordResponse m_Record : m_Records) {
+            size += m_Record.getResponseSize();
         }
 
         return size;
@@ -182,6 +183,8 @@ public final class ReadFileRecordResponse extends ModbusResponse {
 
     /**
      * getRecord -- return the record response indicated by the reference
+     * @param index
+     * @return 
      */
     public RecordResponse getRecord(int index) {
         return m_Records[index];
@@ -189,6 +192,7 @@ public final class ReadFileRecordResponse extends ModbusResponse {
 
     /**
      * addResponse -- add a new record response.
+     * @param response
      */
     public void addResponse(RecordResponse response) {
         if (m_Records == null) {
@@ -202,6 +206,7 @@ public final class ReadFileRecordResponse extends ModbusResponse {
         m_Records[m_Records.length - 1] = response;
     }
 
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.writeByte(getByteCount() - 1);
 
@@ -209,11 +214,12 @@ public final class ReadFileRecordResponse extends ModbusResponse {
             return;
         }
 
-        for (int i = 0; i < m_Records.length; i++) {
-            dout.write(m_Records[i].getResponse());
+        for (RecordResponse m_Record : m_Records) {
+            dout.write(m_Record.getResponse());
         }
     }
 
+    @Override
     public void readData(DataInput din) throws IOException {
         m_ByteCount = (din.readUnsignedByte() & 0xFF);
 
@@ -239,17 +245,16 @@ public final class ReadFileRecordResponse extends ModbusResponse {
         setDataLength(m_ByteCount + 1);
     }
 
+    @Override
     public byte[] getMessage() {
-        byte result[] = null;
-
-        result = new byte[getByteCount()];
+        byte result[] = new byte[getByteCount()];
 
         int offset = 0;
         result[offset++] = (byte) (result.length - 1);
 
-        for (int i = 0; i < m_Records.length; i++) {
-            m_Records[i].getResponse(result, offset);
-            offset += m_Records[i].getWordCount() * 2;
+        for (RecordResponse m_Record : m_Records) {
+            m_Record.getResponse(result, offset);
+            offset += m_Record.getWordCount() * 2;
         }
         return result;
     }

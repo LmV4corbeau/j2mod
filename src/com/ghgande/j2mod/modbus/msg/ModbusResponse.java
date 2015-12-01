@@ -106,7 +106,7 @@ public abstract class ModbusResponse extends ModbusMessageImpl {
      * @return a ModbusResponse instance specific for the given function code.
      */
     public static ModbusResponse createModbusResponse(int functionCode) {
-        ModbusResponse response = null;
+        ModbusResponse response;
 
         switch (functionCode) {
             case Modbus.READ_COILS:

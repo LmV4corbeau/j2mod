@@ -42,7 +42,7 @@ public final class BitVector {
 
     //instance attributes
     private int m_Size;
-    private byte[] m_Data;
+    private final byte[] m_Data;
     private boolean m_MSBAccess = false;
 
     /**
@@ -119,6 +119,7 @@ public final class BitVector {
      * <tt>BitVector</tt>.
      * <p>
      * @param data a <tt>byte[]</tt>.
+     * @param size
      */
     public final void setBytes(byte[] data, int size) {
         System.arraycopy(data, 0, m_Data, 0, data.length);
@@ -140,7 +141,7 @@ public final class BitVector {
         index = translateIndex(index);
         //System.out.println("Get bit #" + index);
         return ((m_Data[byteIndex(index)]
-                & (0x01 << bitIndex(index))) != 0) ? true : false;
+                & (0x01 << bitIndex(index))) != 0);
     }//getBit
 
     /**
@@ -206,13 +207,14 @@ public final class BitVector {
      *
      * @return a <tt>String</tt> representing this <tt>BitVector</tt>.
      */
+    @Override
     public String toString() {
-        StringBuffer sbuf = new StringBuffer();
+        StringBuilder sbuf = new StringBuilder();
         for (int i = 0; i < size(); i++) {
             int idx = doTranslateIndex(i);
             sbuf.append(
                     ((((m_Data[byteIndex(idx)]
-                    & (0x01 << bitIndex(idx))) != 0) ? true : false) ? '1' : '0')
+                            & (0x01 << bitIndex(idx))) != 0)) ? '1' : '0')
             );
             if (((i + 1) % 8) == 0) {
                 sbuf.append(" ");
@@ -231,7 +233,7 @@ public final class BitVector {
      *
      * @throws IndexOutOfBoundsException if index is out of bounds.
      */
-    private final int byteIndex(int index)
+    private int byteIndex(int index)
             throws IndexOutOfBoundsException {
 
         if (index < 0 || index >= m_Data.length * 8) {
@@ -251,7 +253,7 @@ public final class BitVector {
      *
      * @throws IndexOutOfBoundsException if index is out of bounds.
      */
-    private final int bitIndex(int index)
+    private int bitIndex(int index)
             throws IndexOutOfBoundsException {
 
         if (index < 0 || index >= m_Data.length * 8) {
@@ -261,7 +263,7 @@ public final class BitVector {
         }
     }//bitIndex
 
-    private final int translateIndex(int idx) {
+    private int translateIndex(int idx) {
         if (m_MSBAccess) {
             int mod4 = idx % 4;
             int div4 = idx / 4;
@@ -278,7 +280,7 @@ public final class BitVector {
         }
     }//translateIndex
 
-    private static final int doTranslateIndex(int idx) {
+    private static int doTranslateIndex(int idx) {
 
         int mod4 = idx % 4;
         int div4 = idx / 4;
@@ -297,6 +299,7 @@ public final class BitVector {
      * given byte data.
      *
      * @param data a byte[] containing packed bits.
+     * @param size
      * @return the newly created <tt>BitVector</tt> instance.
      */
     public static BitVector createBitVector(byte[] data, int size) {

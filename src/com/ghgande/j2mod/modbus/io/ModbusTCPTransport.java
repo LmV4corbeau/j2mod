@@ -100,7 +100,6 @@ public class ModbusTCPTransport implements ModbusTransport {
                 m_Socket.setSoTimeout(time);
             } catch (SocketException e) {
                 // Not sure what to do.
-                return;
             }
         }
     }

@@ -124,7 +124,8 @@ public class ModbusBINTransport
         try {
             do {
                 //1. Skip to FRAME_START
-                while ((in = m_InputStream.read()) != FRAME_START) ;
+                while ((in = m_InputStream.read()) != FRAME_START)
+                    ;
                 //2. Read to FRAME_END
                 synchronized (m_InBuffer) {
                     m_ByteInOut.reset();
@@ -176,7 +177,8 @@ public class ModbusBINTransport
         try {
             do {
                 //1. Skip to FRAME_START
-                while ((in = m_InputStream.read()) != FRAME_START) ;
+                while ((in = m_InputStream.read()) != FRAME_START)
+                    ;
                 //2. Read to FRAME_END
                 synchronized (m_InBuffer) {
                     m_ByteInOut.reset();

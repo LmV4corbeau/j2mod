@@ -76,6 +76,7 @@ package com.ghgande.j2mod.modbus.procimg;
 public class SimpleRegister extends SynchronizedAbstractRegister implements
         Register {
 
+    @Override
     public String toString() {
         if (m_Register == null) {
             return "invalid";

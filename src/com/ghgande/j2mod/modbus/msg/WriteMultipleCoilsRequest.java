@@ -63,6 +63,7 @@ public final class WriteMultipleCoilsRequest extends ModbusRequest {
     private int m_Reference;
     private BitVector m_Coils;
 
+    @Override
     public ModbusResponse getResponse() {
         WriteMultipleCoilsResponse response = new WriteMultipleCoilsResponse();
 
@@ -77,6 +78,7 @@ public final class WriteMultipleCoilsRequest extends ModbusRequest {
         return response;
     }
 
+    @Override
     public ModbusResponse createResponse() {
         WriteMultipleCoilsResponse response = null;
         DigitalOut douts[] = null;
@@ -188,6 +190,7 @@ public final class WriteMultipleCoilsRequest extends ModbusRequest {
         m_Coils = bv;
     }
 
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.writeShort(m_Reference);
         dout.writeShort(m_Coils.size());
@@ -196,6 +199,7 @@ public final class WriteMultipleCoilsRequest extends ModbusRequest {
         dout.write(m_Coils.getBytes());
     }
 
+    @Override
     public void readData(DataInput din) throws IOException {
         m_Reference = din.readUnsignedShort();
         int bitcount = din.readUnsignedShort();
@@ -213,6 +217,7 @@ public final class WriteMultipleCoilsRequest extends ModbusRequest {
         setDataLength(coilBytes + 5);
     }
 
+    @Override
     public byte[] getMessage() {
         int len = m_Coils.byteSize() + 5;
         byte result[] = new byte[len];
@@ -250,7 +255,7 @@ public final class WriteMultipleCoilsRequest extends ModbusRequest {
     /**
      * Constructs a new <tt>WriteMultipleCoilsRequest</tt> instance with a given
      * reference and count of coils to be written, followed by the actual byte
-     * count, and then <i>count<i> number of bytes.
+     * count, and then <i>count</i> number of bytes.
      *
      * @param ref the index of the first coil to be written.
      * @param count the number of coils to be written.

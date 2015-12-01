@@ -58,10 +58,10 @@ public final class WriteFileRecordRequest extends ModbusRequest {
 
     public class RecordRequest {
 
-        private int m_FileNumber;
-        private int m_RecordNumber;
-        private int m_WordCount;
-        private byte m_Data[];
+        private final int m_FileNumber;
+        private final int m_RecordNumber;
+        private final int m_WordCount;
+        private final byte m_Data[];
 
         public int getFileNumber() {
             return m_FileNumber;
@@ -89,6 +89,7 @@ public final class WriteFileRecordRequest extends ModbusRequest {
 
         /**
          * getRequestSize -- return the size of the response in bytes.
+         * @return 
          */
         public int getRequestSize() {
             return 7 + m_WordCount * 2;
@@ -132,7 +133,7 @@ public final class WriteFileRecordRequest extends ModbusRequest {
      * getRequestSize -- return the total request size. This is useful for
      * determining if a new record can be added.
      *
-     * @returns size in bytes of response.
+     * @return size in bytes of response.
      */
     public int getRequestSize() {
         if (m_Records == null) {
@@ -140,8 +141,8 @@ public final class WriteFileRecordRequest extends ModbusRequest {
         }
 
         int size = 1;
-        for (int i = 0; i < m_Records.length; i++) {
-            size += m_Records[i].getRequestSize();
+        for (RecordRequest m_Record : m_Records) {
+            size += m_Record.getRequestSize();
         }
 
         return size;
@@ -149,6 +150,7 @@ public final class WriteFileRecordRequest extends ModbusRequest {
 
     /**
      * getRequestCount -- return the number of record requests in this message.
+     * @return 
      */
     public int getRequestCount() {
         if (m_Records == null) {
@@ -160,6 +162,8 @@ public final class WriteFileRecordRequest extends ModbusRequest {
 
     /**
      * getRecord -- return the record request indicated by the reference
+     * @param index
+     * @return 
      */
     public RecordRequest getRecord(int index) {
         return m_Records[index];
@@ -167,6 +171,7 @@ public final class WriteFileRecordRequest extends ModbusRequest {
 
     /**
      * addRequest -- add a new record request.
+     * @param request
      */
     public void addRequest(RecordRequest request) {
         if (request.getRequestSize() + getRequestSize() > 248) {
@@ -188,9 +193,11 @@ public final class WriteFileRecordRequest extends ModbusRequest {
 
     /**
      * createResponse -- create an empty response for this request.
+     * @return 
      */
+    @Override
     public ModbusResponse getResponse() {
-        WriteFileRecordResponse response = null;
+        WriteFileRecordResponse response;
 
         response = new WriteFileRecordResponse();
 
@@ -214,9 +221,11 @@ public final class WriteFileRecordRequest extends ModbusRequest {
 
     /**
      * The ModbusCoupler doesn't have a means of writing file records.
+     * @return 
      */
+    @Override
     public ModbusResponse createResponse() {
-        WriteFileRecordResponse response = null;
+        WriteFileRecordResponse response;
         response = (WriteFileRecordResponse) getResponse();
 
         /*
@@ -270,14 +279,18 @@ public final class WriteFileRecordRequest extends ModbusRequest {
 
     /**
      * writeData -- output this Modbus message to dout.
+     * @throws java.io.IOException
      */
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.write(getMessage());
     }
 
     /**
      * readData -- convert the byte stream into a request.
+     * @throws java.io.IOException
      */
+    @Override
     public void readData(DataInput din) throws IOException {
         m_ByteCount = din.readUnsignedByte();
 
@@ -321,16 +334,18 @@ public final class WriteFileRecordRequest extends ModbusRequest {
 
     /**
      * getMessage -- return the raw binary message.
+     * @return 
      */
+    @Override
     public byte[] getMessage() {
         byte results[] = new byte[getRequestSize()];
 
         results[0] = (byte) (getRequestSize() - 1);
 
         int offset = 1;
-        for (int i = 0; i < m_Records.length; i++) {
-            m_Records[i].getRequest(results, offset);
-            offset += m_Records[i].getRequestSize();
+        for (RecordRequest m_Record : m_Records) {
+            m_Record.getRequest(results, offset);
+            offset += m_Record.getRequestSize();
         }
         return results;
     }

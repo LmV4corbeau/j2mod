@@ -77,6 +77,7 @@ abstract public class ModbusSerialTransport
      * @return a <code>ModbusResponse</code> value
      * @exception ModbusIOException if an error occurs
      */
+    @Override
     abstract public ModbusResponse readResponse()
             throws ModbusIOException;
 
@@ -88,6 +89,7 @@ abstract public class ModbusSerialTransport
      * @return a <code>ModbusRequest</code> value
      * @exception ModbusIOException if an error occurs
      */
+    @Override
     abstract public ModbusRequest readRequest()
             throws ModbusIOException;
 
@@ -98,6 +100,7 @@ abstract public class ModbusSerialTransport
      * @param msg a <code>ModbusMessage</code> value
      * @exception ModbusIOException if an error occurs
      */
+    @Override
     abstract public void writeMessage(ModbusMessage msg)
             throws ModbusIOException;
 
@@ -106,6 +109,7 @@ abstract public class ModbusSerialTransport
      *
      * @exception IOException if an error occurs
      */
+    @Override
     abstract public void close() throws IOException;
 
     /**

@@ -5,6 +5,7 @@ public interface ModbusListener extends Runnable {
     /**
      * Main execution loop for this Modbus interface listener
      */
+    @Override
     public void run();
 
     /**
@@ -18,6 +19,7 @@ public interface ModbusListener extends Runnable {
     /**
      * Gets the unit number for this Modbus interface listener.
      *
+     * @return 
      * @returns The Modbus unit number.
      */
     public int getUnit();
@@ -37,6 +39,7 @@ public interface ModbusListener extends Runnable {
      * requests. Additionally, an interface which is no longer alive will return
      * <b>false</b>.
      *
+     * @return 
      * @returns The current <i>listening</i> state.
      */
     public boolean isListening();
@@ -45,6 +48,7 @@ public interface ModbusListener extends Runnable {
      * Starts the listener thread with the <tt>ModbusListener</tt> in
      * <i>listening</i> mode.
      *
+     * @return 
      * @returns The listener Thread.
      */
     public Thread listen();

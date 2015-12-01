@@ -280,6 +280,7 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
      * readRequest - Read a slave request.
      *
      * @return a <tt>ModbusRequest</tt> to be processed by the slave simulator
+     * @throws com.ghgande.j2mod.modbus.ModbusIOException
      */
     @Override
     public ModbusRequest readRequest() throws ModbusIOException {

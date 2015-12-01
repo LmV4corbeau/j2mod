@@ -107,14 +107,17 @@ public class ModbusTCPTransaction implements ModbusTransaction {
         m_IO = con.getModbusTransport();
     }
 
+    @Override
     public void setRequest(ModbusRequest req) {
         m_Request = req;
     }
 
+    @Override
     public ModbusRequest getRequest() {
         return m_Request;
     }
 
+    @Override
     public ModbusResponse getResponse() {
         return m_Response;
     }
@@ -126,6 +129,7 @@ public class ModbusTCPTransaction implements ModbusTransaction {
      * this class instance if multiple threads can create requests at the same
      * time.
      */
+    @Override
     public int getTransactionID() {
         /*
          * Ensure that the transaction ID is in the valid range between
@@ -143,10 +147,12 @@ public class ModbusTCPTransaction implements ModbusTransaction {
         return c_TransactionID;
     }
 
+    @Override
     public void setCheckingValidity(boolean b) {
         m_ValidityCheck = b;
     }
 
+    @Override
     public boolean isCheckingValidity() {
         return m_ValidityCheck;
     }
@@ -173,14 +179,17 @@ public class ModbusTCPTransaction implements ModbusTransaction {
         return m_Reconnecting;
     }
 
+    @Override
     public int getRetries() {
         return m_Retries;
     }
 
+    @Override
     public void setRetries(int num) {
         m_Retries = num;
     }
 
+    @Override
     public void execute() throws ModbusIOException, ModbusSlaveException,
             ModbusException {
 
@@ -261,7 +270,6 @@ public class ModbusTCPTransaction implements ModbusTransaction {
                             + " times)");
                 } else {
                     retryCounter++;
-                    continue;
                 }
             }
         }

@@ -38,9 +38,9 @@ package com.ghgande.j2mod.modbus.procimg;
  */
 public class File {
 
-    private int m_File_Number;
-    private int m_Record_Count;
-    private Record m_Records[];
+    private final int m_File_Number;
+    private final int m_Record_Count;
+    private final Record m_Records[];
 
     public int getFileNumber() {
         return m_File_Number;

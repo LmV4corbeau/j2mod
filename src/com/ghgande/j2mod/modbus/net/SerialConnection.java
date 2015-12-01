@@ -81,7 +81,7 @@ import com.ghgande.j2mod.modbus.util.SerialParameters;
  */
 public class SerialConnection implements SerialPortEventListener {
 
-    private SerialParameters m_Parameters;
+    private final SerialParameters m_Parameters;
     private ModbusSerialTransport m_Transport;
     private SerialPort m_SerialPort;
     private boolean m_Open;
@@ -151,14 +151,16 @@ public class SerialConnection implements SerialPortEventListener {
             throw e;
         }
 
-        if (Modbus.SERIAL_ENCODING_ASCII.equals(m_Parameters.getEncoding())) {
-            m_Transport = new ModbusASCIITransport();
-        } else if (Modbus.SERIAL_ENCODING_RTU
-                .equals(m_Parameters.getEncoding())) {
-            m_Transport = new ModbusRTUTransport();
-        } else if (Modbus.SERIAL_ENCODING_BIN
-                .equals(m_Parameters.getEncoding())) {
-            m_Transport = new ModbusBINTransport();
+        if (null != m_Parameters.getEncoding()) switch (m_Parameters.getEncoding()) {
+            case Modbus.SERIAL_ENCODING_ASCII:
+                m_Transport = new ModbusASCIITransport();
+                break;
+            case Modbus.SERIAL_ENCODING_RTU:
+                m_Transport = new ModbusRTUTransport();
+                break;
+            case Modbus.SERIAL_ENCODING_BIN:
+                m_Transport = new ModbusBINTransport();
+                break;
         }
         m_Transport.setEcho(m_Parameters.isEcho());
 

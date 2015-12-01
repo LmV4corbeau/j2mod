@@ -83,6 +83,7 @@ public final class WriteSingleRegisterRequest extends ModbusRequest {
         m_Register = reg;
     }
 
+    @Override
     public ModbusResponse getResponse() {
         WriteSingleRegisterResponse response = new WriteSingleRegisterResponse();
 
@@ -97,6 +98,7 @@ public final class WriteSingleRegisterRequest extends ModbusRequest {
         return response;
     }
 
+    @Override
     public ModbusResponse createResponse() {
         WriteSingleRegisterResponse response = null;
         Register reg = null;
@@ -156,16 +158,19 @@ public final class WriteSingleRegisterRequest extends ModbusRequest {
         return m_Register;
     }
 
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.writeShort(m_Reference);
         dout.write(m_Register.toBytes());
     }
 
+    @Override
     public void readData(DataInput din) throws IOException {
         m_Reference = din.readUnsignedShort();
         m_Register = new SimpleRegister(din.readByte(), din.readByte());
     }
 
+    @Override
     public byte[] getMessage() {
         byte result[] = new byte[4];
 

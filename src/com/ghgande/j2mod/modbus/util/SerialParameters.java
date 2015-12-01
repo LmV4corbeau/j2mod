@@ -44,7 +44,7 @@ import com.ghgande.j2mod.modbus.Modbus;
  * @author John Charlton
  * @version 1.2rc1 (09/11/2004)
  */
-public class SerialParameters {
+public final class SerialParameters {
 
     //instance attributes
     private String m_PortName;
@@ -62,7 +62,7 @@ public class SerialParameters {
      */
     public SerialParameters() {
         m_PortName = "";
-        m_BaudRate = 9600;
+        m_BaudRate = Modbus.DEFAULT_BAUD_RATE;
         m_FlowControlIn = SerialPort.FLOWCONTROL_NONE;
         m_FlowControlOut = SerialPort.FLOWCONTROL_NONE;
         m_Databits = SerialPort.DATABITS_8;
@@ -73,7 +73,7 @@ public class SerialParameters {
     }//constructor
 
     /**
-     * Constructs a new <tt>SerialParameters<tt> instance with given parameters.
+     * Constructs a new <tt>SerialParameters</tt> instance with given parameters.
      *
      * @param portName The name of the port.
      * @param baudRate The baud rate.

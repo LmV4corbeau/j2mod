@@ -187,7 +187,7 @@ public class TCPSlaveConnection {
      * means to accept all unit numbers, while a non-zero unit number means only
      * to accept requests for that specific unit.
      *
-     * @returns unit number
+     * @return unit number
      */
     public int getUnitNumber() {
         return m_Unit;

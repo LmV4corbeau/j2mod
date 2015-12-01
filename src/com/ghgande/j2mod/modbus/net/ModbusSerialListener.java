@@ -83,7 +83,7 @@ public class ModbusSerialListener implements ModbusListener {
 
     private boolean m_Listening;
     private boolean m_Running = true;
-    private SerialConnection m_SerialCon;
+    private final SerialConnection m_SerialCon;
     private int m_Unit = 0;
 
     /**
@@ -91,6 +91,7 @@ public class ModbusSerialListener implements ModbusListener {
      *
      * Listen for incoming messages and process.
      */
+    @Override
     public void run() {
         try {
             m_Listening = true;
@@ -183,6 +184,7 @@ public class ModbusSerialListener implements ModbusListener {
      *
      * @param unit Modbus unit number
      */
+    @Override
     public void setUnit(int unit) {
         m_Unit = unit;
     }
@@ -192,6 +194,7 @@ public class ModbusSerialListener implements ModbusListener {
      *
      * @returns Modbus unit number
      */
+    @Override
     public int getUnit() {
         return m_Unit;
     }
@@ -202,6 +205,7 @@ public class ModbusSerialListener implements ModbusListener {
      * @param b true if listening (and accepting incoming connections), false
      * otherwise.
      */
+    @Override
     public void setListening(boolean b) {
         m_Listening = b;
     }
@@ -213,6 +217,7 @@ public class ModbusSerialListener implements ModbusListener {
      * @return true if listening (and accepting incoming connections), false
      * otherwise.
      */
+    @Override
     public boolean isListening() {
         return m_Listening;
     }
@@ -220,6 +225,7 @@ public class ModbusSerialListener implements ModbusListener {
     /**
      * Stops this interface.
      */
+    @Override
     public void stop() {
         m_Listening = false;
         m_Running = false;
@@ -227,7 +233,9 @@ public class ModbusSerialListener implements ModbusListener {
 
     /**
      * Start the listener thread for this serial interface.
+     * @return 
      */
+    @Override
     public Thread listen() {
         m_Listening = true;
         Thread result = new Thread(this);

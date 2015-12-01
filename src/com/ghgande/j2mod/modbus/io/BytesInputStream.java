@@ -41,9 +41,7 @@ import java.io.IOException;
  * @author Dieter Wimberger
  * @version 1.2rc1 (09/11/2004)
  */
-public class BytesInputStream
-        extends FastByteArrayInputStream
-        implements DataInput {
+public class BytesInputStream extends FastByteArrayInputStream implements DataInput {
 
     DataInputStream m_Din;
 
@@ -132,84 +130,85 @@ public class BytesInputStream
         return buf;
     }//getBuffer
 
+    @Override
     public int getBufferLength() {
         return buf.length;
     }//getBufferLength
 
-    public void readFully(byte b[])
-            throws IOException {
+    @Override
+    public void readFully(byte b[]) throws IOException {
         m_Din.readFully(b);
     }//readFully
 
-    public void readFully(byte b[], int off, int len)
-            throws IOException {
+    @Override
+    public void readFully(byte b[], int off, int len) throws IOException {
         m_Din.readFully(b, off, len);
     }//readFully
 
-    public int skipBytes(int n)
-            throws IOException {
+    @Override
+    public int skipBytes(int n) throws IOException {
         return m_Din.skipBytes(n);
     }//skipBytes
 
-    public boolean readBoolean()
-            throws IOException {
+    @Override
+    public boolean readBoolean() throws IOException {
         return m_Din.readBoolean();
     }//readBoolean
 
-    public byte readByte()
-            throws IOException {
+    @Override
+    public byte readByte() throws IOException {
         return m_Din.readByte();
     }
 
-    public int readUnsignedByte()
-            throws IOException {
+    @Override
+    public int readUnsignedByte() throws IOException {
         return m_Din.readUnsignedByte();
     }//readUnsignedByte
 
-    public short readShort()
-            throws IOException {
+    @Override
+    public short readShort() throws IOException {
         return m_Din.readShort();
     }//readShort
 
-    public int readUnsignedShort()
-            throws IOException {
+    @Override
+    public int readUnsignedShort() throws IOException {
         return m_Din.readUnsignedShort();
     }//readUnsignedShort
 
-    public char readChar()
-            throws IOException {
+    @Override
+    public char readChar() throws IOException {
         return m_Din.readChar();
     }//readChar
 
-    public int readInt()
-            throws IOException {
+    @Override
+    public int readInt() throws IOException {
         return m_Din.readInt();
     }//readInt
 
-    public long readLong()
-            throws IOException {
+    @Override
+    public long readLong() throws IOException {
         return m_Din.readLong();
     }//readLong
 
     //
-    public float readFloat()
-            throws IOException {
+    @Override
+    public float readFloat() throws IOException {
         return m_Din.readFloat();
     }//readFloat
 
-    public double readDouble()
-            throws IOException {
+    @Override
+    public double readDouble() throws IOException {
         return m_Din.readDouble();
     }//readDouble
     //
 
-    public String readLine()
-            throws IOException {
+    @Override
+    public String readLine() throws IOException {
         throw new IOException("Not supported.");
     }//readLine
 
-    public String readUTF()
-            throws IOException {
+    @Override
+    public String readUTF() throws IOException {
         return m_Din.readUTF();
     }//readUTF
 

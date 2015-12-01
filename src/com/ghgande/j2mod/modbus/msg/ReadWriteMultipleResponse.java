@@ -124,6 +124,7 @@ public final class ReadWriteMultipleResponse extends ModbusResponse {
 
     /**
      * Sets the entire block of registers for this response
+     * @param registers
      */
     public void setRegisters(InputRegister[] registers) {
         m_ByteCount = registers.length * 2 + 1;
@@ -132,6 +133,7 @@ public final class ReadWriteMultipleResponse extends ModbusResponse {
         m_Registers = registers;
     }
 
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.writeByte(m_ByteCount);
 
@@ -140,6 +142,7 @@ public final class ReadWriteMultipleResponse extends ModbusResponse {
         }
     }
 
+    @Override
     public void readData(DataInput din) throws IOException {
         m_ByteCount = din.readUnsignedByte();
 
@@ -152,17 +155,17 @@ public final class ReadWriteMultipleResponse extends ModbusResponse {
         setDataLength(m_ByteCount + 1);
     }
 
+    @Override
     public byte[] getMessage() {
-        byte result[] = null;
+        byte result[];
 
         result = new byte[getWordCount() * 2 + 1];
 
         int offset = 0;
         result[offset++] = (byte) m_ByteCount;
 
-        for (int i = 0; i < m_Registers.length; i++) {
-            byte[] data = m_Registers[i].toBytes();
-
+        for (InputRegister m_Register : m_Registers) {
+            byte[] data = m_Register.toBytes();
             result[offset++] = data[0];
             result[offset++] = data[1];
         }
@@ -187,7 +190,7 @@ public final class ReadWriteMultipleResponse extends ModbusResponse {
     /**
      * Constructs a new <tt>ReadWriteMultipleResponse</tt> instance.
      *
-     * @param registers the Register[] holding response registers.
+     * @param count
      */
     public ReadWriteMultipleResponse(int count) {
         super();

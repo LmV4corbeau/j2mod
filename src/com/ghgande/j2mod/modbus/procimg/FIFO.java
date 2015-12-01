@@ -44,9 +44,9 @@ import java.util.Vector;
  */
 public class FIFO {
 
-    private int m_Address;
+    private final int m_Address;
     private int m_Register_Count;
-    private Vector<Register> m_Registers;
+    private final Vector<Register> m_Registers;
 
     public synchronized int getRegisterCount() {
         return m_Register_Count;
@@ -85,6 +85,6 @@ public class FIFO {
     public FIFO(int address) {
         m_Address = address;
         m_Register_Count = 0;
-        m_Registers = new Vector<Register>();
+        m_Registers = new Vector<>();
     }
 }

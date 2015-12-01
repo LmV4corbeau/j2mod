@@ -98,6 +98,7 @@ public final class ReadInputRegistersResponse extends ModbusResponse {
 
     /**
      * Set the number of words to be written.
+     * @param count
      */
     public void setWordCount(int count) {
         m_ByteCount = count * 2 + 1;
@@ -163,6 +164,7 @@ public final class ReadInputRegistersResponse extends ModbusResponse {
 
     /**
      * Sets the entire block of registers for this response
+     * @param registers
      */
     public void setRegisters(InputRegister[] registers) {
         setDataLength(registers.length * 2 + 1);
@@ -171,6 +173,7 @@ public final class ReadInputRegistersResponse extends ModbusResponse {
         m_Registers = registers;
     }
 
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.writeByte(m_ByteCount);
 
@@ -179,6 +182,7 @@ public final class ReadInputRegistersResponse extends ModbusResponse {
         }
     }
 
+    @Override
     public void readData(DataInput din) throws IOException {
         m_ByteCount = din.readUnsignedByte();
 
@@ -192,6 +196,7 @@ public final class ReadInputRegistersResponse extends ModbusResponse {
         setDataLength(m_ByteCount + 1);
     }
 
+    @Override
     public byte[] getMessage() {
         byte result[] = new byte[m_Registers.length * 2 + 1];
         result[0] = (byte) (m_Registers.length * 2);

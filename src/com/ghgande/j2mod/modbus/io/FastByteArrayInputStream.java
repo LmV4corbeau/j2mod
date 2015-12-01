@@ -129,26 +129,31 @@ public class FastByteArrayInputStream extends InputStream {
     }// constructor
 
     // --- begin ByteArrayInputStream compatible methods ---
+    @Override
     public int available() {
         return count - pos;
     }// available
 
+    @Override
     public boolean markSupported() {
         return true;
     }// markSupported
 
+    @Override
     public void mark(int readlimit) {
         // System.out.println("mark()");
         mark = pos;
         // System.out.println("mark=" + mark + " pos=" + pos);
     }// mark
 
+    @Override
     public void reset() {
         // System.out.println("reset()");
         pos = mark;
         // System.out.println("mark=" + mark + " pos=" + pos);
     }// reset
 
+    @Override
     public long skip(long count) {
         int myCount = (int) count;
         if (myCount + pos > this.count) {
@@ -158,17 +163,20 @@ public class FastByteArrayInputStream extends InputStream {
         return myCount;
     }// skip
 
+    @Override
     public int read() throws IOException {
         // System.out.println("read()");
         // System.out.println("count=" + count + " pos=" + pos);
         return (pos < count) ? (buf[pos++] & 0xff) : (-1);
     }// read
 
+    @Override
     public int read(byte[] toBuf) throws IOException {
         // System.out.println("read(byte[])");
         return read(toBuf, 0, toBuf.length);
     }// read
 
+    @Override
     public int read(byte[] toBuf, int offset, int length) throws IOException {
         // System.out.println("read(byte[],int,int)");
         int avail = count - pos;

@@ -89,6 +89,7 @@ public final class WriteMultipleRegistersRequest extends ModbusRequest {
     private Register[] m_Registers;
     private NonWordDataHandler m_NonWordDataHandler = null;
 
+    @Override
     public ModbusResponse getResponse() {
         WriteMultipleRegistersResponse response = new WriteMultipleRegistersResponse();
 
@@ -114,6 +115,7 @@ public final class WriteMultipleRegistersRequest extends ModbusRequest {
      * with the <tt>ModbusCoupler</tt>. It is commonly used to implement Modbus
      * slave instances.
      *
+     * @return 
      * @returns the corresponding ModbusResponse.
      * <p>
      *
@@ -122,6 +124,7 @@ public final class WriteMultipleRegistersRequest extends ModbusRequest {
      * device has data which are not actually
      * <tt>short</tt> values in the range of registers being processed.
      */
+    @Override
     public ModbusResponse createResponse() {
         WriteMultipleRegistersResponse response = null;
 
@@ -283,6 +286,7 @@ public final class WriteMultipleRegistersRequest extends ModbusRequest {
         return m_NonWordDataHandler;
     }
 
+    @Override
     public void writeData(DataOutput output) throws IOException {
         byte data[] = getMessage();
         if (data == null) {
@@ -292,6 +296,7 @@ public final class WriteMultipleRegistersRequest extends ModbusRequest {
         output.write(data);
     }
 
+    @Override
     public void readData(DataInput input) throws IOException {
         m_Reference = input.readShort();
         int registerCount = input.readUnsignedShort();
@@ -314,6 +319,7 @@ public final class WriteMultipleRegistersRequest extends ModbusRequest {
         }
     }
 
+    @Override
     public byte[] getMessage() {
         int len = 5;
 

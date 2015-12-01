@@ -57,8 +57,8 @@ class UDPSlaveTerminal implements UDPTerminal {
     private int m_LocalPort = Modbus.DEFAULT_PORT;
     protected ModbusUDPTransport m_ModbusTransport;
 
-    private LinkedQueue m_SendQueue;
-    private LinkedQueue m_ReceiveQueue;
+    private final LinkedQueue m_SendQueue;
+    private final LinkedQueue m_ReceiveQueue;
     private PacketSender m_PacketSender;
     private PacketReceiver m_PacketReceiver;
     private Thread m_Receiver;
@@ -79,10 +79,12 @@ class UDPSlaveTerminal implements UDPTerminal {
         m_Requests = new Hashtable<Integer, DatagramPacket>(342);
     }
 
+    @Override
     public InetAddress getLocalAddress() {
         return m_LocalAddress;
     }
 
+    @Override
     public int getLocalPort() {
         return m_LocalPort;
     }
@@ -96,6 +98,7 @@ class UDPSlaveTerminal implements UDPTerminal {
      *
      * @return <tt>true</tt> if active, <tt>false</tt> otherwise.
      */
+    @Override
     public boolean isActive() {
         return m_Active;
     }
@@ -105,6 +108,7 @@ class UDPSlaveTerminal implements UDPTerminal {
      *
      * @throws Exception if there is a network failure.
      */
+    @Override
     public synchronized void activate() throws Exception {
         if (!isActive()) {
             if (Modbus.debug) {
@@ -156,6 +160,7 @@ class UDPSlaveTerminal implements UDPTerminal {
     /**
      * Deactivates this <tt>UDPSlaveTerminal</tt>.
      */
+    @Override
     public void deactivate() {
         try {
             if (m_Active) {
@@ -181,6 +186,7 @@ class UDPSlaveTerminal implements UDPTerminal {
      *
      * @return the connection's <tt>ModbusTransport</tt>.
      */
+    @Override
     public ModbusUDPTransport getModbusTransport() {
         return m_ModbusTransport;
     }
@@ -228,10 +234,12 @@ class UDPSlaveTerminal implements UDPTerminal {
         m_Socket = sock;
     }
 
+    @Override
     public void sendMessage(byte[] msg) throws Exception {
         m_SendQueue.put(msg);
     }
 
+    @Override
     public byte[] receiveMessage() throws Exception {
         return (byte[]) m_ReceiveQueue.take();
     }// receiveMessage
@@ -244,6 +252,7 @@ class UDPSlaveTerminal implements UDPTerminal {
             m_Continue = true;
         }// constructor
 
+        @Override
         public void run() {
             do {
                 try {
@@ -259,7 +268,7 @@ class UDPSlaveTerminal implements UDPTerminal {
                     if (Modbus.debug) {
                         System.out.println("Sent package from queue.");
                     }
-                } catch (Exception ex) {
+                } catch (InterruptedException | IOException ex) {
                     ex.printStackTrace();
                 }
             } while (m_Continue || !m_SendQueue.isEmpty());
@@ -279,6 +288,7 @@ class UDPSlaveTerminal implements UDPTerminal {
             m_Continue = true;
         }// constructor
 
+        @Override
         public void run() {
             do {
                 try {
@@ -288,14 +298,14 @@ class UDPSlaveTerminal implements UDPTerminal {
                             buffer.length);
                     m_Socket.receive(packet);
                     // 2. Extract TID and remember request
-                    Integer tid = new Integer(ModbusUtil.registersToInt(buffer));
+                    Integer tid = ModbusUtil.registersToInt(buffer);
                     m_Requests.put(tid, packet);
                     // 3. place the data buffer in the queue
                     m_ReceiveQueue.put(buffer);
                     if (Modbus.debug) {
                         System.out.println("Received package to queue.");
                     }
-                } catch (Exception ex) {
+                } catch (IOException | InterruptedException ex) {
                     ex.printStackTrace();
                 }
             } while (m_Continue);

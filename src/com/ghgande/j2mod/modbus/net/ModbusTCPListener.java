@@ -111,8 +111,9 @@ public class ModbusTCPListener implements ModbusListener {
      * Modbus/TCP gateway. If the unit number is non-zero, all packets for any
      * other unit number should be discarded.
      *
-     * @returns unit number supported by this interface.
+     * @return unit number supported by this interface.
      */
+    @Override
     public int getUnit() {
         return m_Unit;
     }
@@ -124,6 +125,7 @@ public class ModbusTCPListener implements ModbusListener {
      *
      * @param unit the number of the Modbus unit as <tt>int</tt>.
      */
+    @Override
     public void setUnit(int unit) {
         m_Unit = unit;
     }
@@ -152,6 +154,7 @@ public class ModbusTCPListener implements ModbusListener {
     /**
      * Stops this <tt>ModbusTCPListener</tt>.
      */
+    @Override
     public void stop() {
         m_Listening = false;
         try {
@@ -166,6 +169,7 @@ public class ModbusTCPListener implements ModbusListener {
      * Accepts incoming connections and handles then with
      * <tt>TCPConnectionHandler</tt> instances.
      */
+    @Override
     public void run() {
         try {
             /*
@@ -201,10 +205,9 @@ public class ModbusTCPListener implements ModbusListener {
                 } else {
                     incoming.close();
                 }
-            };
+            }
         } catch (SocketException iex) {
             if (!m_Listening) {
-                return;
             } else {
                 if (Modbus.debug) {
                     iex.printStackTrace();
@@ -222,6 +225,7 @@ public class ModbusTCPListener implements ModbusListener {
      *
      * @param b
      */
+    @Override
     public void setListening(boolean b) {
         m_Listening = b;
     }
@@ -233,13 +237,16 @@ public class ModbusTCPListener implements ModbusListener {
      * @return true if listening (and accepting incoming connections), false
      * otherwise.
      */
+    @Override
     public boolean isListening() {
         return m_Listening;
     }
 
     /**
      * Start the listener thread for this serial interface.
+     * @return 
      */
+    @Override
     public Thread listen() {
         m_Listening = true;
         Thread result = new Thread(this);

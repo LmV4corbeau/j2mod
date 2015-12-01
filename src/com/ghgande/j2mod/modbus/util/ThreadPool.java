@@ -37,10 +37,10 @@ package com.ghgande.j2mod.modbus.util;
  * @author Dieter Wimberger
  * @version 1.2rc1 (09/11/2004)
  */
-public class ThreadPool {
+public final class ThreadPool {
 
     //instance attributes and associations
-    private LinkedQueue m_TaskPool;
+    private final LinkedQueue m_TaskPool;
     private int m_Size = 1;
 
     /**
@@ -92,6 +92,7 @@ public class ThreadPool {
          * This method will infinitely loop, picking up available tasks from the
          * <tt>LinkedQueue</tt>.
          */
+        @Override
         public void run() {
             //System.out.println("Running PoolThread");
             do {

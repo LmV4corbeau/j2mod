@@ -180,6 +180,7 @@ public class FastByteArrayOutputStream
         count = 0;
     }//reset
 
+    @Override
     public void write(int b) throws IOException {
         if (count + 1 > buf.length) {
             bump(1);
@@ -187,6 +188,7 @@ public class FastByteArrayOutputStream
         buf[count++] = (byte) b;
     }//write
 
+    @Override
     public void write(byte[] fromBuf) throws IOException {
         int needed = count + fromBuf.length - buf.length;
         if (needed > 0) {
@@ -197,6 +199,7 @@ public class FastByteArrayOutputStream
         }
     }//write
 
+    @Override
     public void write(byte[] fromBuf, int offset, int length)
             throws IOException {
 
@@ -224,6 +227,7 @@ public class FastByteArrayOutputStream
         out.write(buf, 0, count);
     }//writeTo
 
+    @Override
     public String toString() {
         return new String(buf, 0, count);
     }//toString
@@ -267,9 +271,7 @@ public class FastByteArrayOutputStream
      */
     public void toByteArray(byte[] toBuf, int offset) {
         int toLen = (toBuf.length > count) ? count : toBuf.length;
-        for (int i = offset; i < toLen; i++) {
-            toBuf[i] = buf[i];
-        }
+        System.arraycopy(buf, offset, toBuf, offset, toLen - offset);
     }//toByteArray
 
     /**
@@ -327,9 +329,7 @@ public class FastByteArrayOutputStream
 
         byte[] toBuf = new byte[buf.length + needed + bumpLen];
 
-        for (int i = 0; i < count; i++) {
-            toBuf[i] = buf[i];
-        }
+        System.arraycopy(buf, 0, toBuf, 0, count);
         buf = toBuf;
     }//bump
 

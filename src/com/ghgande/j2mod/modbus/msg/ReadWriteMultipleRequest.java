@@ -95,9 +95,11 @@ public final class ReadWriteMultipleRequest extends ModbusRequest {
 
     /**
      * createResponse -- create an empty response for this request.
+     * @return 
      */
+    @Override
     public ModbusResponse getResponse() {
-        ReadWriteMultipleResponse response = null;
+        ReadWriteMultipleResponse response;
 
         response = new ReadWriteMultipleResponse();
 
@@ -119,6 +121,7 @@ public final class ReadWriteMultipleRequest extends ModbusRequest {
         return response;
     }
 
+    @Override
     public ModbusResponse createResponse() {
         ReadWriteMultipleResponse response = null;
         InputRegister[] readRegs = null;
@@ -329,7 +332,9 @@ public final class ReadWriteMultipleRequest extends ModbusRequest {
 
     /**
      * writeData -- output this Modbus message to dout.
+     * @throws java.io.IOException
      */
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.write(getMessage());
     }
@@ -337,7 +342,10 @@ public final class ReadWriteMultipleRequest extends ModbusRequest {
     /**
      * readData -- read the values of the registers to be written, along with
      * the reference and count for the registers to be read.
+     * @param input
+     * @throws java.io.IOException
      */
+    @Override
     public void readData(DataInput input) throws IOException {
         m_ReadReference = input.readShort();
         m_ReadCount = input.readShort();
@@ -365,7 +373,9 @@ public final class ReadWriteMultipleRequest extends ModbusRequest {
 
     /**
      * getMessage -- return a prepared message.
+     * @return 
      */
+    @Override
     public byte[] getMessage() {
         byte results[] = new byte[9 + 2 * getWriteWordCount()];
 
@@ -392,6 +402,11 @@ public final class ReadWriteMultipleRequest extends ModbusRequest {
 
     /**
      * Constructs a new <tt>Read/Write Multiple Registers Request</tt> instance.
+     * @param unit
+     * @param readRef
+     * @param readCount
+     * @param writeRef
+     * @param writeCount
      */
     public ReadWriteMultipleRequest(int unit, int readRef, int readCount,
             int writeRef, int writeCount) {
@@ -417,6 +432,7 @@ public final class ReadWriteMultipleRequest extends ModbusRequest {
 
     /**
      * Constructs a new <tt>Read/Write Multiple Registers Request</tt> instance.
+     * @param unit
      */
     public ReadWriteMultipleRequest(int unit) {
         super();

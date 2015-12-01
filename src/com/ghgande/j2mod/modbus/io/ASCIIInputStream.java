@@ -70,8 +70,9 @@ public class ASCIIInputStream
      * @return int the byte read from the stream.
      * @throws IOException if an I/O error occurs.
      */
+    @Override
     public int read() throws IOException {
-        StringBuffer sbuf = new StringBuffer(2);
+        StringBuilder sbuf = new StringBuilder(2);
         int ch = in.read();
         if (ch == -1) {
             return -1;

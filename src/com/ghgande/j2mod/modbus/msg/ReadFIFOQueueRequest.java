@@ -97,7 +97,7 @@ public final class ReadFIFOQueueRequest extends ModbusRequest {
     /**
      * setReference -- set the queue register number.
      *
-     * @return
+     * @param ref
      */
     public void setReference(int ref) {
         m_Reference = ref;
@@ -105,11 +105,11 @@ public final class ReadFIFOQueueRequest extends ModbusRequest {
 
     /**
      * getResponse -- create an empty response for this request.
+     * @return 
      */
+    @Override
     public ModbusResponse getResponse() {
-        ReadFIFOQueueResponse response = null;
-
-        response = new ReadFIFOQueueResponse();
+        ReadFIFOQueueResponse response = new ReadFIFOQueueResponse();
 
         /*
          * Copy any header data from the request.
@@ -131,7 +131,9 @@ public final class ReadFIFOQueueRequest extends ModbusRequest {
 
     /**
      * Create a response using the named register as the queue length count.
+     * @return 
      */
+    @Override
     public ModbusResponse createResponse() {
         ReadFIFOQueueResponse response = null;
         InputRegister[] registers = null;
@@ -164,21 +166,27 @@ public final class ReadFIFOQueueRequest extends ModbusRequest {
 
     /**
      * writeData -- output this Modbus message to dout.
+     * @throws java.io.IOException
      */
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.write(getMessage());
     }
 
     /**
      * readData -- read the reference word.
+     * @throws java.io.IOException
      */
+    @Override
     public void readData(DataInput din) throws IOException {
         m_Reference = din.readShort();
     }
 
     /**
      * getMessage -- return an empty array as there is no data for this request.
+     * @return 
      */
+    @Override
     public byte[] getMessage() {
         byte results[] = new byte[2];
 

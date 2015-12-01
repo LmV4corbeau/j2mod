@@ -116,6 +116,7 @@ public final class WriteCoilResponse extends ModbusResponse {
         m_Reference = ref;
     }
 
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         byte data[] = getMessage();
         if (data == null) {
@@ -125,6 +126,7 @@ public final class WriteCoilResponse extends ModbusResponse {
         dout.write(data);
     }
 
+    @Override
     public void readData(DataInput din) throws IOException {
         byte data[] = new byte[4];
         din.readFully(data);
@@ -135,6 +137,7 @@ public final class WriteCoilResponse extends ModbusResponse {
         setDataLength(4);
     }
 
+    @Override
     public byte[] getMessage() {
         byte result[] = new byte[4];
 

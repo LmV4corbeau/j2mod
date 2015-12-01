@@ -97,6 +97,7 @@ public final class ReportSlaveIDResponse
 
     /**
      * getSlaveID -- return the slave identifier field.
+     * @return 
      */
     public int getSlaveID() {
         return m_slaveId;
@@ -105,6 +106,7 @@ public final class ReportSlaveIDResponse
     /**
      * setSlaveID -- initialize the slave identifier when constructing a
      * response message.
+     * @param i
      */
     public void setSlaveID(int i) {
         m_slaveId = i;
@@ -171,16 +173,19 @@ public final class ReportSlaveIDResponse
 
     /**
      * writeData -- output the completed Modbus message to dout
+     * @throws java.io.IOException
      */
-    public void writeData(DataOutput dout)
-            throws IOException {
+    @Override
+    public void writeData(DataOutput dout) throws IOException {
         dout.write(getMessage());
     }
 
     /**
      * readData -- input the Modbus message from din. If there was a header,
      * such as for Modbus/TCP, it will have been read already.
+     * @throws java.io.IOException
      */
+    @Override
     public void readData(DataInput din) throws IOException {
 
         /*
@@ -210,7 +215,9 @@ public final class ReportSlaveIDResponse
 
     /**
      * getMessage -- format the message into a byte array.
+     * @return 
      */
+    @Override
     public byte[] getMessage() {
         byte result[] = new byte[3 + m_length];
         int offset = 0;

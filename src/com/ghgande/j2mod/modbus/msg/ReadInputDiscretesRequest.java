@@ -101,6 +101,7 @@ public final class ReadInputDiscretesRequest extends ModbusRequest {
      *
      * @return
      */
+    @Override
     public ReadInputDiscretesResponse getResponse() {
         ReadInputDiscretesResponse response
                 = new ReadInputDiscretesResponse(getBitCount());
@@ -116,6 +117,7 @@ public final class ReadInputDiscretesRequest extends ModbusRequest {
         return response;
     }
 
+    @Override
     public ModbusResponse createResponse() {
         ReadInputDiscretesResponse response = null;
         DigitalIn[] dins = null;
@@ -192,16 +194,19 @@ public final class ReadInputDiscretesRequest extends ModbusRequest {
         return m_BitCount;
     }
 
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.writeShort(m_Reference);
         dout.writeShort(m_BitCount);
     }
 
+    @Override
     public void readData(DataInput din) throws IOException {
         m_Reference = din.readUnsignedShort();
         m_BitCount = din.readUnsignedShort();
     }
 
+    @Override
     public byte[] getMessage() {
         byte result[] = new byte[4];
 

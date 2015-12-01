@@ -117,39 +117,48 @@ public class ModbusUDPTransaction
         }
     }//setConnection
 
+    @Override
     public void setRequest(ModbusRequest req) {
         m_Request = req;
         //m_Response = req.getResponse();
     }//setRequest
 
+    @Override
     public ModbusRequest getRequest() {
         return m_Request;
     }//getRequest
 
+    @Override
     public ModbusResponse getResponse() {
         return m_Response;
     }//getResponse
 
+    @Override
     public int getTransactionID() {
         return c_TransactionID & 0x0000FFFF;
     }//getTransactionID
 
+    @Override
     public void setCheckingValidity(boolean b) {
         m_ValidityCheck = b;
     }//setCheckingValidity
 
+    @Override
     public boolean isCheckingValidity() {
         return m_ValidityCheck;
     }//isCheckingValidity
 
+    @Override
     public int getRetries() {
         return m_Retries;
     }//getRetries
 
+    @Override
     public void setRetries(int num) {
         m_Retries = num;
     }//setRetries
 
+    @Override
     public void execute() throws ModbusIOException,
             ModbusSlaveException,
             ModbusException {
@@ -184,7 +193,6 @@ public class ModbusUDPTransaction
                 }
             } catch (ModbusIOException ex) {
                 m_RetryCounter++;
-                continue;
             }
         }
 

@@ -62,7 +62,7 @@ public interface ModbusTransport {
     public ModbusTransaction createTransaction();
 
     /**
-     * Writes a <tt<ModbusMessage</tt> to the output stream of this
+     * Writes a <tt>ModbusMessage</tt> to the output stream of this
      * <tt>ModbusTransport</tt>.
      * <p>
      * @param msg a <tt>ModbusMessage</tt>.
@@ -73,7 +73,7 @@ public interface ModbusTransport {
 
     /**
      * Reads a <tt>ModbusRequest</tt> from the input stream of this
-     * <tt>ModbusTransport<tt>.
+     * <tt>ModbusTransport</tt>.
      * <p>
      * @return req the <tt>ModbusRequest</tt> read from the underlying stream.
      * @throws ModbusIOException data cannot be read properly from the raw input
@@ -83,7 +83,7 @@ public interface ModbusTransport {
 
     /**
      * Reads a <tt>ModbusResponse</tt> from the input stream of this
-     * <tt>ModbusTransport<tt>.
+     * <tt>ModbusTransport</tt>.
      * <p>
      * @return res the <tt>ModbusResponse</tt> read from the underlying stream.
      * @throws ModbusIOException data cannot be read properly from the raw input

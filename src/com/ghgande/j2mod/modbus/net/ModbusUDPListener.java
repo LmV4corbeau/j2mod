@@ -92,10 +92,12 @@ public class ModbusUDPListener implements ModbusListener {
     private ModbusTransport m_Transport;
     private int m_Unit = 0;
 
+    @Override
     public int getUnit() {
         return m_Unit;
     }
 
+    @Override
     public void setUnit(int unit) {
         m_Unit = unit;
     }
@@ -123,6 +125,7 @@ public class ModbusUDPListener implements ModbusListener {
     /**
      * Starts this <tt>ModbusUDPListener</tt>.
      */
+    @Override
     public void run() {
         try {
             if (m_Interface == null) {
@@ -196,6 +199,7 @@ public class ModbusUDPListener implements ModbusListener {
     /**
      * Stops this <tt>ModbusUDPListener</tt>.
      */
+    @Override
     public void stop() {
         m_Terminal.deactivate();
         m_Listening = false;
@@ -209,6 +213,7 @@ public class ModbusUDPListener implements ModbusListener {
      * @param listen true if the <tt>ModbusUDPListener</tt> should listen, false
      * otherwise.
      */
+    @Override
     public void setListening(boolean listen) {
         m_Listening = listen;
     }
@@ -220,13 +225,16 @@ public class ModbusUDPListener implements ModbusListener {
      * @return true if listening (and accepting incoming connections), false
      * otherwise.
      */
+    @Override
     public boolean isListening() {
         return m_Listening;
     }
 
     /**
      * Start the listener thread for this serial interface.
+     * @return 
      */
+    @Override
     public Thread listen() {
         m_Listening = true;
         Thread result = new Thread(this);

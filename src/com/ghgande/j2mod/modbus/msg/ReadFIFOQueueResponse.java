@@ -64,7 +64,6 @@ package com.ghgande.j2mod.modbus.msg;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.Arrays;
 
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.procimg.InputRegister;
@@ -98,7 +97,7 @@ public final class ReadFIFOQueueResponse extends ModbusResponse {
     /**
      * getWordCount -- set the queue size.
      *
-     * @return
+     * @param ref
      */
     public synchronized void setWordCount(int ref) {
         if (ref < 0 || ref > 31) {
@@ -136,7 +135,7 @@ public final class ReadFIFOQueueResponse extends ModbusResponse {
     /**
      * setRegisters -- set the device's status.
      *
-     * @param status
+     * @param regs
      */
     public synchronized void setRegisters(InputRegister[] regs) {
         m_Registers = regs;
@@ -154,7 +153,9 @@ public final class ReadFIFOQueueResponse extends ModbusResponse {
 
     /**
      * writeData -- output the completed Modbus message to dout
+     * @throws java.io.IOException
      */
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.write(getMessage());
     }
@@ -162,7 +163,9 @@ public final class ReadFIFOQueueResponse extends ModbusResponse {
     /**
      * readData -- input the Modbus message from din. If there was a header,
      * such as for Modbus/TCP, it will have been read already.
+     * @throws java.io.IOException
      */
+    @Override
     public void readData(DataInput din) throws IOException {
         int byteCount;
 
@@ -187,7 +190,9 @@ public final class ReadFIFOQueueResponse extends ModbusResponse {
 
     /**
      * getMessage -- format the message into a byte array.
+     * @return 
      */
+    @Override
     public byte[] getMessage() {
         byte result[] = new byte[m_Count * 2 + 4];
 

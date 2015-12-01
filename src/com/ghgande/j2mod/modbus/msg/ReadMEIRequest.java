@@ -151,7 +151,8 @@ public final class ReadMEIRequest extends ModbusRequest {
     /**
      * The ModbusCoupler interface doesn't have a method for defining MEI for a
      * device.
-     * @return 
+     *
+     * @return
      */
     @Override
     public ModbusResponse createResponse() {
@@ -160,7 +161,8 @@ public final class ReadMEIRequest extends ModbusRequest {
 
     /**
      * Gets the MEI subcode associated with this request.
-     * @return 
+     *
+     * @return
      */
     public int getSubCode() {
         return m_SubCode;

@@ -82,7 +82,9 @@ public class IllegalFunctionRequest extends ModbusRequest {
 
     /**
      * There is no unit number associated with this exception.
+     * @return 
      */
+    @Override
     public ModbusResponse getResponse() {
         IllegalFunctionExceptionResponse response
                 = new IllegalFunctionExceptionResponse(getFunctionCode());
@@ -91,10 +93,12 @@ public class IllegalFunctionRequest extends ModbusRequest {
         return response;
     }
 
+    @Override
     public ModbusResponse createResponse() {
         return createExceptionResponse(Modbus.ILLEGAL_FUNCTION_EXCEPTION);
     }
 
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         throw new RuntimeException();
     }
@@ -102,7 +106,9 @@ public class IllegalFunctionRequest extends ModbusRequest {
     /**
      * Read all of the data that can be read. This is an unsupported function,
      * so it may not be possible to know exactly how much data needs to be read.
+     * @throws java.io.IOException
      */
+    @Override
     public void readData(DataInput din) throws IOException {
         // skip all following bytes
         int length = getDataLength();
@@ -111,6 +117,7 @@ public class IllegalFunctionRequest extends ModbusRequest {
         }
     }
 
+    @Override
     public byte[] getMessage() {
         return null;
     }

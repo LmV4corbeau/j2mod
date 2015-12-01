@@ -45,7 +45,7 @@ public interface ProcessImageImplementation extends ProcessImage {
      * Sets a new <tt>DigitalOut</tt> instance at the given reference.
      *
      * @param ref the reference as <tt>int</tt>.
-     * @param _do the new <tt>DigitalOut</tt> instance to be set.
+     * @param out the new <tt>DigitalOut</tt> instance to be set.
      *
      * @throws IllegalAddressException if the reference is invalid.
      */

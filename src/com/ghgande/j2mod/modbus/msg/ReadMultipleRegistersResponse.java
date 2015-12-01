@@ -151,6 +151,7 @@ public final class ReadMultipleRegistersResponse extends ModbusResponse {
 
     /**
      * Sets the entire block of registers for this response
+     * @param registers
      */
     public void setRegisters(Register[] registers) {
         m_ByteCount = registers.length * 2;
@@ -159,6 +160,7 @@ public final class ReadMultipleRegistersResponse extends ModbusResponse {
         m_Registers = registers;
     }
 
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.writeByte(m_ByteCount);
 
@@ -167,6 +169,7 @@ public final class ReadMultipleRegistersResponse extends ModbusResponse {
         }
     }
 
+    @Override
     public void readData(DataInput din) throws IOException {
         m_ByteCount = din.readUnsignedByte();
 
@@ -179,17 +182,15 @@ public final class ReadMultipleRegistersResponse extends ModbusResponse {
         setDataLength(m_ByteCount + 1);
     }
 
+    @Override
     public byte[] getMessage() {
-        byte result[] = null;
-
-        result = new byte[getWordCount() * 2 + 1];
+        byte result[] = new byte[getWordCount() * 2 + 1];
 
         int offset = 0;
         result[offset++] = (byte) m_ByteCount;
 
-        for (int i = 0; i < m_Registers.length; i++) {
-            byte[] data = m_Registers[i].toBytes();
-
+        for (Register m_Register : m_Registers) {
+            byte[] data = m_Register.toBytes();
             result[offset++] = data[0];
             result[offset++] = data[1];
         }

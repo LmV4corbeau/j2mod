@@ -100,7 +100,9 @@ public final class WriteMultipleCoilsResponse
     /**
      * writeData - Copy the attribute values for this message to the output
      * buffer.
+     * @throws java.io.IOException
      */
+    @Override
     public void writeData(DataOutput dout) throws IOException {
 
         dout.writeShort(m_Reference);
@@ -110,13 +112,16 @@ public final class WriteMultipleCoilsResponse
     /**
      * readData - Initialize the attribute values for this message from the
      * input buffer.
+     * @throws java.io.IOException
      */
+    @Override
     public void readData(DataInput din) throws IOException {
 
         m_Reference = din.readUnsignedShort();
         m_BitCount = din.readUnsignedShort();
     }
 
+    @Override
     public byte[] getMessage() {
         byte results[] = new byte[4];
 

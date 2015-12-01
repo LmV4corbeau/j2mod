@@ -141,7 +141,7 @@ public abstract class ModbusRequest extends ModbusMessageImpl {
      * @return a ModbusRequest instance specific for the given function type.
      */
     public static ModbusRequest createModbusRequest(int functionCode) {
-        ModbusRequest request = null;
+        ModbusRequest request;
 
         switch (functionCode) {
             case Modbus.READ_COILS:

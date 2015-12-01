@@ -53,10 +53,11 @@ public class ModbusUDPTransport
         implements ModbusTransport {
 
     //instance attributes
-    private UDPTerminal m_Terminal;
-    private BytesOutputStream m_ByteOut;
-    private BytesInputStream m_ByteIn;
+    private final UDPTerminal m_Terminal;
+    private final BytesOutputStream m_ByteOut;
+    private final BytesInputStream m_ByteIn;
 
+    @Override
     public void close()
             throws IOException {
         //?
@@ -66,6 +67,7 @@ public class ModbusUDPTransport
         return "true".equals(System.getProperty("com.ghgande.j2mod.modbus.debug"));
     }
 
+    @Override
     public ModbusTransaction createTransaction() {
         ModbusUDPTransaction trans = new ModbusUDPTransaction();
         trans.setTerminal(m_Terminal);
@@ -73,6 +75,7 @@ public class ModbusUDPTransport
         return trans;
     }
 
+    @Override
     public void writeMessage(ModbusMessage msg)
             throws ModbusIOException {
         try {
@@ -89,6 +92,7 @@ public class ModbusUDPTransport
         }
     }//write
 
+    @Override
     public ModbusRequest readRequest()
             throws ModbusIOException {
         try {
@@ -107,6 +111,7 @@ public class ModbusUDPTransport
         }
     }//readRequest
 
+    @Override
     public ModbusResponse readResponse()
             throws ModbusIOException {
 

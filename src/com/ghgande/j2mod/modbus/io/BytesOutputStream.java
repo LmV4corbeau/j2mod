@@ -41,11 +41,9 @@ import java.io.IOException;
  * @author Dieter Wimberger
  * @version 1.2rc1 (09/11/2004)
  */
-public class BytesOutputStream
-        extends FastByteArrayOutputStream
-        implements DataOutput {
+public class BytesOutputStream extends FastByteArrayOutputStream implements DataOutput {
 
-    private DataOutputStream m_Dout;
+    private final DataOutputStream m_Dout;
 
     /**
      * Constructs a new <tt>BytesOutputStream</tt> instance with a new output
@@ -79,67 +77,68 @@ public class BytesOutputStream
         return buf;
     }//getBuffer
 
+    @Override
     public void reset() {
         count = 0;
     }//reset
 
-    public void writeBoolean(boolean v)
-            throws IOException {
+    @Override
+    public void writeBoolean(boolean v) throws IOException {
         m_Dout.writeBoolean(v);
     }//writeBoolean
 
-    public void writeByte(int v)
-            throws IOException {
+    @Override
+    public void writeByte(int v) throws IOException {
         m_Dout.writeByte(v);
     }//writeByte
 
-    public void writeShort(int v)
-            throws IOException {
+    @Override
+    public void writeShort(int v) throws IOException {
         m_Dout.writeShort(v);
     }//writeShort
 
-    public void writeChar(int v)
-            throws IOException {
+    @Override
+    public void writeChar(int v) throws IOException {
         m_Dout.writeChar(v);
     }//writeChar
 
-    public void writeInt(int v)
-            throws IOException {
+    @Override
+    public void writeInt(int v) throws IOException {
         m_Dout.writeInt(v);
     }//writeInt
 
-    public void writeLong(long v)
-            throws IOException {
+    @Override
+    public void writeLong(long v) throws IOException {
         m_Dout.writeLong(v);
     }//writeLong
 
     //
-    public void writeFloat(float v)
-            throws IOException {
+    @Override
+    public void writeFloat(float v) throws IOException {
         m_Dout.writeFloat(v);
     }//writeFloat
 
-    public void writeDouble(double v)
-            throws IOException {
+    @Override
+    public void writeDouble(double v) throws IOException {
         m_Dout.writeDouble(v);
     }//writeDouble
     //
 
-    public void writeBytes(String s)
-            throws IOException {
+    @Override
+    public void writeBytes(String s) throws IOException {
         int len = s.length();
         for (int i = 0; i < len; i++) {
             this.write((byte) s.charAt(i));
         }
     }//writeBytes
 
-    public void writeChars(String s)
-            throws IOException {
+    @Override
+    public void writeChars(String s) throws IOException {
         m_Dout.writeChars(s);
     }//writeChars
 
-    public void writeUTF(String str)
-            throws IOException {
+    @Override
+    public void writeUTF(String str) throws IOException {
         m_Dout.writeUTF(str);
     }//writeUTF
 

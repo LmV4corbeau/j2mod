@@ -46,34 +46,41 @@ public class ObservableRegister extends Observable implements Register {
      */
     protected short m_Register;
 
+    @Override
     public int getValue() {
         return m_Register & 0xFFFF;
     }
 
+    @Override
     public final int toUnsignedShort() {
         return m_Register & 0xFFFF;
     }
 
+    @Override
     public final short toShort() {
         return m_Register;
     }
 
+    @Override
     public byte[] toBytes() {
         byte[] result = new byte[]{(byte) (m_Register >> 8),
             (byte) (m_Register & 0xFF)};
         return result;
     }
 
+    @Override
     public final synchronized void setValue(int v) {
         m_Register = (short) v;
         notifyObservers("value");
     }
 
+    @Override
     public final synchronized void setValue(short s) {
         m_Register = s;
         notifyObservers("value");
     }
 
+    @Override
     public final synchronized void setValue(byte[] bytes) {
         if (bytes.length < 2) {
             throw new IllegalArgumentException();

@@ -51,6 +51,7 @@ public class ObservableDigitalOut extends Observable implements DigitalOut {
      *
      * @returns the boolean value of the digital output.
      */
+    @Override
     public boolean isSet() {
         return m_Set;
     }
@@ -58,6 +59,7 @@ public class ObservableDigitalOut extends Observable implements DigitalOut {
     /**
      * Set or clear the digital output. Will notify any registered observers.
      */
+    @Override
     public void set(boolean b) {
         m_Set = b;
         notifyObservers("value");

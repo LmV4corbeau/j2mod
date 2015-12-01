@@ -85,9 +85,9 @@ public final class ReadMultipleRegistersRequest extends ModbusRequest {
         setWordCount(count);
     }
 
+    @Override
     public ModbusResponse getResponse() {
-        ReadMultipleRegistersResponse response = null;
-
+        ReadMultipleRegistersResponse response;
         response = new ReadMultipleRegistersResponse();
 
         response.setUnitID(getUnitID());
@@ -99,6 +99,7 @@ public final class ReadMultipleRegistersRequest extends ModbusRequest {
         return response;
     }
 
+    @Override
     public ModbusResponse createResponse() {
         ReadMultipleRegistersResponse response = null;
         Register[] regs = null;
@@ -162,16 +163,19 @@ public final class ReadMultipleRegistersRequest extends ModbusRequest {
         return m_WordCount;
     }
 
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.writeShort(m_Reference);
         dout.writeShort(m_WordCount);
     }
 
+    @Override
     public void readData(DataInput din) throws IOException {
         m_Reference = din.readUnsignedShort();
         m_WordCount = din.readUnsignedShort();
     }
 
+    @Override
     public byte[] getMessage() {
         byte result[] = new byte[4];
 
