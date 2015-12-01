@@ -105,12 +105,14 @@ public class ModbusTCPTransport implements ModbusTransport {
         }
     }
 
+    @Override
     public void close() throws IOException {
         m_Input.close();
         m_Output.close();
         m_Socket.close();
     }// close
 
+    @Override
     public ModbusTransaction createTransaction() {
         if (m_Master == null) {
             m_Master = new TCPMasterConnection(m_Socket.getInetAddress());
@@ -121,6 +123,7 @@ public class ModbusTCPTransport implements ModbusTransport {
         return trans;
     }
 
+    @Override
     public void writeMessage(ModbusMessage msg) throws ModbusIOException {
         try {
             byte message[] = msg.getMessage();
@@ -166,6 +169,7 @@ public class ModbusTCPTransport implements ModbusTransport {
      * @returns Modbus response for message
      * @throws ModbusIOException
      */
+    @Override
     public ModbusRequest readRequest() throws ModbusIOException {
 
         try {
@@ -246,11 +250,12 @@ public class ModbusTCPTransport implements ModbusTransport {
             throw new ModbusIOException("Timeout reading request");
         } catch (SocketException sockex) {
             throw new ModbusIOException("Socket Exception", true);
-        } catch (Exception ex) {
+        } catch (IOException | ModbusIOException ex) {
             throw new ModbusIOException("I/O exception - failed to read.");
         }
     }
 
+    @Override
     public ModbusResponse readResponse() throws ModbusIOException {
 
         try {
@@ -321,7 +326,7 @@ public class ModbusTCPTransport implements ModbusTransport {
 
                     response = ModbusResponse.createModbusResponse(function);
                     response.setUnitID(unit);
-                    response.setHeadless();
+                    response.setHeadless(true);
                     response.readData(m_Input);
 
                     /*
@@ -334,7 +339,7 @@ public class ModbusTCPTransport implements ModbusTransport {
             return response;
         } catch (SocketTimeoutException ex) {
             throw new ModbusIOException("Timeout reading response");
-        } catch (Exception ex) {
+        } catch (IOException | ModbusIOException ex) {
             throw new ModbusIOException("I/O exception - failed to read.");
         }
     }

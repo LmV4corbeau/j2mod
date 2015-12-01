@@ -71,6 +71,7 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
     private boolean osIsKnown = false;
     private boolean osIsWindows = false;
 
+    @Override
     public ModbusTransaction createTransaction() {
         ModbusSerialTransaction transaction = new ModbusSerialTransaction();
         transaction.setTransport(this);
@@ -78,6 +79,7 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
         return transaction;
     }
 
+    @Override
     public void writeMessage(ModbusMessage msg) throws ModbusIOException {
         try {
             int len;
@@ -87,7 +89,7 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
                 clearInput();
                 // write message to byte out
                 m_ByteOut.reset();
-                msg.setHeadless();
+                msg.setHeadless(true);
                 msg.writeTo(m_ByteOut);
                 len = m_ByteOut.size();
                 int[] crc = ModbusUtil.calculateCRC(m_ByteOut.getBuffer(), 0,
@@ -279,6 +281,7 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
      *
      * @return a <tt>ModbusRequest</tt> to be processed by the slave simulator
      */
+    @Override
     public ModbusRequest readRequest() throws ModbusIOException {
         ModbusCoupler coupler = ModbusCoupler.getReference();
 
@@ -304,7 +307,7 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
 
                         // create response to acquire length of message
                         request = ModbusRequest.createModbusRequest(fc);
-                        request.setHeadless();
+                        request.setHeadless(true);
 
                         /*
                          * With Modbus RTU, there is no end frame. Either we
@@ -374,7 +377,7 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
     /**
      * clearInput - Clear the input if characters are found in the input stream.
      *
-     * @throws ModbusIOException
+     * @throws java.io.IOException
      */
     public void clearInput() throws IOException {
         if (m_InputStream.available() > 0) {
@@ -582,7 +585,9 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
      * readResponse - Read the bytes for the response from the slave.
      *
      * @return a <tt>ModbusRespose</tt>
+     * @throws com.ghgande.j2mod.modbus.ModbusIOException
      */
+    @Override
     public ModbusResponse readResponse() throws ModbusIOException {
         boolean done = false;
         ModbusResponse response = null;
@@ -602,7 +607,7 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
 
                         // create response to acquire length of message
                         response = ModbusResponse.createModbusResponse(fc);
-                        response.setHeadless();
+                        response.setHeadless(true);
 
                         /*
                          * With Modbus RTU, there is no end frame. Either we
@@ -671,6 +676,7 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
      * @param out the output stream to write to.
      * @throws IOException if an I\O error occurs.
      */
+    @Override
     public void prepareStreams(InputStream in, OutputStream out)
             throws IOException {
         m_InputStream = in; // new RTUInputStream(in);
@@ -682,6 +688,7 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
         m_ByteInOut = new BytesOutputStream(m_InBuffer);
     }
 
+    @Override
     public void close() throws IOException {
         m_InputStream.close();
         m_OutputStream.close();

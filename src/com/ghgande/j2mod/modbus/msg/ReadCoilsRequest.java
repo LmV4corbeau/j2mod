@@ -89,6 +89,7 @@ public final class ReadCoilsRequest extends ModbusRequest {
         setBitCount(count);
     }
 
+    @Override
     public ReadCoilsResponse getResponse() {
         ReadCoilsResponse response = null;
         response = new ReadCoilsResponse(m_BitCount);
@@ -98,13 +99,14 @@ public final class ReadCoilsRequest extends ModbusRequest {
             response.setTransactionID(getTransactionID());
             response.setProtocolID(getProtocolID());
         } else {
-            response.setHeadless();
+            response.setHeadless(true);
         }
         response.setUnitID(getUnitID());
 
         return response;
     }
 
+    @Override
     public ModbusResponse createResponse() {
         ModbusResponse response = null;
         DigitalOut[] douts = null;
@@ -183,15 +185,18 @@ public final class ReadCoilsRequest extends ModbusRequest {
         return m_BitCount;
     }
 
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.write(getMessage());
     }
 
+    @Override
     public void readData(DataInput din) throws IOException {
         m_Reference = din.readUnsignedShort();
         m_BitCount = din.readUnsignedShort();
     }
 
+    @Override
     public byte[] getMessage() {
         byte result[] = new byte[4];
 

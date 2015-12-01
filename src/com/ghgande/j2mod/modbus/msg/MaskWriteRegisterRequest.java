@@ -88,6 +88,7 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
 
     /**
      * getReference -- return the reference field.
+     * @return 
      */
     public int getReference() {
         return m_Reference;
@@ -95,6 +96,7 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
 
     /**
      * setReference -- set the reference field.
+     * @param ref
      */
     public void setReference(int ref) {
         m_Reference = ref;
@@ -111,6 +113,7 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
 
     /**
      * setAndMask -- set AND mask
+     * @param mask
      */
     public void setAndMask(int mask) {
         m_AndMask = mask;
@@ -127,6 +130,7 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
 
     /**
      * setOrMask -- set OR mask
+     * @param mask
      */
     public void setOrMask(int mask) {
         m_OrMask = mask;
@@ -134,7 +138,9 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
 
     /**
      * getResponse -- create an empty response for this request.
+     * @return 
      */
+    @Override
     public ModbusResponse getResponse() {
         MaskWriteRegisterResponse response = null;
 
@@ -161,7 +167,9 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
     /**
      * The ModbusCoupler doesn't have a means of reporting the slave state or ID
      * information.
+     * @return 
      */
+    @Override
     public ModbusResponse createResponse() {
         MaskWriteRegisterResponse response = null;
 
@@ -199,14 +207,18 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
 
     /**
      * writeData -- output this Modbus message to dout.
+     * @throws java.io.IOException
      */
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         dout.write(getMessage());
     }
 
     /**
      * readData -- dummy function. There is no data with the request.
+     * @throws java.io.IOException
      */
+    @Override
     public void readData(DataInput din) throws IOException {
         m_Reference = din.readShort();
         m_AndMask = din.readShort();
@@ -215,7 +227,9 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
 
     /**
      * getMessage -- return an empty array as there is no data for this request.
+     * @return 
      */
+    @Override
     public byte[] getMessage() {
         byte results[] = new byte[6];
 

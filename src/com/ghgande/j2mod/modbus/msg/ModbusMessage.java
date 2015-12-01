@@ -46,14 +46,16 @@ public interface ModbusMessage extends Transportable {
     /**
      * Check the flag which indicates that this <tt>ModbusMessage</tt> is for a
      * headless (serial, or headless networked) connection.
+     * @return 
      */
     public boolean isHeadless();
 
     /**
      * Sets the flag that marks this <tt>ModbusMessage</tt> as headless (for
      * serial transport).
+     * @param b
      */
-    public void setHeadless();
+    public void setHeadless(boolean b);
 
     /**
      * Returns the transaction identifier of this <tt>ModbusMessage</tt> as

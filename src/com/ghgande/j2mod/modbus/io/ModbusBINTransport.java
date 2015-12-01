@@ -67,15 +67,18 @@ public class ModbusBINTransport
     public ModbusBINTransport() {
     }//constructor
 
+    @Override
     public void close() throws IOException {
         m_InputStream.close();
         m_OutputStream.close();
     }//close
 
+    @Override
     public ModbusTransaction createTransaction() {
         return new ModbusSerialTransaction();
     }
 
+    @Override
     public void writeMessage(ModbusMessage msg)
             throws ModbusIOException {
 
@@ -83,7 +86,7 @@ public class ModbusBINTransport
             int len;
             synchronized (m_ByteOut) {
                 //write message to byte out
-                msg.setHeadless();
+                msg.setHeadless(true);
                 msg.writeTo(m_ByteOut);
                 byte[] buf = m_ByteOut.getBuffer();
                 len = m_ByteOut.size();
@@ -109,6 +112,7 @@ public class ModbusBINTransport
         }
     }//writeMessage
 
+    @Override
     public ModbusRequest readRequest()
             throws ModbusIOException {
 
@@ -144,7 +148,7 @@ public class ModbusBINTransport
                     in = m_ByteIn.readUnsignedByte();
                     //create request
                     request = ModbusRequest.createModbusRequest(in);
-                    request.setHeadless();
+                    request.setHeadless(true);
                     //read message
                     m_ByteIn.reset(m_InBuffer, m_ByteInOut.size());
                     request.readFrom(m_ByteIn);
@@ -161,6 +165,7 @@ public class ModbusBINTransport
 
     }//readRequest
 
+    @Override
     public ModbusResponse readResponse()
             throws ModbusIOException {
 
@@ -200,7 +205,7 @@ public class ModbusBINTransport
                     in = m_ByteIn.readUnsignedByte();
                     //create request
                     response = ModbusResponse.createModbusResponse(in);
-                    response.setHeadless();
+                    response.setHeadless(true);
                     //read message
                     m_ByteIn.reset(m_InBuffer, m_ByteInOut.size());
                     response.readFrom(m_ByteIn);
@@ -225,6 +230,7 @@ public class ModbusBINTransport
      * @param out the output stream to be used for writing.
      * @throws java.io.IOException if an I\O related error occurs.
      */
+    @Override
     public void prepareStreams(InputStream in, OutputStream out) throws IOException {
         m_InputStream = new DataInputStream(new ASCIIInputStream(in));
         m_OutputStream = new ASCIIOutputStream(out);

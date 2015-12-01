@@ -68,22 +68,25 @@ public class ModbusASCIITransport
     public ModbusASCIITransport() {
     }//constructor
 
+    @Override
     public void close() throws IOException {
         m_InputStream.close();
         m_OutputStream.close();
     }//close
 
+    @Override
     public ModbusTransaction createTransaction() {
         return new ModbusSerialTransaction();
     }
 
+    @Override
     public void writeMessage(ModbusMessage msg)
             throws ModbusIOException {
 
         try {
             synchronized (m_ByteOut) {
                 //write message to byte out
-                msg.setHeadless();
+                msg.setHeadless(true);
                 msg.writeTo(m_ByteOut);
                 byte[] buf = m_ByteOut.getBuffer();
                 int len = m_ByteOut.size();
@@ -108,6 +111,7 @@ public class ModbusASCIITransport
         }
     }//writeMessage
 
+    @Override
     public ModbusRequest readRequest()
             throws ModbusIOException {
 
@@ -134,7 +138,6 @@ public class ModbusASCIITransport
                             != calculateLRC(m_InBuffer, 0, m_ByteInOut.size(), 1)) {
                         continue;
                     }
-                    ;
                     m_ByteIn.reset(m_InBuffer, m_ByteInOut.size());
                     in = m_ByteIn.readUnsignedByte();
                     //check message with this slave unit identifier
@@ -144,7 +147,7 @@ public class ModbusASCIITransport
                     in = m_ByteIn.readUnsignedByte();
                     //create request
                     request = ModbusRequest.createModbusRequest(in);
-                    request.setHeadless();
+                    request.setHeadless(true);
                     //read message
                     m_ByteIn.reset(m_InBuffer, m_ByteInOut.size());
                     request.readFrom(m_ByteIn);
@@ -161,6 +164,7 @@ public class ModbusASCIITransport
 
     }//readRequest
 
+    @Override
     public ModbusResponse readResponse()
             throws ModbusIOException {
 
@@ -208,7 +212,7 @@ public class ModbusASCIITransport
                     in = m_ByteIn.readUnsignedByte();
                     //create request
                     response = ModbusResponse.createModbusResponse(in);
-                    response.setHeadless();
+                    response.setHeadless(true);
                     //read message
                     m_ByteIn.reset(m_InBuffer, m_ByteInOut.size());
                     response.readFrom(m_ByteIn);
@@ -233,6 +237,7 @@ public class ModbusASCIITransport
      * @param out the output stream to be used for writing.
      * @throws IOException if an I\O related error occurs.
      */
+    @Override
     public void prepareStreams(InputStream in, OutputStream out) throws IOException {
         m_InputStream = new DataInputStream(new ASCIIInputStream(in));
         m_OutputStream = new ASCIIOutputStream(out);
@@ -242,7 +247,7 @@ public class ModbusASCIITransport
         m_ByteInOut = new BytesOutputStream(m_InBuffer);
     }//prepareStreams
 
-    private final static int calculateLRC(byte[] data, int off, int len) {
+    private static int calculateLRC(byte[] data, int off, int len) {
         int lrc = 0;
         for (int i = off; i < len; i++) {
             lrc += ((int) data[i]) & 0xFF;
@@ -250,7 +255,7 @@ public class ModbusASCIITransport
         return (-lrc) & 0xff;
     }//calculateLRC
 
-    private final byte calculateLRC(byte[] data, int off, int length, int tailskip) {
+    private byte calculateLRC(byte[] data, int off, int length, int tailskip) {
         int lrc = 0;
         for (int i = off; i < length - tailskip; i++) {
             lrc += ((int) data[i]) & 0xFF;

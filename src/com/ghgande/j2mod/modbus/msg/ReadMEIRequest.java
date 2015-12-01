@@ -101,8 +101,8 @@ public final class ReadMEIRequest extends ModbusRequest {
      * reference and count of coils (i.e. bits) to be read.
      * <p>
      *
-     * @param ref the reference number of the register to read from.
-     * @param count the number of bits to be read.
+     * @param level
+     * @param id
      */
     public ReadMEIRequest(int level, int id) {
         super();
@@ -116,6 +116,7 @@ public final class ReadMEIRequest extends ModbusRequest {
         setFieldId(id);
     }
 
+    @Override
     public ModbusResponse getResponse() {
         ReadMEIResponse response = null;
 
@@ -139,7 +140,7 @@ public final class ReadMEIRequest extends ModbusRequest {
             response.setTransactionID(getTransactionID());
             response.setProtocolID(getProtocolID());
         } else {
-            response.setHeadless();
+            response.setHeadless(true);
         }
         response.setUnitID(getUnitID());
         response.setFunctionCode(Modbus.READ_MEI);
@@ -150,13 +151,16 @@ public final class ReadMEIRequest extends ModbusRequest {
     /**
      * The ModbusCoupler interface doesn't have a method for defining MEI for a
      * device.
+     * @return 
      */
+    @Override
     public ModbusResponse createResponse() {
         return createExceptionResponse(Modbus.ILLEGAL_FUNCTION_EXCEPTION);
     }
 
     /**
      * Gets the MEI subcode associated with this request.
+     * @return 
      */
     public int getSubCode() {
         return m_SubCode;
@@ -167,7 +171,7 @@ public final class ReadMEIRequest extends ModbusRequest {
      * <tt>ReadCoilsRequest</tt>.
      * <p>
      *
-     * @param ref the reference of the register to start reading from.
+     * @param level
      */
     public void setLevel(int level) {
         m_FieldLevel = level;
@@ -190,7 +194,7 @@ public final class ReadMEIRequest extends ModbusRequest {
      * <tt>ReadCoilsRequest</tt>.
      * <p>
      *
-     * @param count the number of bits to be read.
+     * @param id
      */
     public void setFieldId(int id) {
         m_FieldId = id;
@@ -207,6 +211,7 @@ public final class ReadMEIRequest extends ModbusRequest {
         return m_FieldId;
     }
 
+    @Override
     public void writeData(DataOutput dout) throws IOException {
         byte results[] = new byte[3];
 
@@ -217,6 +222,7 @@ public final class ReadMEIRequest extends ModbusRequest {
         dout.write(results);
     }
 
+    @Override
     public void readData(DataInput din) throws IOException {
         m_SubCode = din.readUnsignedByte();
 
@@ -233,6 +239,7 @@ public final class ReadMEIRequest extends ModbusRequest {
         m_FieldId = din.readUnsignedByte();
     }
 
+    @Override
     public byte[] getMessage() {
         byte results[] = new byte[3];
 

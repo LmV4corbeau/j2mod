@@ -127,7 +127,7 @@ public abstract class ModbusRequest extends ModbusMessageImpl {
             response.setTransactionID(getTransactionID());
             response.setProtocolID(getProtocolID());
         } else {
-            response.setHeadless();
+            response.setHeadless(true);
         }
         response.setUnitID(getUnitID());
         return response;
