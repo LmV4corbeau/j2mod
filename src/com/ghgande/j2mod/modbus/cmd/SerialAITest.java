@@ -108,7 +108,7 @@ public class SerialAITest {
             //5. Prepare a request
             req = new ReadInputRegistersRequest(ref, count);
             req.setUnitID(unitid);
-            req.setHeadless();
+            req.setHeadless(true);
             if (Modbus.debug) {
                 System.out.println("Request: " + req.getHexMessage());
             }
