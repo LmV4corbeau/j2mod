@@ -30,7 +30,7 @@
  */
 package com.ghgande.j2mod.modbus.procimg;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * @author Julie
@@ -46,7 +46,7 @@ public class FIFO {
 
     private final int m_Address;
     private int m_Register_Count;
-    private final Vector<Register> m_Registers;
+    private final ArrayList<Register> m_Registers;
 
     public synchronized int getRegisterCount() {
         return m_Register_Count;
@@ -74,7 +74,7 @@ public class FIFO {
     }
 
     public synchronized void resetRegisters() {
-        m_Registers.removeAllElements();
+        m_Registers.clear();
         m_Register_Count = 0;
     }
 
@@ -85,6 +85,6 @@ public class FIFO {
     public FIFO(int address) {
         m_Address = address;
         m_Register_Count = 0;
-        m_Registers = new Vector<>();
+        m_Registers = new ArrayList<>();
     }
 }

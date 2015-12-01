@@ -31,7 +31,7 @@
  */
 package com.ghgande.j2mod.modbus.util;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * A cleanroom implementation of the Observable pattern.
@@ -42,13 +42,13 @@ import java.util.Vector;
  */
 public class Observable {
 
-    private Vector<Observer> m_Observers;
+    private final ArrayList<Observer> m_Observers;
 
     /**
      * Constructs a new Observable instance.
      */
     public Observable() {
-        m_Observers = new Vector<Observer>(10);
+        m_Observers = new ArrayList<>(10);
     }
 
     public int getObserverCount() {
@@ -66,7 +66,7 @@ public class Observable {
     public void addObserver(Observer o) {
         synchronized (m_Observers) {
             if (!m_Observers.contains(o)) {
-                m_Observers.addElement(o);
+                m_Observers.add(o);
 
             }
         }
@@ -80,7 +80,7 @@ public class Observable {
      */
     public void removeObserver(Observer o) {
         synchronized (m_Observers) {
-            m_Observers.removeElement(o);
+            m_Observers.remove(o);
         }
     }
 
@@ -90,7 +90,7 @@ public class Observable {
      */
     public void removeObservers() {
         synchronized (m_Observers) {
-            m_Observers.removeAllElements();
+            m_Observers.clear();
         }
     }
 
@@ -102,8 +102,8 @@ public class Observable {
      */
     public void notifyObservers(Object arg) {
         synchronized (m_Observers) {
-            for (int i = 0; i < m_Observers.size(); i++) {
-                m_Observers.elementAt(i).update(this, arg);
+            for (Observer m_Observer : m_Observers) {
+                m_Observer.update(this, arg);
             }
         }
     }
