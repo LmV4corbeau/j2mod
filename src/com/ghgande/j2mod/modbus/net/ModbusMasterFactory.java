@@ -45,6 +45,10 @@ public class ModbusMasterFactory {
                 int baudrate = Modbus.DEFAULT_BAUD_RATE;
                 if (parts.length > 3) {
                     baudrate = Integer.parseInt(parts[3]);
+                } else {
+                    if (System.getProperty("com.ghgande.j2mod.modbus.baud") != null) {
+                        baudrate = Integer.parseInt(System.getProperty("com.ghgande.j2mod.modbus.baud"));
+                    }
                 }
 
                 SerialParameters parms = new SerialParameters();

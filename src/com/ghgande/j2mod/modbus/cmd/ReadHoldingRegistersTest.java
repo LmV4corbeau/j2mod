@@ -137,15 +137,6 @@ public class ReadHoldingRegistersTest {
                     System.exit(1);
                 }
 
-                if (transport instanceof ModbusSerialTransport) {
-                    ((ModbusSerialTransport) transport).setReceiveTimeout(500);
-                    if (System.getProperty("com.ghgande.j2mod.modbus.baud") != null) {
-                        ((ModbusSerialTransport) transport).setBaudRate(Integer.parseInt(System.getProperty("com.ghgande.j2mod.modbus.baud")));
-                    } else {
-                        ((ModbusSerialTransport) transport).setBaudRate(Modbus.DEFAULT_BAUD_RATE);
-                    }
-                }
-
                 /*
                  * There are a number of devices which won't initialize immediately
                  * after being opened.  Take a moment to let them come up.
@@ -168,11 +159,6 @@ public class ReadHoldingRegistersTest {
                     String parts[] = args[0].split(":");
                     if (parts.length >= 3) {
                         unit = Integer.parseInt(parts[2]);
-                    }
-
-                    String baud = System.getProperty("com.ghgande.j2mod.modbus.baud");
-                    if (baud != null) {
-                        ((ModbusRTUTransport) transport).setBaudRate(Integer.parseInt(baud));
                     }
                 }
             } catch (Exception ex) {
