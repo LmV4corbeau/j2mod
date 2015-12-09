@@ -20,10 +20,13 @@ public class ModbusListenerFactory {
         }
 
         String protocol = parts[0].toLowerCase();
+        if (protocol.equals("device")) {
+            protocol = Modbus.SERIAL_ENCODING_RTU;
+        }
         switch (protocol) {
-            case "device":
-            case "rtu":
-            case "ascii": {
+            case Modbus.SERIAL_ENCODING_RTU:
+            case Modbus.SERIAL_ENCODING_ASCII:
+            case Modbus.SERIAL_ENCODING_BIN: {
                 /*
                  * Create a ModbusSerialListener with the default Modbus
                  * values of 19200 baud, no parity, using the specified
@@ -41,6 +44,7 @@ public class ModbusListenerFactory {
                 parms.setEcho(false);
                 parms.setParity(SerialPort.PARITY_NONE);
                 parms.setFlowControlIn(SerialPort.FLOWCONTROL_NONE);
+                parms.setEncoding(protocol);
 
                 ModbusSerialListener listener = new ModbusSerialListener(parms);
                 if ((parts.length > 2) && (parts[2].length() > 0)) {

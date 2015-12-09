@@ -33,11 +33,13 @@ public class ModbusMasterFactory {
         }
 
         String protocol = parts[0].toLowerCase();
+        if (protocol.equals("device")) {
+            protocol = Modbus.SERIAL_ENCODING_RTU;
+        }
         switch (protocol) {
-            case "device":
-            case "rtu":
-            case "ascii":
-            case "bin": {
+            case Modbus.SERIAL_ENCODING_RTU:
+            case Modbus.SERIAL_ENCODING_ASCII:
+            case Modbus.SERIAL_ENCODING_BIN: {
                 /*
                  * Create a ModbusSerialListener with the default Modbus values of
                  * 19200 baud, no parity, using the specified device. If there is an
@@ -69,10 +71,10 @@ public class ModbusMasterFactory {
 
                 ModbusSerialTransport transport;
                 switch (protocol) {
-                    case "ascii":
+                    case Modbus.SERIAL_ENCODING_ASCII:
                         transport = new ModbusASCIITransport(unitId);
                         break;
-                    case "bin":
+                    case Modbus.SERIAL_ENCODING_BIN:
                         transport = new ModbusBINTransport(unitId);
                         break;
                     default:
