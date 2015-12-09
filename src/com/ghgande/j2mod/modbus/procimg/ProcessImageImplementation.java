@@ -177,38 +177,38 @@ public interface ProcessImageImplementation extends ProcessImage {
     public void removeRegister(Register reg);
 
     /**
-     * Sets a new <tt>File</tt> instance at the given reference.
+     * Sets a new <tt>ModbusFile</tt> instance at the given reference.
      *
      * @param ref the reference as <tt>int</tt>.
-     * @param reg the new <tt>File</tt> instance to be set.
+     * @param reg the new <tt>ModbusFile</tt> instance to be set.
      *
      * @throws IllegalAddressException if the reference is invalid.
      */
-    public void setFile(int ref, File reg)
+    public void setFile(int ref, ModbusFile reg)
             throws IllegalAddressException;
 
     /**
-     * Adds a new <tt>File</tt> instance.
+     * Adds a new <tt>ModbusFile</tt> instance.
      *
-     * @param reg the <tt>File</tt> instance to be added.
+     * @param reg the <tt>ModbusFile</tt> instance to be added.
      */
-    public void addFile(File reg);
+    public void addFile(ModbusFile reg);
 
     /**
-     * Adds a new <tt>File</tt> instance, possibly creating a hole between the
+     * Adds a new <tt>ModbusFile</tt> instance, possibly creating a hole between the
      * last existing reference and the new object.
      *
      * @param ref - the reference for the new isntance.
-     * @param reg the <tt>File</tt> instance to be added.
+     * @param reg the <tt>ModbusFile</tt> instance to be added.
      */
-    public void addFile(int ref, File reg);
+    public void addFile(int ref, ModbusFile reg);
 
     /**
-     * Removes a given <tt>File</tt> instance.
+     * Removes a given <tt>ModbusFile</tt> instance.
      *
-     * @param reg the <tt>File</tt> instance to be removed.
+     * @param reg the <tt>ModbusFile</tt> instance to be removed.
      */
-    public void removeFile(File reg);
+    public void removeFile(ModbusFile reg);
 
     /**
      * Sets a new <tt>FIFO</tt> instance at the given reference.

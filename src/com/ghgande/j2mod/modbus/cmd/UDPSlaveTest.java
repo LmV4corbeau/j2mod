@@ -63,7 +63,7 @@ package com.ghgande.j2mod.modbus.cmd;
 
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.net.ModbusUDPListener;
-import com.ghgande.j2mod.modbus.procimg.File;
+import com.ghgande.j2mod.modbus.procimg.ModbusFile;
 import com.ghgande.j2mod.modbus.procimg.Record;
 import com.ghgande.j2mod.modbus.procimg.SimpleDigitalIn;
 import com.ghgande.j2mod.modbus.procimg.SimpleDigitalOut;
@@ -107,7 +107,7 @@ public class UDPSlaveTest {
             spi.addDigitalIn(new SimpleDigitalIn(true));
             spi.addRegister(new SimpleRegister(251));
 
-            spi.addFile(new File(0, 10)
+            spi.addFile(new ModbusFile(0, 10)
                     .setRecord(0, new Record(0, 10))
                     .setRecord(1, new Record(1, 10))
                     .setRecord(2, new Record(2, 10))
@@ -119,7 +119,7 @@ public class UDPSlaveTest {
                     .setRecord(8, new Record(8, 10))
                     .setRecord(9, new Record(9, 10)));
 
-            spi.addFile(new File(1, 20)
+            spi.addFile(new ModbusFile(1, 20)
                     .setRecord(0, new Record(0, 10))
                     .setRecord(1, new Record(1, 20))
                     .setRecord(2, new Record(2, 20))

@@ -32,11 +32,11 @@ package com.ghgande.j2mod.modbus.procimg;
 
 /**
  * @author Julie
- *
- * File -- an abstraction of a Modbus File, as supported by the READ FILE RECORD
- * and WRITE FILE RECORD commands.
+
+ ModbusFile -- an abstraction of a Modbus File, as supported by the READ FILE RECORD
+ and WRITE FILE RECORD commands.
  */
-public class File {
+public class ModbusFile {
 
     private final int m_File_Number;
     private final int m_Record_Count;
@@ -58,7 +58,7 @@ public class File {
         return m_Records[i];
     }
 
-    public File setRecord(int i, Record record) {
+    public ModbusFile setRecord(int i, Record record) {
         if (i < 0 || i >= m_Record_Count) {
             throw new IllegalAddressException();
         }
@@ -68,7 +68,7 @@ public class File {
         return this;
     }
 
-    public File(int fileNumber, int records) {
+    public ModbusFile(int fileNumber, int records) {
         m_File_Number = fileNumber;
         m_Record_Count = records;
         m_Records = new Record[records];

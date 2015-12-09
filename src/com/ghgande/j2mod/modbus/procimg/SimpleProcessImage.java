@@ -65,7 +65,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Objects;
-import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -89,7 +88,7 @@ public class SimpleProcessImage implements ProcessImageImplementation {
     protected final NavigableMap<Integer, DigitalOut> m_DigitalOutputs;
     protected final NavigableMap<Integer, InputRegister> m_InputRegisters;
     protected final NavigableMap<Integer, Register> m_Registers;
-    protected final NavigableMap<Integer, File> m_Files;
+    protected final NavigableMap<Integer, ModbusFile> m_Files;
     protected final NavigableMap<Integer, FIFO> m_FIFOs;
     protected boolean m_Locked = false;
     protected int m_Unit = 0;
@@ -440,7 +439,7 @@ public class SimpleProcessImage implements ProcessImageImplementation {
     }
 
     @Override
-    public void addFile(File newFile) {
+    public void addFile(ModbusFile newFile) {
         if (!isLocked()) {
             int newRef = 0;
             if (!m_Files.isEmpty()) {
@@ -451,7 +450,7 @@ public class SimpleProcessImage implements ProcessImageImplementation {
     }
 
     @Override
-    public void addFile(int ref, File newFile) {
+    public void addFile(int ref, ModbusFile newFile) {
         if (ref < 0 || ref >= 65536) {
             throw new IllegalArgumentException();
         }
@@ -462,14 +461,14 @@ public class SimpleProcessImage implements ProcessImageImplementation {
     }
 
     @Override
-    public void removeFile(File oldFile) {
+    public void removeFile(ModbusFile oldFile) {
         if (!isLocked()) {
             m_Files.remove(getKeyByValue(m_Files, oldFile));
         }
     }
 
     @Override
-    public void setFile(int fileNumber, File file) {
+    public void setFile(int fileNumber, ModbusFile file) {
         if (!isLocked()) {
             if (!m_Files.containsKey(fileNumber)) {
                 throw new IllegalAddressException();
@@ -480,8 +479,8 @@ public class SimpleProcessImage implements ProcessImageImplementation {
     }
 
     @Override
-    public File getFile(int fileNumber) {
-        File result = m_Files.get(fileNumber);
+    public ModbusFile getFile(int fileNumber) {
+        ModbusFile result = m_Files.get(fileNumber);
         if (result == null) {
             throw new IllegalAddressException();
         }
@@ -499,13 +498,13 @@ public class SimpleProcessImage implements ProcessImageImplementation {
     }
 
     @Override
-    public File getFileByNumber(int ref) {
+    public ModbusFile getFileByNumber(int ref) {
         if (ref < 0 || ref >= 10000 || m_Files == null) {
             throw new IllegalAddressException();
         }
 
         synchronized (m_Files) {
-            for (File file : m_Files.values()) {
+            for (ModbusFile file : m_Files.values()) {
                 if (file.getFileNumber() == ref) {
                     return file;
                 }

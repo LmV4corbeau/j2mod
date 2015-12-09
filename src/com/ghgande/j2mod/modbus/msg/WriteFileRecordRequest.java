@@ -37,7 +37,7 @@ import java.io.IOException;
 
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.msg.WriteFileRecordResponse.RecordResponse;
-import com.ghgande.j2mod.modbus.procimg.File;
+import com.ghgande.j2mod.modbus.procimg.ModbusFile;
 import com.ghgande.j2mod.modbus.procimg.IllegalAddressException;
 import com.ghgande.j2mod.modbus.procimg.ProcessImage;
 import com.ghgande.j2mod.modbus.procimg.Record;
@@ -45,7 +45,7 @@ import com.ghgande.j2mod.modbus.procimg.Register;
 import com.ghgande.j2mod.modbus.procimg.SimpleRegister;
 
 /**
- * Class implementing a <tt>Write File Record</tt> request.
+ * Class implementing a <tt>Write ModbusFile Record</tt> request.
  *
  * @author Julie Haugh (jfh@ghgande.com)
  * @version @version@ (@date@)
@@ -238,7 +238,7 @@ public final class WriteFileRecordRequest extends ModbusRequest {
                     return createExceptionResponse(Modbus.ILLEGAL_ADDRESS_EXCEPTION);
                 }
 
-                File file = procimg.getFileByNumber(recordRequest.getFileNumber());
+                ModbusFile file = procimg.getFileByNumber(recordRequest.getFileNumber());
 
                 if (recordRequest.getRecordNumber() < 0
                         || recordRequest.getRecordNumber() >= file.getRecordCount()) {
@@ -345,7 +345,7 @@ public final class WriteFileRecordRequest extends ModbusRequest {
     }
 
     /**
-     * Constructs a new <tt>Write File Record</tt> request instance.
+     * Constructs a new <tt>Write ModbusFile Record</tt> request instance.
      */
     public WriteFileRecordRequest() {
         super();

@@ -67,14 +67,14 @@ import java.io.IOException;
 
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.msg.ReadFileRecordResponse.RecordResponse;
-import com.ghgande.j2mod.modbus.procimg.File;
+import com.ghgande.j2mod.modbus.procimg.ModbusFile;
 import com.ghgande.j2mod.modbus.procimg.IllegalAddressException;
 import com.ghgande.j2mod.modbus.procimg.ProcessImage;
 import com.ghgande.j2mod.modbus.procimg.Record;
 import com.ghgande.j2mod.modbus.procimg.Register;
 
 /**
- * Class implementing a <tt>Read File Record</tt> request.
+ * Class implementing a <tt>Read ModbusFile Record</tt> request.
  *
  * @author Julie Haugh (jfh@ghgande.com)
  * @version @version@ (@date@)
@@ -243,7 +243,7 @@ public final class ReadFileRecordRequest extends ModbusRequest {
                     return createExceptionResponse(Modbus.ILLEGAL_ADDRESS_EXCEPTION);
                 }
 
-                File file = procimg.getFileByNumber(recordRequest
+                ModbusFile file = procimg.getFileByNumber(recordRequest
                         .getFileNumber());
 
                 if (recordRequest.getRecordNumber() < 0
@@ -333,7 +333,7 @@ public final class ReadFileRecordRequest extends ModbusRequest {
     }
 
     /**
-     * Constructs a new <tt>Read File Record</tt> request instance.
+     * Constructs a new <tt>Read ModbusFile Record</tt> request instance.
      */
     public ReadFileRecordRequest() {
         super();
