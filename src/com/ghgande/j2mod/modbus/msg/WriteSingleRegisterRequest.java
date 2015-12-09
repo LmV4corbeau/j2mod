@@ -99,18 +99,15 @@ public final class WriteSingleRegisterRequest extends ModbusRequest {
 
     @Override
     public ModbusResponse createResponse(ProcessImage procimg) {
-        WriteSingleRegisterResponse response = null;
-        Register reg = null;
+        ModbusResponse response;
 
-        // 2. get register
         try {
-            reg = procimg.getRegister(m_Reference);
-            // 3. set Register
+            Register reg = procimg.getRegister(m_Reference);
             reg.setValue(m_Register.toBytes());
+            response = getResponse();
         } catch (IllegalAddressException iaex) {
-            return createExceptionResponse(Modbus.ILLEGAL_ADDRESS_EXCEPTION);
+            response =  createExceptionResponse(Modbus.ILLEGAL_ADDRESS_EXCEPTION);
         }
-        response = (WriteSingleRegisterResponse) getResponse();
 
         return response;
     }
