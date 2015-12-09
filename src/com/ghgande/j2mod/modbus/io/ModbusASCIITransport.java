@@ -37,7 +37,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.ModbusIOException;
 import com.ghgande.j2mod.modbus.msg.ModbusMessage;
 import com.ghgande.j2mod.modbus.msg.ModbusRequest;
@@ -61,11 +60,15 @@ public class ModbusASCIITransport
     private BytesInputStream m_ByteIn;         //to read message from
     private BytesOutputStream m_ByteInOut;     //to buffer message to
     private BytesOutputStream m_ByteOut;      //write frames
+    private final int m_unitId;
 
     /**
      * Constructs a new <tt>MobusASCIITransport</tt> instance.
+     *
+     * @param unitId
      */
-    public ModbusASCIITransport() {
+    public ModbusASCIITransport(int unitId) {
+        m_unitId = unitId;
     }//constructor
 
     @Override
@@ -142,7 +145,7 @@ public class ModbusASCIITransport
                     m_ByteIn.reset(m_InBuffer, m_ByteInOut.size());
                     in = m_ByteIn.readUnsignedByte();
                     //check message with this slave unit identifier
-                    if (in != ModbusCoupler.getReference().getUnitID()) {
+                    if (in != m_unitId) {
                         continue;
                     }
                     in = m_ByteIn.readUnsignedByte();
@@ -207,9 +210,9 @@ public class ModbusASCIITransport
                     // only respond when a master request is made and there is only one
                     // master.  We are the only master, so we can assume that this
                     // response message is from the slave responding to the last request.
-//           if (in != ModbusCoupler.getReference().getUnitID()) {
-//             continue;
-//           }
+                    // if (in != getUnitID()) {
+                    //      continue;
+                    // }
                     in = m_ByteIn.readUnsignedByte();
                     //create request
                     response = ModbusResponse.createModbusResponse(in);

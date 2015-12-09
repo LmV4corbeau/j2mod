@@ -1,5 +1,7 @@
 package com.ghgande.j2mod.modbus.net;
 
+import com.ghgande.j2mod.modbus.procimg.ProcessImage;
+
 public interface ModbusListener extends Runnable {
 
     /**
@@ -19,7 +21,7 @@ public interface ModbusListener extends Runnable {
     /**
      * Gets the unit number for this Modbus interface listener.
      *
-     * @return 
+     * @return
      * @returns The Modbus unit number.
      */
     public int getUnit();
@@ -39,7 +41,7 @@ public interface ModbusListener extends Runnable {
      * requests. Additionally, an interface which is no longer alive will return
      * <b>false</b>.
      *
-     * @return 
+     * @return
      * @returns The current <i>listening</i> state.
      */
     public boolean isListening();
@@ -48,7 +50,7 @@ public interface ModbusListener extends Runnable {
      * Starts the listener thread with the <tt>ModbusListener</tt> in
      * <i>listening</i> mode.
      *
-     * @return 
+     * @return
      * @returns The listener Thread.
      */
     public Thread listen();
@@ -57,4 +59,8 @@ public interface ModbusListener extends Runnable {
      * Stop the listener thread for this <tt>ModbusListener</tt> instance.
      */
     public void stop();
+
+    public ProcessImage getProcessImage();
+
+    public void setProcessImage(ProcessImage processImage);
 }

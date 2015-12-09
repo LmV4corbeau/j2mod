@@ -32,7 +32,6 @@
 package com.ghgande.j2mod.modbus.cmd;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.net.ModbusSerialListener;
 import com.ghgande.j2mod.modbus.procimg.*;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
@@ -52,7 +51,7 @@ public class SerialSlaveTest {
     public static void main(String[] args) {
 
         ModbusSerialListener listener = null;
-        SimpleProcessImage spi = new SimpleProcessImage();
+        SimpleProcessImage spi;
         String portname = null;
         boolean hasUnit = false;
         int unit = 2;
@@ -137,11 +136,6 @@ public class SerialSlaveTest {
                 spi.addInputRegister(new SimpleInputRegister(45));
             }
 
-            // 2. Create the coupler and set the slave identity
-            ModbusCoupler.getReference().setProcessImage(spi);
-            ModbusCoupler.getReference().setMaster(false);
-            ModbusCoupler.getReference().setUnitID(unit);
-
             // 3. Set up serial parameters
             SerialParameters params = new SerialParameters();
 
@@ -152,6 +146,7 @@ public class SerialSlaveTest {
             params.setStopbits(1);
             params.setEncoding("rtu");
             params.setEcho(false);
+            params.setUnitId(unit);
             if (Modbus.debug) {
                 System.out.println("Encoding [" + params.getEncoding() + "]");
             }
@@ -159,6 +154,7 @@ public class SerialSlaveTest {
             // 4. Set up serial listener
             listener = new ModbusSerialListener(params);
             listener.setListening(true);
+            listener.setProcessImage(spi);
 
             // 5. Start the listener thread.
             new Thread(listener).start();

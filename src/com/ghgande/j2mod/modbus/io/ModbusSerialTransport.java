@@ -84,7 +84,7 @@ abstract public class ModbusSerialTransport
     /**
      * The <code>readRequest</code> method listens continuously on the serial
      * input stream for master request messages and replies if the request slave
-     * ID matches its own set in ModbusCoupler.getUnitID().
+     * ID matches its own set in getUnitID().
      *
      * @return a <code>ModbusRequest</code> value
      * @exception ModbusIOException if an error occurs

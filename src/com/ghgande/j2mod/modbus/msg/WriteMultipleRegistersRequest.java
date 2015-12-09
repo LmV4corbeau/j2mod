@@ -65,7 +65,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.io.NonWordDataHandler;
 import com.ghgande.j2mod.modbus.procimg.*;
 
@@ -111,8 +110,8 @@ public final class WriteMultipleRegistersRequest extends ModbusRequest {
      * The implementation should take care about assembling the reply to this
      * <tt>WriteMultipleRegistersRequest</tt>.
      *
-     * This method is used to create responses from the process image associated
-     * with the <tt>ModbusCoupler</tt>. It is commonly used to implement Modbus
+     * This method is used to create responses from the process image. It is
+     * commonly used to implement Modbus
      * slave instances.
      *
      * @return 
@@ -125,13 +124,11 @@ public final class WriteMultipleRegistersRequest extends ModbusRequest {
      * <tt>short</tt> values in the range of registers being processed.
      */
     @Override
-    public ModbusResponse createResponse() {
+    public ModbusResponse createResponse(ProcessImage procimg) {
         WriteMultipleRegistersResponse response = null;
 
         if (m_NonWordDataHandler == null) {
             Register[] regs = null;
-            // 1. get process image
-            ProcessImage procimg = ModbusCoupler.getReference().getProcessImage();
             // 2. get registers
             try {
                 regs = procimg.getRegisterRange(getReference(), getWordCount());

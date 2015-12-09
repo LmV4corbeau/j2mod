@@ -51,15 +51,13 @@ public class ModbusSerialTransaction
         implements ModbusTransaction {
 
     //class attributes
-    private static int c_TransactionID
-            = Modbus.DEFAULT_TRANSACTION_ID;
+    private static int c_TransactionID = Modbus.DEFAULT_TRANSACTION_ID;
 
     //instance attributes and associations
     private ModbusTransport m_IO;
     private ModbusRequest m_Request;
     private ModbusResponse m_Response;
-    private boolean m_ValidityCheck
-            = Modbus.DEFAULT_VALIDITYCHECK;
+    private boolean m_ValidityCheck = Modbus.DEFAULT_VALIDITYCHECK;
     private int m_Retries = Modbus.DEFAULT_RETRIES;
     private int m_TransDelayMS = Modbus.DEFAULT_TRANSMIT_DELAY;
     private SerialConnection m_SerialCon;

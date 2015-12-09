@@ -10,6 +10,7 @@ import gnu.io.SerialPort;
 
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.io.ModbusASCIITransport;
+import com.ghgande.j2mod.modbus.io.ModbusBINTransport;
 import com.ghgande.j2mod.modbus.io.ModbusRTUTransport;
 import com.ghgande.j2mod.modbus.io.ModbusSerialTransport;
 import com.ghgande.j2mod.modbus.io.ModbusTCPTransport;
@@ -35,7 +36,8 @@ public class ModbusMasterFactory {
         switch (protocol) {
             case "device":
             case "rtu":
-            case "ascii": {
+            case "ascii":
+            case "bin": {
                 /*
                  * Create a ModbusSerialListener with the default Modbus values of
                  * 19200 baud, no parity, using the specified device. If there is an
@@ -50,6 +52,12 @@ public class ModbusMasterFactory {
                         baudrate = Integer.parseInt(System.getProperty("com.ghgande.j2mod.modbus.baud"));
                     }
                 }
+                int unitId;
+                if (parts.length > 2) {
+                    unitId = Integer.parseInt(parts[2]);
+                } else {
+                    unitId = Modbus.DEFAULT_UNIT_ID;
+                }
 
                 SerialParameters parms = new SerialParameters();
                 parms.setPortName(parts[1]);
@@ -60,10 +68,16 @@ public class ModbusMasterFactory {
                 parms.setFlowControlIn(SerialPort.FLOWCONTROL_NONE);
 
                 ModbusSerialTransport transport;
-                if (protocol.equals("ascii")) {
-                    transport = new ModbusASCIITransport();
-                } else {
-                    transport = new ModbusRTUTransport();
+                switch (protocol) {
+                    case "ascii":
+                        transport = new ModbusASCIITransport(unitId);
+                        break;
+                    case "bin":
+                        transport = new ModbusBINTransport(unitId);
+                        break;
+                    default:
+                        transport = new ModbusRTUTransport();
+                        break;
                 }
                 CommPort port = new RXTXPort(parms.getPortName());
 

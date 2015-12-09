@@ -36,7 +36,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.procimg.DigitalOut;
 import com.ghgande.j2mod.modbus.procimg.IllegalAddressException;
 import com.ghgande.j2mod.modbus.procimg.ProcessImage;
@@ -79,12 +78,10 @@ public final class WriteMultipleCoilsRequest extends ModbusRequest {
     }
 
     @Override
-    public ModbusResponse createResponse() {
+    public ModbusResponse createResponse(ProcessImage procimg) {
         WriteMultipleCoilsResponse response = null;
         DigitalOut douts[] = null;
 
-        // 1. get process image
-        ProcessImage procimg = ModbusCoupler.getReference().getProcessImage();
         // 2. get coil range
         try {
             douts = procimg.getDigitalOutRange(m_Reference, m_Coils.size());

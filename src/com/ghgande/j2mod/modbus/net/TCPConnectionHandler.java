@@ -32,7 +32,6 @@
 package com.ghgande.j2mod.modbus.net;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.ModbusIOException;
 import com.ghgande.j2mod.modbus.io.ModbusTransport;
 import com.ghgande.j2mod.modbus.msg.ModbusRequest;
@@ -49,6 +48,7 @@ public class TCPConnectionHandler implements Runnable {
 
     private TCPSlaveConnection m_Connection;
     private ModbusTransport m_Transport;
+    private final ProcessImage m_ProcessImage;
 
     /**
      * Constructs a new <tt>TCPConnectionHandler</tt> instance.
@@ -60,8 +60,9 @@ public class TCPConnectionHandler implements Runnable {
      *
      * @param con an incoming connection.
      */
-    public TCPConnectionHandler(TCPSlaveConnection con) {
+    public TCPConnectionHandler(TCPSlaveConnection con, ProcessImage processImage) {
         setConnection(con);
+        m_ProcessImage = processImage;
     }
 
     /**
@@ -81,13 +82,12 @@ public class TCPConnectionHandler implements Runnable {
             do {
                 // 1. read the request
                 ModbusRequest request = m_Transport.readRequest();
-                ModbusResponse response = null;
+                ModbusResponse response;
 
                 /*
                  * test if Process image exists.
                  */
-                ProcessImage image = ModbusCoupler.getReference()
-                        .getProcessImage();
+                ProcessImage image = m_ProcessImage;
                 if (image == null) {
                     /*
                      * Do nothing -- non-existent devices do not respond to
@@ -105,7 +105,7 @@ public class TCPConnectionHandler implements Runnable {
                 }
 
                 // 2. create the response.
-                response = request.createResponse();
+                response = request.createResponse(m_ProcessImage);
 
                 if (Modbus.debug) {
                     System.out.println("Request:" + request.getHexMessage());

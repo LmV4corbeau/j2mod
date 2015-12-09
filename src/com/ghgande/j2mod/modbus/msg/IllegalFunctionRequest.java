@@ -36,6 +36,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import com.ghgande.j2mod.modbus.Modbus;
+import com.ghgande.j2mod.modbus.procimg.ProcessImage;
 
 /**
  * <p>
@@ -94,7 +95,7 @@ public class IllegalFunctionRequest extends ModbusRequest {
     }
 
     @Override
-    public ModbusResponse createResponse() {
+    public ModbusResponse createResponse(ProcessImage procimg) {
         return createExceptionResponse(Modbus.ILLEGAL_FUNCTION_EXCEPTION);
     }
 

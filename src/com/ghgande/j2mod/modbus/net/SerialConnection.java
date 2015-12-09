@@ -153,13 +153,13 @@ public class SerialConnection implements SerialPortEventListener {
 
         if (null != m_Parameters.getEncoding()) switch (m_Parameters.getEncoding()) {
             case Modbus.SERIAL_ENCODING_ASCII:
-                m_Transport = new ModbusASCIITransport();
+                m_Transport = new ModbusASCIITransport(m_Parameters.getUnitId());
                 break;
             case Modbus.SERIAL_ENCODING_RTU:
                 m_Transport = new ModbusRTUTransport();
                 break;
             case Modbus.SERIAL_ENCODING_BIN:
-                m_Transport = new ModbusBINTransport();
+                m_Transport = new ModbusBINTransport(m_Parameters.getUnitId());
                 break;
         }
         m_Transport.setEcho(m_Parameters.isEcho());
@@ -290,6 +290,7 @@ public class SerialConnection implements SerialPortEventListener {
         return m_Open;
     }
 
+    @Override
     public void serialEvent(SerialPortEvent e) {
         // Determine type of event.
         switch (e.getEventType()) {

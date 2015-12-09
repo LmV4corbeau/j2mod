@@ -31,7 +31,6 @@
  */
 package com.ghgande.j2mod.modbus.facade;
 
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.ModbusException;
 import com.ghgande.j2mod.modbus.io.ModbusSerialTransaction;
 import com.ghgande.j2mod.modbus.msg.*;
@@ -93,7 +92,7 @@ public class ModbusSerialMaster {
      * @param unitid the unit identifier.
      */
     public void setUnitIdentifier(int unitid) {
-        ModbusCoupler.getReference().setUnitID(unitid);
+        m_CommParameters.setUnitId(unitid);
     }//setUnitIdentifier
 
     /**
@@ -102,7 +101,7 @@ public class ModbusSerialMaster {
      * @return the unit identifier.
      */
     public int getUnitIdentifier() {
-        return ModbusCoupler.getReference().getUnitID();
+        return m_CommParameters.getUnitId();
     }//setUnitIdentifier
 
     /**

@@ -62,11 +62,11 @@
 package com.ghgande.j2mod.modbus.net;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.ModbusIOException;
 import com.ghgande.j2mod.modbus.io.ModbusTransport;
 import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.msg.ModbusResponse;
+import com.ghgande.j2mod.modbus.procimg.ProcessImage;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
 
 /**
@@ -85,6 +85,7 @@ public class ModbusSerialListener implements ModbusListener {
     private boolean m_Running = true;
     private final SerialConnection m_SerialCon;
     private int m_Unit = 0;
+    private ProcessImage m_ProcessImage = null;
 
     /**
      * run
@@ -122,12 +123,11 @@ public class ModbusSerialListener implements ModbusListener {
                          * ILLEGAL FUNCTION exception will be thrown if there is
                          * no ProcessImage.
                          */
-                        ModbusResponse response = null;
-                        if (ModbusCoupler.getReference().getProcessImage() == null) {
-                            response = request
-                                    .createExceptionResponse(Modbus.ILLEGAL_FUNCTION_EXCEPTION);
+                        ModbusResponse response;
+                        if (m_ProcessImage == null) {
+                            response = request.createExceptionResponse(Modbus.ILLEGAL_FUNCTION_EXCEPTION);
                         } else {
-                            response = request.createResponse();
+                            response = request.createResponse(m_ProcessImage);
                         }
 
                         /*
@@ -233,7 +233,8 @@ public class ModbusSerialListener implements ModbusListener {
 
     /**
      * Start the listener thread for this serial interface.
-     * @return 
+     *
+     * @return
      */
     @Override
     public Thread listen() {
@@ -251,5 +252,15 @@ public class ModbusSerialListener implements ModbusListener {
      */
     public ModbusSerialListener(SerialParameters params) {
         m_SerialCon = new SerialConnection(params);
+    }
+
+    @Override
+    public ProcessImage getProcessImage() {
+        return m_ProcessImage;
+    }
+
+    @Override
+    public void setProcessImage(ProcessImage processImage) {
+        m_ProcessImage = processImage;
     }
 }

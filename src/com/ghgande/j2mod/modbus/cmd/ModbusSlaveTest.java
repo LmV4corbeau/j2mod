@@ -32,7 +32,6 @@
 package com.ghgande.j2mod.modbus.cmd;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.net.ModbusListener;
 import com.ghgande.j2mod.modbus.net.ModbusListenerFactory;
 import com.ghgande.j2mod.modbus.procimg.File;
@@ -54,9 +53,9 @@ public class ModbusSlaveTest {
 
     public static void main(String[] args) {
         ModbusListener listener = null;
-        SimpleProcessImage spi = null;
 
         try {
+            SimpleProcessImage spi;
             System.out.println("j2mod Modbus Slave (Server) v0.97");
 
             /*
@@ -115,15 +114,11 @@ public class ModbusSlaveTest {
             spi.addRegister(new SimpleRegister(251));
             spi.addInputRegister(new SimpleInputRegister(45));
 
-            // 2. create the coupler holding the image
-            ModbusCoupler.getReference().setProcessImage(spi);
-            ModbusCoupler.getReference().setMaster(false);
-            ModbusCoupler.getReference().setUnitID(15);
-
             // 3. create a listener with 3 threads in pool
             System.out.println("Creating.");
 
             listener = ModbusListenerFactory.createModbusListener(args[0]);
+            listener.setProcessImage(spi);
 
             System.out.println("Listening.");
 

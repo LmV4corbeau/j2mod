@@ -62,7 +62,6 @@
 package com.ghgande.j2mod.modbus.cmd;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.net.ModbusUDPListener;
 import com.ghgande.j2mod.modbus.procimg.File;
 import com.ghgande.j2mod.modbus.procimg.Record;
@@ -87,11 +86,11 @@ public class UDPSlaveTest {
 
     public static void main(String[] args) {
 
-        ModbusUDPListener listener = null;
-        SimpleProcessImage spi = null;
         int port = Modbus.DEFAULT_PORT;
 
         try {
+            ModbusUDPListener listener;
+            SimpleProcessImage spi;
 
             if (args != null && args.length == 1) {
                 port = Integer.parseInt(args[0]);
@@ -151,14 +150,12 @@ public class UDPSlaveTest {
             spi.addRegister(new SimpleRegister(251));
             spi.addInputRegister(new SimpleInputRegister(45));
 
-            ModbusCoupler.getReference().setProcessImage(spi);
-            ModbusCoupler.getReference().setMaster(false);
-            ModbusCoupler.getReference().setUnitID(15);
-
             // 2. Setup and start listener
             listener = new ModbusUDPListener();
             listener.setPort(port);
-            new Thread(listener).start();
+            listener.setUnit(0);
+            listener.setProcessImage(spi);
+            listener.listen();
 
         } catch (Exception ex) {
             ex.printStackTrace();

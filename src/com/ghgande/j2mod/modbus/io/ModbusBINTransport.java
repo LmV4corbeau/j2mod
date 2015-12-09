@@ -37,7 +37,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.ModbusIOException;
 import com.ghgande.j2mod.modbus.msg.ModbusMessage;
 import com.ghgande.j2mod.modbus.msg.ModbusRequest;
@@ -60,11 +59,14 @@ public class ModbusBINTransport
     private BytesInputStream m_ByteIn;         //to read message from
     private BytesOutputStream m_ByteInOut;     //to buffer message to
     private BytesOutputStream m_ByteOut;      //write frames
+    private final int m_unitId;
 
     /**
      * Constructs a new <tt>MobusBINTransport</tt> instance.
+     * @param unitId
      */
-    public ModbusBINTransport() {
+    public ModbusBINTransport(int unitId) {
+        m_unitId = unitId;
     }//constructor
 
     @Override
@@ -143,7 +145,7 @@ public class ModbusBINTransport
                     m_ByteIn.reset(m_InBuffer, m_ByteInOut.size());
                     in = m_ByteIn.readUnsignedByte();
                     //check unit identifier
-                    if (in != ModbusCoupler.getReference().getUnitID()) {
+                    if (in != m_unitId) {
                         continue;
                     }
                     in = m_ByteIn.readUnsignedByte();
@@ -195,13 +197,13 @@ public class ModbusBINTransport
                     m_ByteIn.reset(m_InBuffer, m_ByteInOut.size());
                     in = m_ByteIn.readUnsignedByte();
                     //check unit identifier
-                    if (in != ModbusCoupler.getReference().getUnitID()) {
+                    if (in != m_unitId) {
                         continue;
                     }
                     m_ByteIn.reset(m_InBuffer, m_ByteInOut.size());
                     in = m_ByteIn.readUnsignedByte();
                     //check unit identifier
-                    if (in != ModbusCoupler.getReference().getUnitID()) {
+                    if (in != m_unitId) {
                         continue;
                     }
                     in = m_ByteIn.readUnsignedByte();

@@ -66,7 +66,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.msg.ReadFileRecordResponse.RecordResponse;
 import com.ghgande.j2mod.modbus.procimg.File;
 import com.ghgande.j2mod.modbus.procimg.IllegalAddressException;
@@ -225,18 +224,12 @@ public final class ReadFileRecordRequest extends ModbusRequest {
     }
 
     /**
-     * The ModbusCoupler doesn't have a means of reporting the slave state or ID
-     * information.
+     * 
      * @return 
      */
     @Override
-    public ModbusResponse createResponse() {
+    public ModbusResponse createResponse(ProcessImage procimg) {
         ReadFileRecordResponse response = (ReadFileRecordResponse) getResponse();
-
-        /*
-         * Get the process image.
-         */
-        ProcessImage procimg = ModbusCoupler.getReference().getProcessImage();
 
         /*
          * There is a list of requests to be resolved.

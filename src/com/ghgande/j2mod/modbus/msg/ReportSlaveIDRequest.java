@@ -66,6 +66,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import com.ghgande.j2mod.modbus.Modbus;
+import com.ghgande.j2mod.modbus.procimg.ProcessImage;
 
 /**
  * Class implementing a <tt>Read MEI Data</tt> request.
@@ -107,12 +108,11 @@ public final class ReportSlaveIDRequest extends ModbusRequest {
     }
 
     /**
-     * The ModbusCoupler doesn't have a means of reporting the slave state or ID
-     * information.
+     * 
      * @return 
      */
     @Override
-    public ModbusResponse createResponse() {
+    public ModbusResponse createResponse(ProcessImage procimg) {
         return createExceptionResponse(Modbus.ILLEGAL_FUNCTION_EXCEPTION);
     }
 

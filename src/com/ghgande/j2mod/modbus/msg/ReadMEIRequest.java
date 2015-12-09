@@ -67,6 +67,7 @@ import java.io.EOFException;
 import java.io.IOException;
 
 import com.ghgande.j2mod.modbus.Modbus;
+import com.ghgande.j2mod.modbus.procimg.ProcessImage;
 
 /**
  * Class implementing a <tt>Read MEI Data</tt> request.
@@ -149,13 +150,11 @@ public final class ReadMEIRequest extends ModbusRequest {
     }
 
     /**
-     * The ModbusCoupler interface doesn't have a method for defining MEI for a
-     * device.
-     *
+     * 
      * @return
      */
     @Override
-    public ModbusResponse createResponse() {
+    public ModbusResponse createResponse(ProcessImage procimg) {
         return createExceptionResponse(Modbus.ILLEGAL_FUNCTION_EXCEPTION);
     }
 

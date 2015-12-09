@@ -38,7 +38,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.ModbusIOException;
 import com.ghgande.j2mod.modbus.msg.ModbusMessage;
 import com.ghgande.j2mod.modbus.msg.ModbusRequest;
@@ -284,12 +283,11 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
      */
     @Override
     public ModbusRequest readRequest() throws ModbusIOException {
-        ModbusCoupler coupler = ModbusCoupler.getReference();
 
-        if (coupler == null || coupler.isMaster()) {
-            throw new RuntimeException("Operation not supported.");
-        }
-
+        //@todo: add test ifMaster
+        //if (isMaster()) {
+        //  throw new RuntimeException("Operation not supported.");
+        //}
         boolean done = false;
         ModbusRequest request = null;
         int dlength = 0;

@@ -36,7 +36,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.procimg.IllegalAddressException;
 import com.ghgande.j2mod.modbus.procimg.ProcessImage;
 import com.ghgande.j2mod.modbus.procimg.Register;
@@ -100,12 +99,10 @@ public final class ReadMultipleRegistersRequest extends ModbusRequest {
     }
 
     @Override
-    public ModbusResponse createResponse() {
+    public ModbusResponse createResponse(ProcessImage procimg) {
         ReadMultipleRegistersResponse response = null;
         Register[] regs = null;
 
-        // 1. get process image
-        ProcessImage procimg = ModbusCoupler.getReference().getProcessImage();
         // 2. get input registers range
         try {
             regs = procimg.getRegisterRange(getReference(), getWordCount());

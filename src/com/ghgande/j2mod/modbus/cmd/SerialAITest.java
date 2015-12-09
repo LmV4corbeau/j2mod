@@ -32,7 +32,6 @@
 package com.ghgande.j2mod.modbus.cmd;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.io.ModbusSerialTransaction;
 import com.ghgande.j2mod.modbus.msg.ReadInputRegistersRequest;
 import com.ghgande.j2mod.modbus.msg.ReadInputRegistersResponse;
@@ -82,9 +81,6 @@ public class SerialAITest {
                 }
             }
 
-            //2. Set slave identifier for master response parsing
-            ModbusCoupler.getReference().setUnitID(unitid);
-
             System.out.println("com.ghgande.j2mod.modbus.debug set to: "
                     + System.getProperty("com.ghgande.j2mod.modbus.debug"));
 
@@ -97,6 +93,7 @@ public class SerialAITest {
             params.setStopbits(1);
             params.setEncoding("ascii");
             params.setEcho(false);
+            params.setUnitId(unitid);
             if (Modbus.debug) {
                 System.out.println("Encoding [" + params.getEncoding() + "]");
             }

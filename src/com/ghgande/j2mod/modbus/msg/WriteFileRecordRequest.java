@@ -36,7 +36,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.msg.WriteFileRecordResponse.RecordResponse;
 import com.ghgande.j2mod.modbus.procimg.File;
 import com.ghgande.j2mod.modbus.procimg.IllegalAddressException;
@@ -220,18 +219,13 @@ public final class WriteFileRecordRequest extends ModbusRequest {
     }
 
     /**
-     * The ModbusCoupler doesn't have a means of writing file records.
+     * 
      * @return 
      */
     @Override
-    public ModbusResponse createResponse() {
+    public ModbusResponse createResponse(ProcessImage procimg) {
         WriteFileRecordResponse response;
         response = (WriteFileRecordResponse) getResponse();
-
-        /*
-         * Get the process image.
-         */
-        ProcessImage procimg = ModbusCoupler.getReference().getProcessImage();
 
         /*
          * There is a list of requests to be resolved.

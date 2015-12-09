@@ -426,6 +426,10 @@ public class SimpleProcessImage implements ProcessImageImplementation {
         }
     }
 
+    public Integer[] getRegisterRefs() {
+        return m_Registers.keySet().toArray(new Integer[0]);
+    }
+
     @Override
     public Register[] getRegisterRange(int ref, int count) {
         Register[] iregs = new Register[count];

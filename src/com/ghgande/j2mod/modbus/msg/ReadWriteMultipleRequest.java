@@ -66,7 +66,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.io.NonWordDataHandler;
 import com.ghgande.j2mod.modbus.procimg.IllegalAddressException;
 import com.ghgande.j2mod.modbus.procimg.InputRegister;
@@ -122,13 +121,11 @@ public final class ReadWriteMultipleRequest extends ModbusRequest {
     }
 
     @Override
-    public ModbusResponse createResponse() {
+    public ModbusResponse createResponse(ProcessImage procimg) {
         ReadWriteMultipleResponse response = null;
         InputRegister[] readRegs = null;
         Register[] writeRegs = null;
 
-        // 1. get process image
-        ProcessImage procimg = ModbusCoupler.getReference().getProcessImage();
         // 2. get input registers range
         try {
             readRegs = procimg.getRegisterRange(getReadReference(),

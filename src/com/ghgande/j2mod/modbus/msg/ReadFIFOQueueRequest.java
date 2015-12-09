@@ -66,7 +66,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.procimg.IllegalAddressException;
 import com.ghgande.j2mod.modbus.procimg.InputRegister;
 import com.ghgande.j2mod.modbus.procimg.ProcessImage;
@@ -134,14 +133,9 @@ public final class ReadFIFOQueueRequest extends ModbusRequest {
      * @return 
      */
     @Override
-    public ModbusResponse createResponse() {
+    public ModbusResponse createResponse(ProcessImage procimg) {
         ReadFIFOQueueResponse response = null;
         InputRegister[] registers = null;
-
-        /*
-         * Get the process image.
-         */
-        ProcessImage procimg = ModbusCoupler.getReference().getProcessImage();
 
         try {
             /*

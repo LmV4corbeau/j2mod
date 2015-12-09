@@ -36,7 +36,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.procimg.DigitalOut;
 import com.ghgande.j2mod.modbus.procimg.IllegalAddressException;
 import com.ghgande.j2mod.modbus.procimg.ProcessImage;
@@ -106,30 +105,27 @@ public final class ReadCoilsRequest extends ModbusRequest {
     }
 
     @Override
-    public ModbusResponse createResponse() {
-        ModbusResponse response = null;
-        DigitalOut[] douts = null;
+    public ModbusResponse createResponse(ProcessImage procimg) {
+        ModbusResponse response;
 
-        // 1. get process image
-        ProcessImage procimg = ModbusCoupler.getReference().getProcessImage();
         // 2. get input discretes range
         try {
+            DigitalOut[] douts;
             douts = procimg.getDigitalOutRange(getReference(),
                     getBitCount());
+            response = getResponse();
+
+            /*
+             * Populate the discrete values from the process image.
+             */
+            for (int i = 0; i < douts.length; i++) {
+                ((ReadCoilsResponse) response).setCoilStatus(i, douts[i].isSet());
+            }
         } catch (IllegalAddressException e) {
             response = new IllegalAddressExceptionResponse();
             response.setUnitID(getUnitID());
             response.setFunctionCode(getFunctionCode());
 
-            return response;
-        }
-        response = getResponse();
-
-        /*
-         * Populate the discrete values from the process image.
-         */
-        for (int i = 0; i < douts.length; i++) {
-            ((ReadCoilsResponse) response).setCoilStatus(i, douts[i].isSet());
         }
 
         return response;

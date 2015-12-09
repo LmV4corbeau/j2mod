@@ -62,6 +62,7 @@
 package com.ghgande.j2mod.modbus.msg;
 
 import com.ghgande.j2mod.modbus.Modbus;
+import com.ghgande.j2mod.modbus.procimg.ProcessImage;
 
 /**
  * Abstract class implementing a <tt>ModbusRequest</tt>. This class provides
@@ -105,13 +106,14 @@ public abstract class ModbusRequest extends ModbusMessageImpl {
      * <tt>ModbusRequest</tt>.
      *
      * <p>
-     * This method is used to create responses from the process image associated
-     * with the ModbusCoupler. It is commonly used to implement Modbus slave
+     * This method is used to create responses from the process image. It is
+     * commonly used to implement Modbus slave
      * instances.
      *
+     * @param procimg ProcessImage
      * @return the corresponding <tt>ModbusResponse</tt>.
      */
-    public abstract ModbusResponse createResponse();
+    public abstract ModbusResponse createResponse(ProcessImage procimg);
 
     /**
      * Factory method for creating exception responses with the given exception

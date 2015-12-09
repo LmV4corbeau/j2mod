@@ -65,12 +65,12 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.ModbusIOException;
 import com.ghgande.j2mod.modbus.io.ModbusTransport;
 import com.ghgande.j2mod.modbus.io.ModbusUDPTransport;
 import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.msg.ModbusResponse;
+import com.ghgande.j2mod.modbus.procimg.ProcessImage;
 
 /**
  * Class that implements a ModbusUDPListener.<br>
@@ -91,6 +91,7 @@ public class ModbusUDPListener implements ModbusListener {
     private UDPSlaveTerminal m_Terminal;
     private ModbusTransport m_Transport;
     private int m_Unit = 0;
+    private ProcessImage m_ProcessImage;
 
     @Override
     public int getUnit() {
@@ -162,16 +163,16 @@ public class ModbusUDPListener implements ModbusListener {
                  * using an associated process image.
                  */
                 ModbusRequest request = m_Transport.readRequest();
-                ModbusResponse response = null;
+                ModbusResponse response;
 
                 /*
                  * Make sure there is a process image to handle the request.
                  */
-                if (ModbusCoupler.getReference().getProcessImage() == null) {
+                if (m_ProcessImage == null) {
                     response = request
                             .createExceptionResponse(Modbus.ILLEGAL_FUNCTION_EXCEPTION);
                 } else {
-                    response = request.createResponse();
+                    response = request.createResponse(m_ProcessImage);
                 }
                 /* DEBUG */
                 if (Modbus.debug) {
@@ -264,5 +265,15 @@ public class ModbusUDPListener implements ModbusListener {
         } catch (UnknownHostException e) {
             // Can't happen -- length is fixed by code.
         }
+    }
+
+    @Override
+    public ProcessImage getProcessImage() {
+        return m_ProcessImage;
+    }
+
+    @Override
+    public void setProcessImage(ProcessImage processImage) {
+        m_ProcessImage = processImage;
     }
 }

@@ -69,6 +69,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import com.ghgande.j2mod.modbus.Modbus;
+import com.ghgande.j2mod.modbus.procimg.ProcessImage;
 import com.ghgande.j2mod.modbus.util.ThreadPool;
 
 /**
@@ -94,6 +95,7 @@ public class ModbusTCPListener implements ModbusListener {
     private int m_FloodProtection = 5;
     private boolean m_Listening;
     private InetAddress m_Address;
+    private ProcessImage m_ProcessImage;
 
     /**
      * Sets the port to be listened to.
@@ -201,7 +203,7 @@ public class ModbusTCPListener implements ModbusListener {
                 if (m_Listening) {
                     // FIXME: Replace with object pool due to resource issues
                     m_ThreadPool.execute(new TCPConnectionHandler(
-                            new TCPSlaveConnection(incoming)));
+                            new TCPSlaveConnection(incoming), m_ProcessImage));
                 } else {
                     incoming.close();
                 }
@@ -287,5 +289,15 @@ public class ModbusTCPListener implements ModbusListener {
         } catch (UnknownHostException ex) {
             // Can't happen -- size is fixed.
         }
+    }
+
+    @Override
+    public ProcessImage getProcessImage() {
+        return m_ProcessImage;
+    }
+
+    @Override
+    public void setProcessImage(ProcessImage processImage) {
+        m_ProcessImage = processImage;
     }
 }

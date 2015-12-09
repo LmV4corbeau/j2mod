@@ -34,7 +34,6 @@ package com.ghgande.j2mod.modbus.cmd;
 import java.net.Inet4Address;
 
 import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.ModbusCoupler;
 import com.ghgande.j2mod.modbus.net.ModbusTCPListener;
 import com.ghgande.j2mod.modbus.procimg.File;
 import com.ghgande.j2mod.modbus.procimg.Record;
@@ -122,11 +121,6 @@ public class TCPSlaveTest {
             spi.addRegister(new SimpleRegister(251));
             spi.addInputRegister(new SimpleInputRegister(45));
 
-            // 2. create the coupler holding the image
-            ModbusCoupler.getReference().setProcessImage(spi);
-            ModbusCoupler.getReference().setMaster(false);
-            ModbusCoupler.getReference().setUnitID(15);
-
             // 3. create a listener with 3 threads in pool
             if (Modbus.debug) {
                 System.out.println("Listening...");
@@ -136,6 +130,7 @@ public class TCPSlaveTest {
                     Inet4Address.getByName("0.0.0.0"));
             listener.setPort(port);
             listener.setUnit(unit);
+            listener.setProcessImage(spi);
             listener.listen();
 
         } catch (Exception ex) {

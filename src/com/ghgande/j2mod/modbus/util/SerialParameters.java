@@ -55,6 +55,7 @@ public final class SerialParameters {
     private int m_Stopbits;
     private int m_Parity;
     private String m_Encoding;
+    private int m_UnitId;
     private boolean m_Echo;
 
     /**
@@ -70,10 +71,12 @@ public final class SerialParameters {
         m_Parity = SerialPort.PARITY_NONE;
         m_Encoding = Modbus.DEFAULT_SERIAL_ENCODING;
         m_Echo = false;
+        m_UnitId = Modbus.DEFAULT_UNIT_ID;
     }//constructor
 
     /**
-     * Constructs a new <tt>SerialParameters</tt> instance with given parameters.
+     * Constructs a new <tt>SerialParameters</tt> instance with given
+     * parameters.
      *
      * @param portName The name of the port.
      * @param baudRate The baud rate.
@@ -540,4 +543,21 @@ public final class SerialParameters {
      * Boolean(props.getProperty("echo")).booleanValue()); }//loadFrom
      *
      */
+    /**
+     * Get unit ID
+     *
+     * @return
+     */
+    public int getUnitId() {
+        return m_UnitId;
+    }
+
+    /**
+     * Set unit ID
+     *
+     * @param unitId
+     */
+    public void setUnitId(int unitId) {
+        m_UnitId = unitId;
+    }
 }//class SerialParameters
