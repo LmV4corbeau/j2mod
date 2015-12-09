@@ -234,17 +234,21 @@ public class ModbusTCPTransport implements ModbusTransport {
                      * proper error correction and recovery.
                      */
                     m_Input.readShort();
-                    Logger.getLogger(ModbusTCPTransport.class.getName()).log(Level.FINE, "Read: " + req.getHexMessage());
+                    Logger.getLogger(ModbusTCPTransport.class.getName()).log(Level.FINE, "Read: {0}", req.getHexMessage());
                 }
             }
             return req;
-        } catch (EOFException eoex) {
+        } catch (EOFException ex) {
+            Logger.getLogger(ModbusTCPTransport.class.getName()).log(Level.SEVERE, null, ex);
             throw new ModbusIOException("End of File", true);
-        } catch (SocketTimeoutException x) {
+        } catch (SocketTimeoutException ex) {
+            Logger.getLogger(ModbusTCPTransport.class.getName()).log(Level.SEVERE, null, ex);
             throw new ModbusIOException("Timeout reading request");
-        } catch (SocketException sockex) {
+        } catch (SocketException ex) {
+            Logger.getLogger(ModbusTCPTransport.class.getName()).log(Level.SEVERE, null, ex);
             throw new ModbusIOException("Socket Exception", true);
         } catch (IOException | ModbusIOException ex) {
+            Logger.getLogger(ModbusTCPTransport.class.getName()).log(Level.SEVERE, null, ex);
             throw new ModbusIOException("I/O exception - failed to read.");
         }
     }

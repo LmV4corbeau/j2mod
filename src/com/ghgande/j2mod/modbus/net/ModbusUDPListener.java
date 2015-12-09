@@ -206,18 +206,6 @@ public class ModbusUDPListener implements ModbusListener {
     }
 
     /**
-     * Sets if this <tt>ModbusUDPListener</tt> is listening and accepting
-     * incoming connections.
-     *
-     * @param listen true if the <tt>ModbusUDPListener</tt> should listen, false
-     * otherwise.
-     */
-    @Override
-    public void setListening(boolean listen) {
-        m_Listening = listen;
-    }
-
-    /**
      * Tests if this <tt>ModbusTCPListener</tt> is listening and accepting
      * incoming connections.
      *

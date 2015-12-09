@@ -65,24 +65,38 @@ public class SerialSlaveTest {
         int holdings = 1;
         int arg = 0;
 
+        OUTER:
         for (arg = 0; arg < args.length; arg++) {
-            if (args[arg].equals("--port") || args[arg].equals("-p")) {
-                portname = args[++arg];
-            } else if (args[arg].equals("--unit") || args[arg].equals("-u")) {
-                unit = Integer.parseInt(args[++arg]);
-                hasUnit = true;
-            } else if (args[arg].equals("--coils") || args[arg].equals("-c")) {
-                coils = Integer.parseInt(args[++arg]);
-            } else if (args[arg].equals("--discretes") || args[arg].equals("-d")) {
-                discretes = Integer.parseInt(args[++arg]);
-            } else if (args[arg].equals("--inputs") || args[arg].equals("-i")) {
-                inputs = Integer.parseInt(args[++arg]);
-                hasInputs = true;
-            } else if (args[arg].equals("--holdings") || args[arg].equals("-h")) {
-                holdings = Integer.parseInt(args[++arg]);
-                hasHoldings = true;
-            } else {
-                break;
+            switch (args[arg]) {
+                case "--port":
+                case "-p":
+                    portname = args[++arg];
+                    break;
+                case "--unit":
+                case "-u":
+                    unit = Integer.parseInt(args[++arg]);
+                    hasUnit = true;
+                    break;
+                case "--coils":
+                case "-c":
+                    coils = Integer.parseInt(args[++arg]);
+                    break;
+                case "--discretes":
+                case "-d":
+                    discretes = Integer.parseInt(args[++arg]);
+                    break;
+                case "--inputs":
+                case "-i":
+                    inputs = Integer.parseInt(args[++arg]);
+                    hasInputs = true;
+                    break;
+                case "--holdings":
+                case "-h":
+                    holdings = Integer.parseInt(args[++arg]);
+                    hasHoldings = true;
+                    break;
+                default:
+                    break OUTER;
             }
         }
 
@@ -147,15 +161,14 @@ public class SerialSlaveTest {
             params.setEncoding("rtu");
             params.setEcho(false);
             params.setUnitId(unit);
-            Logger.getLogger(SerialSlaveTest.class.getName()).log(Level.FINE, "Encoding [" + params.getEncoding() + "]");
+            Logger.getLogger(SerialSlaveTest.class.getName()).log(Level.FINE, "Encoding [{0}]", params.getEncoding());
 
             // 4. Set up serial listener
             listener = new ModbusSerialListener(params);
-            listener.setListening(true);
             listener.setProcessImage(spi);
 
             // 5. Start the listener thread.
-            new Thread(listener).start();
+            listener.listen();
         } catch (Exception ex) {
             Logger.getLogger(SerialSlaveTest.class.getName()).log(Level.SEVERE, null, ex);
         }

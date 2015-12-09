@@ -193,17 +193,6 @@ public class ModbusSerialListener implements ModbusListener {
     }
 
     /**
-     * Sets the listening flag of this <tt>ModbusTCPListener</tt>.
-     *
-     * @param b true if listening (and accepting incoming connections), false
-     * otherwise.
-     */
-    @Override
-    public void setListening(boolean b) {
-        m_Listening = b;
-    }
-
-    /**
      * Tests if this <tt>ModbusTCPListener</tt> is listening and accepting
      * incoming connections.
      *

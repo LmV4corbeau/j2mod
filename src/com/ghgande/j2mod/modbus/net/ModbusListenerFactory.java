@@ -55,11 +55,7 @@ public class ModbusListenerFactory {
 
                     listener.setUnit(unit);
                 }
-                listener.setListening(true);
-
-                Thread result = new Thread(listener);
-                result.start();
-
+                listener.listen();
                 return listener;
             }
             case "tcp": {
@@ -78,11 +74,7 @@ public class ModbusListenerFactory {
                         listener.setUnit(unit);
                     }
                 }
-                listener.setListening(true);
-
-                Thread result = new Thread(listener);
-                result.start();
-
+                listener.listen();
                 return listener;
             }
             case "udp": {
@@ -101,11 +93,7 @@ public class ModbusListenerFactory {
                         listener.setUnit(unit);
                     }
                 }
-                listener.setListening(true);
-
-                Thread result = new Thread(listener);
-                result.start();
-
+                listener.listen();
                 return listener;
             }
             default:

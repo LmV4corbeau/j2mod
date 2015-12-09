@@ -27,15 +27,6 @@ public interface ModbusListener extends Runnable {
     public int getUnit();
 
     /**
-     * Sets the <i>listening</i> state for this Modbus interface. A Modbus
-     * interface which is not <i>listening</i> will silently discard all
-     * requests.
-     *
-     * @param listening This interface will accept and process requests.
-     */
-    public void setListening(boolean listening);
-
-    /**
      * Gets the <i>listening</i> state for this Modbus interface. A Modbus
      * interface which is not <i>listening</i> will silently discard all
      * requests. Additionally, an interface which is no longer alive will return

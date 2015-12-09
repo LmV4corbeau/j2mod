@@ -216,18 +216,6 @@ public class ModbusTCPListener implements ModbusListener {
     }
 
     /**
-     * Set the listening state of this <tt>ModbusTCPListener</tt> object. A
-     * <tt>ModbusTCPListener</tt> will silently drop any requests if the
-     * listening state is set to <tt>false</tt>.
-     *
-     * @param b
-     */
-    @Override
-    public void setListening(boolean b) {
-        m_Listening = b;
-    }
-
-    /**
      * Tests if this <tt>ModbusTCPListener</tt> is listening and accepting
      * incoming connections.
      *
