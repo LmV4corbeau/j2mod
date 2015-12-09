@@ -267,10 +267,6 @@ public class ModbusASCIITransport
         return (byte) ((-lrc) & 0xff);
     }//calculateLRC
 
-    public boolean getDebug() {
-        return "true".equals(System.getProperty("com.ghgande.j2mod.modbus.debug"));
-    }
-
     /**
      * Defines a virtual number for the FRAME START token (COLON).
      */
