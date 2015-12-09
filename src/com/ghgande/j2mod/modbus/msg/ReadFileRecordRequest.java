@@ -101,7 +101,8 @@ public final class ReadFileRecordRequest extends ModbusRequest {
 
         /**
          * getRequestSize -- return the size of the response in bytes.
-         * @return 
+         *
+         * @return
          */
         public int getRequestSize() {
             return 7 + m_WordCount * 2;
@@ -139,7 +140,7 @@ public final class ReadFileRecordRequest extends ModbusRequest {
      * getRequestSize -- return the total request size. This is useful for
      * determining if a new record can be added.
      *
-     * @return 
+     * @return
      * @returns size in bytes of response.
      */
     public int getRequestSize() {
@@ -157,7 +158,8 @@ public final class ReadFileRecordRequest extends ModbusRequest {
 
     /**
      * getRequestCount -- return the number of record requests in this message.
-     * @return 
+     *
+     * @return
      */
     public int getRequestCount() {
         if (m_Records == null) {
@@ -169,8 +171,9 @@ public final class ReadFileRecordRequest extends ModbusRequest {
 
     /**
      * getRecord -- return the record request indicated by the reference
+     *
      * @param index
-     * @return 
+     * @return
      */
     public RecordRequest getRecord(int index) {
         return m_Records[index];
@@ -199,7 +202,8 @@ public final class ReadFileRecordRequest extends ModbusRequest {
 
     /**
      * getResponse -- get an empty response for this message.
-     * @return 
+     *
+     * @return
      */
     @Override
     public ModbusResponse getResponse() {
@@ -224,8 +228,8 @@ public final class ReadFileRecordRequest extends ModbusRequest {
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     public ModbusResponse createResponse(ProcessImage procimg) {
@@ -279,6 +283,7 @@ public final class ReadFileRecordRequest extends ModbusRequest {
 
     /**
      * writeData -- output this Modbus message to dout.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -288,6 +293,7 @@ public final class ReadFileRecordRequest extends ModbusRequest {
 
     /**
      * readData -- read all the data for this request.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -316,7 +322,8 @@ public final class ReadFileRecordRequest extends ModbusRequest {
 
     /**
      * getMessage -- return the PDU message.
-     * @return 
+     *
+     * @return
      */
     @Override
     public byte[] getMessage() {

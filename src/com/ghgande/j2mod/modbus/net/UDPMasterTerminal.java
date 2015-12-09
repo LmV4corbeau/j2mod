@@ -37,6 +37,8 @@ import java.net.InetAddress;
 
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.io.ModbusUDPTransport;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class implementing a <tt>UDPMasterTerminal</tt>.
@@ -130,10 +132,7 @@ class UDPMasterTerminal implements UDPTerminal {
     @Override
     public synchronized void activate() throws Exception {
         if (!isActive()) {
-            if (Modbus.debug) {
-                System.out.println("UDPMasterTerminal::activate()::laddr=:"
-                        + m_LocalAddress + ":lport=" + m_LocalPort);
-            }
+            Logger.getLogger(UDPMasterTerminal.class.getName()).log(Level.FINE, "UDPMasterTerminal::activate()::laddr=:{0}:lport={1}", new Object[]{m_LocalAddress, m_LocalPort});
 
             if (m_Socket == null) {
                 if (m_LocalAddress != null && m_LocalPort != -1) {
@@ -144,20 +143,9 @@ class UDPMasterTerminal implements UDPTerminal {
                     m_LocalAddress = m_Socket.getLocalAddress();
                 }
             }
-            if (Modbus.debug) {
-                System.out.println("UDPMasterTerminal::haveSocket():"
-                        + m_Socket.toString());
-            }
-            if (Modbus.debug) {
-                System.out.println("UDPMasterTerminal::laddr=:"
-                        + m_LocalAddress.toString() + ":lport=" + m_LocalPort);
-            }
-            if (Modbus.debug) {
-                System.out
-                        .println("UDPMasterTerminal::raddr=:"
-                                + m_RemoteAddress.toString() + ":rport="
-                                + m_RemotePort);
-            }
+            Logger.getLogger(UDPMasterTerminal.class.getName()).log(Level.FINE, "UDPMasterTerminal::haveSocket():{0}", m_Socket.toString());
+            Logger.getLogger(UDPMasterTerminal.class.getName()).log(Level.FINE, "UDPMasterTerminal::laddr=:{0}:lport={1}", new Object[]{m_LocalAddress.toString(), m_LocalPort});
+            Logger.getLogger(UDPMasterTerminal.class.getName()).log(Level.FINE, "UDPMasterTerminal::raddr=:{0}:rport={1}", new Object[]{m_RemoteAddress.toString(), m_RemotePort});
 
             m_Socket.setReceiveBufferSize(1024);
             m_Socket.setSendBufferSize(1024);
@@ -165,9 +153,7 @@ class UDPMasterTerminal implements UDPTerminal {
             m_ModbusTransport = new ModbusUDPTransport(this);
             m_Active = true;
         }
-        if (Modbus.debug) {
-            System.out.println("UDPMasterTerminal::activated");
-        }
+        Logger.getLogger(UDPMasterTerminal.class.getName()).log(Level.FINE, "UDPMasterTerminal::activated");
     }
 
     /**
@@ -176,15 +162,13 @@ class UDPMasterTerminal implements UDPTerminal {
     @Override
     public void deactivate() {
         try {
-            if (Modbus.debug) {
-                System.out.println("UDPMasterTerminal::deactivate()");
-            }
+            Logger.getLogger(UDPMasterTerminal.class.getName()).log(Level.FINE, "UDPMasterTerminal::deactivate()");
 
             m_Socket.close();
             m_ModbusTransport = null;
             m_Active = false;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(UDPMasterTerminal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

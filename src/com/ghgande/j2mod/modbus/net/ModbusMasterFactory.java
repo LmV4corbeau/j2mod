@@ -17,6 +17,8 @@ import com.ghgande.j2mod.modbus.io.ModbusTCPTransport;
 import com.ghgande.j2mod.modbus.io.ModbusTransport;
 import com.ghgande.j2mod.modbus.io.ModbusUDPTransport;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Create a <tt>ModbusListener</tt> from an URI-like specifier.
@@ -103,9 +105,7 @@ public class ModbusMasterFactory {
                 }
 
                 Socket socket = new Socket(hostName, port);
-                if (Modbus.debug) {
-                    System.err.println("connecting to " + socket);
-                }
+                Logger.getLogger(ModbusMasterFactory.class.getName()).log(Level.FINE, "connecting to {0}", socket);
 
                 ModbusTCPTransport transport = new ModbusTCPTransport(socket);
 

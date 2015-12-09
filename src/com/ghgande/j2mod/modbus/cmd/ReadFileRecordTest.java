@@ -47,6 +47,8 @@ import com.ghgande.j2mod.modbus.msg.ReadFileRecordRequest.RecordRequest;
 import com.ghgande.j2mod.modbus.msg.ReadFileRecordResponse;
 import com.ghgande.j2mod.modbus.msg.ReadFileRecordResponse.RecordResponse;
 import com.ghgande.j2mod.modbus.net.ModbusMasterFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * ReadFileRecordText -- Exercise the "READ FILE RECORD" Modbus message.
@@ -108,7 +110,7 @@ public class ReadFileRecordTest {
             System.err.println("Invalid parameter");
             usage();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(ReadFileRecordTest.class.getName()).log(Level.SEVERE, null, ex);
             usage();
             System.exit(1);
         }
@@ -126,9 +128,7 @@ public class ReadFileRecordTest {
                         = request.new RecordRequest(file, record + i, registers);
                 request.addRequest(recordRequest);
 
-                if (Modbus.debug) {
-                    System.out.println("Request: " + request.getHexMessage());
-                }
+                Logger.getLogger(ReadFileRecordTest.class.getName()).log(Level.FINE, "Request: {0}", request.getHexMessage());
 
                 /*
                  * Setup the transaction.
@@ -169,10 +169,7 @@ public class ReadFileRecordTest {
                 } else if (dummy instanceof ReadFileRecordResponse) {
                     response = (ReadFileRecordResponse) dummy;
 
-                    if (Modbus.debug) {
-                        System.out.println("Response: "
-                                + response.getHexMessage());
-                    }
+                    Logger.getLogger(ReadFileRecordTest.class.getName()).log(Level.FINE, "Response: {0}", response.getHexMessage());
 
                     int count = response.getRecordCount();
                     for (int j = 0; j < count; j++) {
@@ -228,7 +225,7 @@ public class ReadFileRecordTest {
              */
             transport.close();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(ReadFileRecordTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.exit(0);
     }

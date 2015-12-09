@@ -41,6 +41,8 @@ import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 import com.ghgande.j2mod.modbus.msg.ReadFIFOQueueRequest;
 import com.ghgande.j2mod.modbus.msg.ReadFIFOQueueResponse;
 import com.ghgande.j2mod.modbus.net.ModbusMasterFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * ReadFIFOTest -- Exercise the "READ FIFO" Modbus message.
@@ -98,7 +100,7 @@ public class ReadFIFOTest {
             System.err.println("Invalid parameter");
             usage();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(ReadFIFOTest.class.getName()).log(Level.SEVERE, null, ex);
             usage();
             System.exit(1);
         }
@@ -113,9 +115,7 @@ public class ReadFIFOTest {
                 request.setUnitID(unit);
                 request.setReference(fifo);
 
-                if (Modbus.debug) {
-                    System.out.println("Request: " + request.getHexMessage());
-                }
+                Logger.getLogger(ReadFIFOTest.class.getName()).log(Level.FINE, "Request: {0}", request.getHexMessage());
 
                 /*
                  * Setup the transaction.
@@ -156,10 +156,7 @@ public class ReadFIFOTest {
                 } else if (dummy instanceof ReadFIFOQueueResponse) {
                     response = (ReadFIFOQueueResponse) dummy;
 
-                    if (Modbus.debug) {
-                        System.out.println("Response: "
-                                + response.getHexMessage());
-                    }
+                    Logger.getLogger(ReadFIFOTest.class.getName()).log(Level.FINE, "Response: {0}", response.getHexMessage());
 
                     int count = response.getWordCount();
                     System.out.println(count + " values");
@@ -182,9 +179,11 @@ public class ReadFIFOTest {
             /*
              * Teardown the connection.
              */
-            transport.close();
+            if (transport != null) {
+                transport.close();
+            }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(ReadFIFOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.exit(0);
     }

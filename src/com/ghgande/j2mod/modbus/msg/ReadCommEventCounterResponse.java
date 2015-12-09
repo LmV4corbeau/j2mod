@@ -116,7 +116,8 @@ public final class ReadCommEventCounterResponse extends ModbusResponse {
 
     /**
      * getEvents -- get device's event counter.
-     * @return 
+     *
+     * @return
      */
     public int getEventCount() {
         return m_Events;
@@ -124,6 +125,7 @@ public final class ReadCommEventCounterResponse extends ModbusResponse {
 
     /**
      * setEvents -- set the device's event counter.
+     *
      * @param count
      */
     public void setEventCount(int count) {
@@ -132,6 +134,7 @@ public final class ReadCommEventCounterResponse extends ModbusResponse {
 
     /**
      * writeData -- output the completed Modbus message to dout
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -142,6 +145,7 @@ public final class ReadCommEventCounterResponse extends ModbusResponse {
     /**
      * readData -- input the Modbus message from din. If there was a header,
      * such as for Modbus/TCP, it will have been read already.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -152,7 +156,8 @@ public final class ReadCommEventCounterResponse extends ModbusResponse {
 
     /**
      * getMessage -- format the message into a byte array.
-     * @return 
+     *
+     * @return
      */
     @Override
     public byte[] getMessage() {

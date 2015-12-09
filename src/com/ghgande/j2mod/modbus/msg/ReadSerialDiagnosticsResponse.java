@@ -103,7 +103,8 @@ public final class ReadSerialDiagnosticsResponse extends ModbusResponse {
 
     /**
      * getWordCount -- get the number of words in m_Data.
-     * @return 
+     *
+     * @return
      */
     public int getWordCount() {
         return 1;
@@ -111,7 +112,8 @@ public final class ReadSerialDiagnosticsResponse extends ModbusResponse {
 
     /**
      * getData -- return the first data item.
-     * @return 
+     *
+     * @return
      */
     public int getData() {
         return m_Data;
@@ -121,7 +123,7 @@ public final class ReadSerialDiagnosticsResponse extends ModbusResponse {
      * getData -- Get the data item at the index.
      *
      * @param index - Unused, must be 0.
-     * @return 
+     * @return
      *
      * @deprecated
      */
@@ -135,6 +137,7 @@ public final class ReadSerialDiagnosticsResponse extends ModbusResponse {
 
     /**
      * setData -- Set the optional data value
+     *
      * @param value
      */
     public void setData(int value) {
@@ -159,6 +162,7 @@ public final class ReadSerialDiagnosticsResponse extends ModbusResponse {
 
     /**
      * writeData -- output the completed Modbus message to dout
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -168,6 +172,7 @@ public final class ReadSerialDiagnosticsResponse extends ModbusResponse {
 
     /**
      * readData -- Read the function code and data value
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -178,7 +183,8 @@ public final class ReadSerialDiagnosticsResponse extends ModbusResponse {
 
     /**
      * getMessage -- Create the DIAGNOSTICS message paylaod.
-     * @return 
+     *
+     * @return
      */
     @Override
     public byte[] getMessage() {

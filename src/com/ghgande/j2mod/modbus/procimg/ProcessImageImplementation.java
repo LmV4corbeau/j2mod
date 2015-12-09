@@ -195,8 +195,8 @@ public interface ProcessImageImplementation extends ProcessImage {
     public void addFile(ModbusFile reg);
 
     /**
-     * Adds a new <tt>ModbusFile</tt> instance, possibly creating a hole between the
-     * last existing reference and the new object.
+     * Adds a new <tt>ModbusFile</tt> instance, possibly creating a hole between
+     * the last existing reference and the new object.
      *
      * @param ref - the reference for the new isntance.
      * @param reg the <tt>ModbusFile</tt> instance to be added.

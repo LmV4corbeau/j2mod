@@ -42,6 +42,8 @@ import com.ghgande.j2mod.modbus.msg.ModbusMessage;
 import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 import com.ghgande.j2mod.modbus.util.ModbusUtil;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements the Modbus/ASCII transport flavor.
@@ -160,9 +162,7 @@ public class ModbusASCIITransport
             } while (!done);
             return request;
         } catch (Exception ex) {
-            if (Modbus.debug) {
-                System.out.println(ex.getMessage());
-            }
+            Logger.getLogger(ModbusASCIITransport.class.getName()).log(Level.FINE, ex.getMessage());
             throw new ModbusIOException("I/O exception - failed to read.");
         }
 
@@ -194,10 +194,7 @@ public class ModbusASCIITransport
                         m_ByteInOut.writeByte(in);
                     }
                     int len = m_ByteInOut.size();
-                    if (Modbus.debug) {
-                        System.out.println("Received: "
-                                + ModbusUtil.toHex(m_InBuffer, 0, len));
-                    }
+                    Logger.getLogger(ModbusASCIITransport.class.getName()).log(Level.FINE, "Received: {0}", ModbusUtil.toHex(m_InBuffer, 0, len));
                     //check LRC
                     if (m_InBuffer[len - 1] != calculateLRC(m_InBuffer, 0, len, 1)) {
                         continue;
@@ -225,9 +222,7 @@ public class ModbusASCIITransport
             } while (!done);
             return response;
         } catch (Exception ex) {
-            if (Modbus.debug) {
-                System.out.println(ex.getMessage());
-            }
+            Logger.getLogger(ModbusASCIITransport.class.getName()).log(Level.FINE, ex.getMessage());
             throw new ModbusIOException("I/O exception - failed to read.");
         }
     }//readResponse

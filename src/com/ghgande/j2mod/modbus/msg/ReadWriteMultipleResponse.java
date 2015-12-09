@@ -124,6 +124,7 @@ public final class ReadWriteMultipleResponse extends ModbusResponse {
 
     /**
      * Sets the entire block of registers for this response
+     *
      * @param registers
      */
     public void setRegisters(InputRegister[] registers) {

@@ -94,7 +94,8 @@ public final class ReadWriteMultipleRequest extends ModbusRequest {
 
     /**
      * createResponse -- create an empty response for this request.
-     * @return 
+     *
+     * @return
      */
     @Override
     public ModbusResponse getResponse() {
@@ -329,6 +330,7 @@ public final class ReadWriteMultipleRequest extends ModbusRequest {
 
     /**
      * writeData -- output this Modbus message to dout.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -339,6 +341,7 @@ public final class ReadWriteMultipleRequest extends ModbusRequest {
     /**
      * readData -- read the values of the registers to be written, along with
      * the reference and count for the registers to be read.
+     *
      * @param input
      * @throws java.io.IOException
      */
@@ -370,7 +373,8 @@ public final class ReadWriteMultipleRequest extends ModbusRequest {
 
     /**
      * getMessage -- return a prepared message.
-     * @return 
+     *
+     * @return
      */
     @Override
     public byte[] getMessage() {
@@ -399,6 +403,7 @@ public final class ReadWriteMultipleRequest extends ModbusRequest {
 
     /**
      * Constructs a new <tt>Read/Write Multiple Registers Request</tt> instance.
+     *
      * @param unit
      * @param readRef
      * @param readCount
@@ -429,6 +434,7 @@ public final class ReadWriteMultipleRequest extends ModbusRequest {
 
     /**
      * Constructs a new <tt>Read/Write Multiple Registers Request</tt> instance.
+     *
      * @param unit
      */
     public ReadWriteMultipleRequest(int unit) {

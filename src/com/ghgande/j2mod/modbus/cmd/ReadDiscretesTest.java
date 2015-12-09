@@ -69,6 +69,8 @@ import com.ghgande.j2mod.modbus.io.ModbusTransport;
 import com.ghgande.j2mod.modbus.msg.ReadInputDiscretesRequest;
 import com.ghgande.j2mod.modbus.msg.ReadInputDiscretesResponse;
 import com.ghgande.j2mod.modbus.net.ModbusMasterFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements a simple command line tool for reading a digital input.
@@ -125,7 +127,7 @@ public class ReadDiscretesTest {
                         repeat = Integer.parseInt(args[4]);
                     }
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    Logger.getLogger(ReadDiscretesTest.class.getName()).log(Level.SEVERE, null, ex);
                     printUsage();
                     System.exit(1);
                 }
@@ -133,9 +135,7 @@ public class ReadDiscretesTest {
 
             req = new ReadInputDiscretesRequest(ref, count);
             req.setUnitID(unit);
-            if (Modbus.debug) {
-                System.out.println("Request: " + req.getHexMessage());
-            }
+            Logger.getLogger(ReadDiscretesTest.class.getName()).log(Level.FINE, "Request: {0}", req.getHexMessage());
 
             // 4. Prepare the transaction
             trans = transport.createTransaction();
@@ -152,9 +152,7 @@ public class ReadDiscretesTest {
 
                 res = (ReadInputDiscretesResponse) trans.getResponse();
 
-                if (Modbus.debug) {
-                    System.out.println("Response: " + res.getHexMessage());
-                }
+                Logger.getLogger(ReadDiscretesTest.class.getName()).log(Level.FINE, "Response: {0}", res.getHexMessage());
 
                 System.out.println("Input Discretes Status="
                         + res.getDiscretes().toString());
@@ -166,7 +164,7 @@ public class ReadDiscretesTest {
             transport.close();
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(ReadDiscretesTest.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         System.exit(0);

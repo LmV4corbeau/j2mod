@@ -74,7 +74,9 @@ public class LinkedQueue {
     }//constructor
 
     /**
-     * Main mechanics for put/offer *
+     * Main mechanics for put/offer
+     *
+     *
      * @param x
      */
     protected void insert(Object x) {
@@ -91,8 +93,10 @@ public class LinkedQueue {
     }//insert
 
     /**
-     * Main mechanics for take/poll *
-     * @return 
+     * Main mechanics for take/poll
+     *
+     *
+     * @return
      */
     protected synchronized Object extract() {
         synchronized (m_Head) {

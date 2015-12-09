@@ -69,6 +69,8 @@ import com.ghgande.j2mod.modbus.io.ModbusTransport;
 import com.ghgande.j2mod.modbus.msg.ReadCoilsRequest;
 import com.ghgande.j2mod.modbus.msg.ReadCoilsResponse;
 import com.ghgande.j2mod.modbus.net.ModbusMasterFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements a simple command line tool for reading a digital input.
@@ -86,56 +88,51 @@ public class ReadCoilsTest {
     public static void main(String[] args) {
         ReadCoilsRequest req = null;
         ReadCoilsResponse res = null;
-        ModbusTransport transport = null;
         ModbusTransaction trans = null;
         int ref = 0;
         int count = 0;
         int repeat = 1;
         int unit = 0;
 
-        try {
-
-            // 1. Setup the parameters
-            if (args.length < 4 || args.length > 5) {
+        // 1. Setup the parameters
+        if (args.length < 4 || args.length > 5) {
+            printUsage();
+            System.exit(1);
+        } else {
+            try {
+                unit = Integer.parseInt(args[1]);
+                ref = Integer.parseInt(args[2]);
+                count = Integer.parseInt(args[3]);
+                if (args.length == 5) {
+                    repeat = Integer.parseInt(args[4]);
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(ReadCoilsTest.class.getName()).log(Level.SEVERE, null, ex);
                 printUsage();
                 System.exit(1);
-            } else {
-                try {
-                    transport = ModbusMasterFactory.createModbusMaster(args[0]);
+            }
+        }
 
-                    if (transport instanceof ModbusSerialTransport) {
-                        ((ModbusSerialTransport) transport).setReceiveTimeout(500);
-                        if (System.getProperty("com.ghgande.j2mod.modbus.baud") != null) {
-                            ((ModbusSerialTransport) transport).setBaudRate(Integer.parseInt(System.getProperty("com.ghgande.j2mod.modbus.baud")));
-                        } else {
-                            ((ModbusSerialTransport) transport).setBaudRate(Modbus.DEFAULT_BAUD_RATE);
-                        }
-                    }
+        try (ModbusTransport transport = ModbusMasterFactory.createModbusMaster(args[0])) {
 
-                    /*
-                     * There are a number of devices which won't initialize immediately
-                     * after being opened.  Take a moment to let them come up.
-                     */
-                    Thread.sleep(2000);
-
-                    unit = Integer.parseInt(args[1]);
-                    ref = Integer.parseInt(args[2]);
-                    count = Integer.parseInt(args[3]);
-                    if (args.length == 5) {
-                        repeat = Integer.parseInt(args[4]);
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    printUsage();
-                    System.exit(1);
+            if (transport instanceof ModbusSerialTransport) {
+                ((ModbusSerialTransport) transport).setReceiveTimeout(500);
+                if (System.getProperty("com.ghgande.j2mod.modbus.baud") != null) {
+                    ((ModbusSerialTransport) transport).setBaudRate(Integer.parseInt(System.getProperty("com.ghgande.j2mod.modbus.baud")));
+                } else {
+                    ((ModbusSerialTransport) transport).setBaudRate(Modbus.DEFAULT_BAUD_RATE);
                 }
             }
 
+            /*
+             * There are a number of devices which won't initialize immediately
+             * after being opened.  Take a moment to let them come up.
+             */
+            Thread.sleep(2000);
+
             req = new ReadCoilsRequest(ref, count);
             req.setUnitID(unit);
-            if (Modbus.debug) {
-                System.out.println("Request: " + req.getHexMessage());
-            }
+            Logger.getLogger(ReadCoilsTest.class.getName()).log(Level.FINE, "Request: {0}", req.getHexMessage());
 
             // 4. Prepare the transaction
             trans = transport.createTransaction();
@@ -152,9 +149,7 @@ public class ReadCoilsTest {
 
                 res = (ReadCoilsResponse) trans.getResponse();
 
-                if (Modbus.debug) {
-                    System.out.println("Response: " + res.getHexMessage());
-                }
+                Logger.getLogger(ReadCoilsTest.class.getName()).log(Level.FINE, "Response: {0}", res.getHexMessage());
 
                 System.out.println("Digital Inputs Status="
                         + res.getCoils().toString());
@@ -162,13 +157,8 @@ public class ReadCoilsTest {
                 k++;
             } while (k < repeat);
 
-            // 6. Close the connection
-            transport.close();
-
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(ReadCoilsTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        System.exit(0);
     }
 }

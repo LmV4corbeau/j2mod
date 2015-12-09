@@ -101,7 +101,8 @@ public final class ReadFileRecordResponse extends ModbusResponse {
          *
          * The response is a byte count, a function code, then wordCount words
          * (2 bytes).
-         * @return 
+         *
+         * @return
          */
         public int getResponseSize() {
             return 2 + (m_WordCount * 2);
@@ -183,8 +184,9 @@ public final class ReadFileRecordResponse extends ModbusResponse {
 
     /**
      * getRecord -- return the record response indicated by the reference
+     *
      * @param index
-     * @return 
+     * @return
      */
     public RecordResponse getRecord(int index) {
         return m_Records[index];
@@ -192,6 +194,7 @@ public final class ReadFileRecordResponse extends ModbusResponse {
 
     /**
      * addResponse -- add a new record response.
+     *
      * @param response
      */
     public void addResponse(RecordResponse response) {

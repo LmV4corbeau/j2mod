@@ -112,7 +112,8 @@ public final class WriteFileRecordResponse extends ModbusResponse {
 
         /**
          * getResponseSize -- return the size of the response in bytes.
-         * @return 
+         *
+         * @return
          */
         public int getResponseSize() {
             return 7 + m_WordCount * 2;
@@ -173,7 +174,8 @@ public final class WriteFileRecordResponse extends ModbusResponse {
 
     /**
      * getRequestCount -- return the number of record requests in this message.
-     * @return 
+     *
+     * @return
      */
     public int getRequestCount() {
         if (m_Records == null) {
@@ -185,8 +187,9 @@ public final class WriteFileRecordResponse extends ModbusResponse {
 
     /**
      * getRecord -- return the record request indicated by the reference
+     *
      * @param index
-     * @return 
+     * @return
      */
     public RecordResponse getRecord(int index) {
         return m_Records[index];
@@ -194,6 +197,7 @@ public final class WriteFileRecordResponse extends ModbusResponse {
 
     /**
      * addResponse -- add a new record response.
+     *
      * @param response
      */
     public void addResponse(RecordResponse response) {

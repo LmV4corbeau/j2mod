@@ -35,6 +35,8 @@ import java.net.InetAddress;
 
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.io.ModbusTransport;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements a UDPMasterConnection.
@@ -89,9 +91,7 @@ public class UDPMasterConnection {
             try {
                 m_Terminal.deactivate();
             } catch (Exception ex) {
-                if (Modbus.debug) {
-                    ex.printStackTrace();
-                }
+                Logger.getLogger(UDPMasterConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
             m_Connected = false;
         }

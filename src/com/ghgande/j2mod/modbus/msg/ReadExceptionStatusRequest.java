@@ -81,7 +81,8 @@ public final class ReadExceptionStatusRequest extends ModbusRequest {
 
     /**
      * createResponse -- create an empty response for this request.
-     * @return 
+     *
+     * @return
      */
     @Override
     public ModbusResponse getResponse() {
@@ -106,8 +107,8 @@ public final class ReadExceptionStatusRequest extends ModbusRequest {
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     public ModbusResponse createResponse(ProcessImage procimg) {
@@ -116,6 +117,7 @@ public final class ReadExceptionStatusRequest extends ModbusRequest {
 
     /**
      * writeData -- output this Modbus message to dout.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -125,6 +127,7 @@ public final class ReadExceptionStatusRequest extends ModbusRequest {
 
     /**
      * readData -- dummy function. There is no data with the request.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -133,7 +136,8 @@ public final class ReadExceptionStatusRequest extends ModbusRequest {
 
     /**
      * getMessage -- return an empty array as there is no data for this request.
-     * @return 
+     *
+     * @return
      */
     @Override
     public byte[] getMessage() {

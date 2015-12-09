@@ -42,6 +42,8 @@ import com.ghgande.j2mod.modbus.msg.ModbusMessage;
 import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 import com.ghgande.j2mod.modbus.net.UDPTerminal;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements the Modbus UDP transport flavor.
@@ -125,7 +127,7 @@ public class ModbusUDPTransport
         } catch (InterruptedIOException ioex) {
             throw new ModbusIOException("Socket timed out.");
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(ModbusUDPTransport.class.getName()).log(Level.SEVERE, null, ex);
             throw new ModbusIOException("I/O exception - failed to read.");
         }
     }//readResponse

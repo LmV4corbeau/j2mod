@@ -71,6 +71,8 @@ import com.ghgande.j2mod.modbus.io.ModbusUDPTransport;
 import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 import com.ghgande.j2mod.modbus.procimg.ProcessImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements a ModbusUDPListener.<br>
@@ -139,14 +141,12 @@ public class ModbusUDPListener implements ModbusListener {
             m_Terminal.activate();
 
             m_Transport = new ModbusUDPTransport(m_Terminal);
-        } catch (Exception e) {
+        } catch (Exception ex) {
             /*
              * TODO -- Make sure the methods in the try block are throwing
              * reasonable exemptions and not just "Exception".
              */
-            if (Modbus.debug) {
-                e.printStackTrace();
-            }
+            Logger.getLogger(ModbusUDPListener.class.getName()).log(Level.SEVERE, null, ex);
 
             m_Listening = false;
             return;
@@ -175,17 +175,15 @@ public class ModbusUDPListener implements ModbusListener {
                     response = request.createResponse(m_ProcessImage);
                 }
                 /* DEBUG */
-                if (Modbus.debug) {
-                    System.err.println("Request:" + request.getHexMessage());
+                Logger.getLogger(ModbusUDPListener.class.getName()).log(Level.FINE, "Request:{0}", request.getHexMessage());
+                Logger.getLogger(ModbusUDPListener.class.getName()).log(Level.FINE, "Response:{0}", response.getHexMessage());
 
-                    System.err.println("Response:" + response.getHexMessage());
-                }
                 m_Transport.writeMessage(response);
             }
         } catch (ModbusIOException ex) {
             if (!ex.isEOF()) {
                 // FIXME: other troubles, output for debug
-                ex.printStackTrace();
+                Logger.getLogger(ModbusUDPListener.class.getName()).log(Level.SEVERE, null, ex);
             }
         } finally {
             try {
@@ -233,7 +231,8 @@ public class ModbusUDPListener implements ModbusListener {
 
     /**
      * Start the listener thread for this serial interface.
-     * @return 
+     *
+     * @return
      */
     @Override
     public Thread listen() {

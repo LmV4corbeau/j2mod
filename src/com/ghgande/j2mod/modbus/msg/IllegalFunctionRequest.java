@@ -83,7 +83,8 @@ public class IllegalFunctionRequest extends ModbusRequest {
 
     /**
      * There is no unit number associated with this exception.
-     * @return 
+     *
+     * @return
      */
     @Override
     public ModbusResponse getResponse() {
@@ -107,6 +108,7 @@ public class IllegalFunctionRequest extends ModbusRequest {
     /**
      * Read all of the data that can be read. This is an unsupported function,
      * so it may not be possible to know exactly how much data needs to be read.
+     *
      * @throws java.io.IOException
      */
     @Override

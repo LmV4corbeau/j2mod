@@ -43,6 +43,8 @@ import com.ghgande.j2mod.modbus.msg.ModbusMessage;
 import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 import com.ghgande.j2mod.modbus.util.ModbusUtil;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements the ModbusRTU transport flavor.
@@ -100,10 +102,8 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
                 byte buf[] = m_ByteOut.getBuffer();
                 m_OutputStream.write(buf, 0, len); // PDU + CRC
                 m_OutputStream.flush();
-                if (Modbus.debug) {
-                    System.err
-                            .println("Sent: " + ModbusUtil.toHex(buf, 0, len));
-                }
+                Logger.getLogger(ModbusRTUTransport.class.getName()).log(Level.FINE, "Sent: {0}", ModbusUtil.toHex(buf, 0, len));
+
                 // clears out the echoed message
                 // for RS485
                 if (m_Echo) {
@@ -179,9 +179,8 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
                 Thread.yield();
             }
         }
-        if (Modbus.debug && remaining > 0) {
-            System.err.println("Error: looking for "
-                    + (byteCount + 2) + " bytes, received " + read);
+        if (remaining > 0) {
+            Logger.getLogger(ModbusRTUTransport.class.getName()).log(Level.FINE, "Error: looking for {0} bytes, received {1}", new Object[]{byteCount + 2, read});
         }
         m_CommPort.disableReceiveThreshold();
     }
@@ -318,11 +317,8 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
                          */
                         getRequest(fc, m_ByteInOut);
                         dlength = m_ByteInOut.size() - 2; // less the crc
-                        if (Modbus.debug) {
-                            System.err.println("Response: "
-                                    + ModbusUtil.toHex(m_ByteInOut.getBuffer(),
-                                            0, dlength + 2));
-                        }
+                        Logger.getLogger(ModbusRTUTransport.class.getName()).log(Level.FINE,
+                                "Response: {0}", ModbusUtil.toHex(m_ByteInOut.getBuffer(), 0, dlength + 2));
 
                         m_ByteIn.reset(m_InBuffer, dlength);
 
@@ -332,10 +328,8 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
                         if (ModbusUtil.unsignedByteToInt(m_InBuffer[dlength]) != crc[0]
                                 && ModbusUtil
                                 .unsignedByteToInt(m_InBuffer[dlength + 1]) != crc[1]) {
-                            if (Modbus.debug) {
-                                System.err.println("CRC should be " + crc[0]
-                                        + ", " + crc[1]);
-                            }
+                            Logger.getLogger(ModbusRTUTransport.class.getName()).log(Level.FINE,
+                                    "CRC should be " + crc[0] + ", " + crc[1]);
 
                             /*
                              * Drain the input in case the frame was misread and more
@@ -383,10 +377,7 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
             int len = m_InputStream.available();
             byte buf[] = new byte[len];
             m_InputStream.read(buf, 0, len);
-            if (Modbus.debug) {
-                System.err.println("Clear input: "
-                        + ModbusUtil.toHex(buf, 0, len));
-            }
+            Logger.getLogger(ModbusRTUTransport.class.getName()).log(Level.FINE, "Clear input: {0}", ModbusUtil.toHex(buf, 0, len));
         }
     }
 
@@ -469,9 +460,8 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
                                 Thread.yield();
                             }
                         }
-                        if (Modbus.debug && remaining > 0) {
-                            System.err.println("Error: looking for "
-                                    + (byteCount + 2) + " bytes, received " + read);
+                        if (remaining > 0) {
+                            Logger.getLogger(ModbusRTUTransport.class.getName()).log(Level.FINE, "Error: looking for {0} bytes, received {1}", new Object[]{byteCount + 2, read});
                         }
                         m_CommPort.disableReceiveThreshold();
                         break;
@@ -618,11 +608,9 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
                          */
                         getResponse(fc, m_ByteInOut);
                         dlength = m_ByteInOut.size() - 2; // less the crc
-                        if (Modbus.debug) {
-                            System.err.println("Response: "
-                                    + ModbusUtil.toHex(m_ByteInOut.getBuffer(),
-                                            0, dlength + 2));
-                        }
+                        Logger.getLogger(ModbusRTUTransport.class.getName()).log(Level.FINE, "Response: "
+                                + ModbusUtil.toHex(m_ByteInOut.getBuffer(),
+                                        0, dlength + 2));
 
                         m_ByteIn.reset(m_InBuffer, dlength);
 
@@ -632,10 +620,8 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
                         if (ModbusUtil.unsignedByteToInt(m_InBuffer[dlength]) != crc[0]
                                 && ModbusUtil
                                 .unsignedByteToInt(m_InBuffer[dlength + 1]) != crc[1]) {
-                            if (Modbus.debug) {
-                                System.err.println("CRC should be " + crc[0]
-                                        + ", " + crc[1]);
-                            }
+                            Logger.getLogger(ModbusRTUTransport.class.getName()).log(Level.FINE, "CRC should be {0}, {1}", new Object[]{crc[0], crc[1]});
+
                             throw new IOException(
                                     "CRC Error in received frame: "
                                     + dlength
@@ -658,11 +644,8 @@ public class ModbusRTUTransport extends ModbusSerialTransport {
             } while (!done);
             return response;
         } catch (Exception ex) {
-            if (Modbus.debug) {
-                System.err.println("Last request: "
-                        + ModbusUtil.toHex(lastRequest));
-                System.err.println(ex.getMessage());
-            }
+            Logger.getLogger(ModbusRTUTransport.class.getName()).log(Level.FINE, "Last request: {0}", ModbusUtil.toHex(lastRequest));
+            Logger.getLogger(ModbusRTUTransport.class.getName()).log(Level.FINE, ex.getMessage());
             throw new ModbusIOException("I/O exception - failed to read");
         }
     }

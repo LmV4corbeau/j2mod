@@ -31,6 +31,9 @@
  */
 package com.ghgande.j2mod.modbus.util;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Class implementing a simple thread pool.
  *
@@ -101,7 +104,7 @@ public final class ThreadPool {
                     ((Runnable) m_TaskPool.take()).run();
                 } catch (Exception ex) {
                     //FIXME: Handle somehow!?
-                    ex.printStackTrace();
+                    Logger.getLogger(ThreadPool.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } while (true);
         }

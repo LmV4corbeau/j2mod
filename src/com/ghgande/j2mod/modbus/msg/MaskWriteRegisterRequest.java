@@ -87,7 +87,8 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
 
     /**
      * getReference -- return the reference field.
-     * @return 
+     *
+     * @return
      */
     public int getReference() {
         return m_Reference;
@@ -95,6 +96,7 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
 
     /**
      * setReference -- set the reference field.
+     *
      * @param ref
      */
     public void setReference(int ref) {
@@ -112,6 +114,7 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
 
     /**
      * setAndMask -- set AND mask
+     *
      * @param mask
      */
     public void setAndMask(int mask) {
@@ -129,6 +132,7 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
 
     /**
      * setOrMask -- set OR mask
+     *
      * @param mask
      */
     public void setOrMask(int mask) {
@@ -137,7 +141,8 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
 
     /**
      * getResponse -- create an empty response for this request.
-     * @return 
+     *
+     * @return
      */
     @Override
     public ModbusResponse getResponse() {
@@ -163,7 +168,7 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
 
     /**
      *
-     * @return 
+     * @return
      */
     @Override
     public ModbusResponse createResponse(ProcessImage procimg) {
@@ -202,6 +207,7 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
 
     /**
      * writeData -- output this Modbus message to dout.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -211,6 +217,7 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
 
     /**
      * readData -- dummy function. There is no data with the request.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -222,7 +229,8 @@ public final class MaskWriteRegisterRequest extends ModbusRequest {
 
     /**
      * getMessage -- return an empty array as there is no data for this request.
-     * @return 
+     *
+     * @return
      */
     @Override
     public byte[] getMessage() {

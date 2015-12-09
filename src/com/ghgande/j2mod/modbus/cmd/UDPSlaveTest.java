@@ -70,6 +70,8 @@ import com.ghgande.j2mod.modbus.procimg.SimpleDigitalOut;
 import com.ghgande.j2mod.modbus.procimg.SimpleInputRegister;
 import com.ghgande.j2mod.modbus.procimg.SimpleProcessImage;
 import com.ghgande.j2mod.modbus.procimg.SimpleRegister;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class implementing a simple Modbus/UDP slave. A simple process image is
@@ -158,7 +160,7 @@ public class UDPSlaveTest {
             listener.listen();
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(UDPSlaveTest.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }// main

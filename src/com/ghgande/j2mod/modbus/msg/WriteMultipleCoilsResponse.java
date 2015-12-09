@@ -100,6 +100,7 @@ public final class WriteMultipleCoilsResponse
     /**
      * writeData - Copy the attribute values for this message to the output
      * buffer.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -112,6 +113,7 @@ public final class WriteMultipleCoilsResponse
     /**
      * readData - Initialize the attribute values for this message from the
      * input buffer.
+     *
      * @throws java.io.IOException
      */
     @Override

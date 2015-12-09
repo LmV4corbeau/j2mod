@@ -44,6 +44,8 @@ import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.msg.WriteSingleRegisterRequest;
 import com.ghgande.j2mod.modbus.net.ModbusMasterFactory;
 import com.ghgande.j2mod.modbus.procimg.SimpleRegister;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements a simple command line tool for writing to an analog
@@ -135,7 +137,7 @@ public class WriteHoldingRegisterTest {
                     }
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                Logger.getLogger(WriteHoldingRegisterTest.class.getName()).log(Level.SEVERE, null, ex);
                 printUsage();
                 System.exit(1);
             }
@@ -150,26 +152,22 @@ public class WriteHoldingRegisterTest {
             trans.setRequest(req);
             req.setHeadless(trans instanceof ModbusSerialTransaction);
 
-            if (Modbus.debug) {
-                System.out.println("Request: " + req.getHexMessage());
-            }
+            Logger.getLogger(WriteHoldingRegisterTest.class.getName()).log(Level.FINE, "Request: {0}", req.getHexMessage());
 
             // 4. Execute the transaction repeat times
             for (int count = 0; count < repeat; count++) {
                 trans.execute();
-
-                if (Modbus.debug) {
-                    System.out.println("Response: "
-                            + trans.getResponse().getHexMessage());
-                }
+                Logger.getLogger(WriteHoldingRegisterTest.class.getName()).log(Level.FINE, "Response: {0}", trans.getResponse().getHexMessage());
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(WriteHoldingRegisterTest.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                transport.close();
-            } catch (IOException e) {
-                // Do nothing.
+                if (transport != null) {
+                    transport.close();
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(WriteHoldingRegisterTest.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         System.exit(0);

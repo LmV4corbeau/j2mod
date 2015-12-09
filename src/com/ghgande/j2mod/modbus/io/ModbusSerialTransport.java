@@ -43,6 +43,8 @@ import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 import com.ghgande.j2mod.modbus.util.ModbusUtil;
 
 import gnu.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Abstract base class for serial <tt>ModbusTransport</tt>
@@ -200,9 +202,7 @@ abstract public class ModbusSerialTransport
 
             physicalPort.setSerialPortParams(baud, data, stop, parity);
 
-            if (Modbus.debug) {
-                System.err.println("baud rate is now " + physicalPort.getBaudRate());
-            }
+            Logger.getLogger(ModbusSerialTransport.class.getName()).log(Level.FINE, "baud rate is now {0}", physicalPort.getBaudRate());
         } catch (UnsupportedCommOperationException x) {
             System.out.println(x.getMessage());
         }
@@ -222,15 +222,11 @@ abstract public class ModbusSerialTransport
         byte echoBuf[] = new byte[len];
         setReceiveThreshold(len);
         int echoLen = m_CommPort.getInputStream().read(echoBuf, 0, len);
-        if (Modbus.debug) {
-            System.out.println("Echo: "
-                    + ModbusUtil.toHex(echoBuf, 0, echoLen));
-        }
+        Logger.getLogger(ModbusSerialTransport.class.getName()).log(Level.FINE, "Echo: {0}", ModbusUtil.toHex(echoBuf, 0, echoLen));
+
         m_CommPort.disableReceiveThreshold();
         if (echoLen != len) {
-            if (Modbus.debug) {
-                System.err.println("Error: Transmit echo not received.");
-            }
+            Logger.getLogger(ModbusSerialTransport.class.getName()).log(Level.FINE, "Error: Transmit echo not received.");
             throw new IOException("Echo not received.");
         }
     }//readEcho

@@ -40,6 +40,8 @@ import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 import com.ghgande.j2mod.modbus.net.UDPMasterConnection;
 import com.ghgande.j2mod.modbus.net.UDPTerminal;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class implementing the <tt>ModbusTransaction</tt>
@@ -171,7 +173,7 @@ public class ModbusUDPTransaction
                 m_Terminal.activate();
                 m_IO = m_Terminal.getModbusTransport();
             } catch (Exception ex) {
-                ex.printStackTrace();
+                Logger.getLogger(ModbusUDPTransaction.class.getName()).log(Level.SEVERE, null, ex);
                 throw new ModbusIOException("Activation failed.");
 
             }

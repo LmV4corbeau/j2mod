@@ -37,6 +37,8 @@ import com.ghgande.j2mod.modbus.io.ModbusTransport;
 import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 import com.ghgande.j2mod.modbus.procimg.ProcessImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class implementing a handler for incoming Modbus/TCP requests.
@@ -107,17 +109,15 @@ public class TCPConnectionHandler implements Runnable {
                 // 2. create the response.
                 response = request.createResponse(m_ProcessImage);
 
-                if (Modbus.debug) {
-                    System.out.println("Request:" + request.getHexMessage());
-                    System.out.println("Response:" + response.getHexMessage());
-                }
+                Logger.getLogger(TCPConnectionHandler.class.getName()).log(Level.FINE, "Request:{0}", request.getHexMessage());
+                Logger.getLogger(TCPConnectionHandler.class.getName()).log(Level.FINE, "Response:{0}", response.getHexMessage());
 
                 // 3. write the response message.
                 m_Transport.writeMessage(response);
             } while (true);
         } catch (ModbusIOException ex) {
-            if (!ex.isEOF() && Modbus.debug) {
-                ex.printStackTrace();
+            if (!ex.isEOF()) {
+                Logger.getLogger(TCPConnectionHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         } finally {
             try {

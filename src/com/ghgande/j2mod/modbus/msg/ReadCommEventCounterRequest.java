@@ -81,7 +81,8 @@ public final class ReadCommEventCounterRequest extends ModbusRequest {
 
     /**
      * createResponse -- create an empty response for this request.
-     * @return 
+     *
+     * @return
      */
     @Override
     public ModbusResponse getResponse() {
@@ -107,7 +108,7 @@ public final class ReadCommEventCounterRequest extends ModbusRequest {
 
     /**
      *
-     * @return 
+     * @return
      */
     @Override
     public ModbusResponse createResponse(ProcessImage procimg) {
@@ -116,6 +117,7 @@ public final class ReadCommEventCounterRequest extends ModbusRequest {
 
     /**
      * writeData -- output this Modbus message to dout.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -125,6 +127,7 @@ public final class ReadCommEventCounterRequest extends ModbusRequest {
 
     /**
      * readData -- dummy function. There is no additional data to read.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -133,7 +136,8 @@ public final class ReadCommEventCounterRequest extends ModbusRequest {
 
     /**
      * getMessage -- return an empty array as there is no data for this request.
-     * @return 
+     *
+     * @return
      */
     @Override
     public byte[] getMessage() {

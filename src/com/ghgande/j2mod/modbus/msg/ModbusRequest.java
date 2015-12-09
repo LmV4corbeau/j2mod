@@ -107,8 +107,7 @@ public abstract class ModbusRequest extends ModbusMessageImpl {
      *
      * <p>
      * This method is used to create responses from the process image. It is
-     * commonly used to implement Modbus slave
-     * instances.
+     * commonly used to implement Modbus slave instances.
      *
      * @param procimg ProcessImage
      * @return the corresponding <tt>ModbusResponse</tt>.

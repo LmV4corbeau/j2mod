@@ -104,7 +104,8 @@ public final class ReadSerialDiagnosticsRequest extends ModbusRequest {
 
     /**
      * getWordCount -- get the number of words in m_Data.
-     * @return 
+     *
+     * @return
      */
     public int getWordCount() {
         return 1;
@@ -112,7 +113,8 @@ public final class ReadSerialDiagnosticsRequest extends ModbusRequest {
 
     /**
      * getData -- return the first data item.
-     * @return 
+     *
+     * @return
      */
     public int getData() {
         return m_Data;
@@ -122,7 +124,7 @@ public final class ReadSerialDiagnosticsRequest extends ModbusRequest {
      * getData -- Get the data item at the index.
      *
      * @param index - Unused, must be 0.
-     * @return 
+     * @return
      *
      * @deprecated
      */
@@ -136,6 +138,7 @@ public final class ReadSerialDiagnosticsRequest extends ModbusRequest {
 
     /**
      * setData -- Set the optional data value
+     *
      * @param value
      */
     public void setData(int value) {
@@ -160,7 +163,8 @@ public final class ReadSerialDiagnosticsRequest extends ModbusRequest {
 
     /**
      * createResponse -- create an empty response for this request.
-     * @return 
+     *
+     * @return
      */
     @Override
     public ModbusResponse getResponse() {
@@ -192,8 +196,8 @@ public final class ReadSerialDiagnosticsRequest extends ModbusRequest {
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     public ModbusResponse createResponse(ProcessImage procimg) {
@@ -202,6 +206,7 @@ public final class ReadSerialDiagnosticsRequest extends ModbusRequest {
 
     /**
      * writeData -- output the completed Modbus message to dout
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -211,6 +216,7 @@ public final class ReadSerialDiagnosticsRequest extends ModbusRequest {
 
     /**
      * readData -- Read the function code and data value
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -221,7 +227,8 @@ public final class ReadSerialDiagnosticsRequest extends ModbusRequest {
 
     /**
      * getMessage -- Create the DIAGNOSTICS message paylaod.
-     * @return 
+     *
+     * @return
      */
     @Override
     public byte[] getMessage() {

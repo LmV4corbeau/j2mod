@@ -111,10 +111,9 @@ public final class WriteMultipleRegistersRequest extends ModbusRequest {
      * <tt>WriteMultipleRegistersRequest</tt>.
      *
      * This method is used to create responses from the process image. It is
-     * commonly used to implement Modbus
-     * slave instances.
+     * commonly used to implement Modbus slave instances.
      *
-     * @return 
+     * @return
      * @returns the corresponding ModbusResponse.
      * <p>
      *

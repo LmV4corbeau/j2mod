@@ -45,14 +45,15 @@ import com.ghgande.j2mod.modbus.msg.ModbusResponse;
  * @author Dieter Wimberger
  * @version 1.2rc1 (09/11/2004)
  */
-public interface ModbusTransport {
+public interface ModbusTransport extends java.lang.AutoCloseable {
 
     /**
      * Closes the raw input and output streams of this <tt>ModbusTransport</tt>.
      * <p>
      * @throws IOException if a stream cannot be closed properly.
      */
-    public void close() throws IOException;
+    @Override
+    public void close() throws Exception;
 
     /**
      * Creates a Modbus transaction for the underlying transport.

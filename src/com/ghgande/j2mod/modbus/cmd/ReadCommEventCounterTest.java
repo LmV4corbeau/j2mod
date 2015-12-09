@@ -75,6 +75,8 @@ import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 import com.ghgande.j2mod.modbus.msg.ReadCommEventCounterRequest;
 import com.ghgande.j2mod.modbus.msg.ReadCommEventCounterResponse;
 import com.ghgande.j2mod.modbus.net.ModbusMasterFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements a simple command line tool for reading the
@@ -152,7 +154,7 @@ public class ReadCommEventCounterTest {
                 }
 
             } catch (Exception ex) {
-                ex.printStackTrace();
+                Logger.getLogger(ReadCommEventCounterTest.class.getName()).log(Level.SEVERE, null, ex);
                 printUsage();
                 System.exit(1);
             }
@@ -164,9 +166,7 @@ public class ReadCommEventCounterTest {
                 req.setUnitID(unit);
                 req.setHeadless(trans instanceof ModbusSerialTransaction);
 
-                if (Modbus.debug) {
-                    System.out.println("Request: " + req.getHexMessage());
-                }
+                Logger.getLogger(ReadCommEventCounterTest.class.getName()).log(Level.FINE, "Request: {0}", req.getHexMessage());
 
                 // 4. Prepare the transaction
                 trans = transport.createTransaction();
@@ -188,12 +188,10 @@ public class ReadCommEventCounterTest {
                 }
                 ModbusResponse res = trans.getResponse();
 
-                if (Modbus.debug) {
-                    if (res != null) {
-                        System.out.println("Response: " + res.getHexMessage());
-                    } else {
-                        System.err.println("No response to READ INPUT request.");
-                    }
+                if (res != null) {
+                    Logger.getLogger(ReadCommEventCounterTest.class.getName()).log(Level.FINE, "Response: {0}", res.getHexMessage());
+                } else {
+                    Logger.getLogger(ReadCommEventCounterTest.class.getName()).log(Level.FINE, "No response to READ INPUT request.");
                 }
                 if (res instanceof ExceptionResponse) {
                     ExceptionResponse exception = (ExceptionResponse) res;
@@ -209,7 +207,7 @@ public class ReadCommEventCounterTest {
                 System.out.println("Status: " + data.getStatus() + ", Events " + data.getEventCount());
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(ReadCommEventCounterTest.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         try {
@@ -217,8 +215,8 @@ public class ReadCommEventCounterTest {
             if (transport != null) {
                 transport.close();
             }
-        } catch (IOException e) {
-            // Do nothing.
+        } catch (Exception ex) {
+            Logger.getLogger(ReadCommEventCounterTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.exit(0);
     }

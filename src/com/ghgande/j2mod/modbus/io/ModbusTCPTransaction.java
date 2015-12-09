@@ -39,6 +39,8 @@ import com.ghgande.j2mod.modbus.msg.ExceptionResponse;
 import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 import com.ghgande.j2mod.modbus.net.TCPMasterConnection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class implementing the <tt>ModbusTransaction</tt> interface.
@@ -218,21 +220,16 @@ public class ModbusTCPTransaction implements ModbusTransaction {
         while (retryCounter < retryLimit) {
             try {
                 synchronized (m_IO) {
-                    if (Modbus.debug) {
-                        System.err.println("request transaction ID = " + m_Request.getTransactionID());
-                    }
+                    Logger.getLogger(ModbusTCPTransaction.class.getName()).log(Level.FINE, "request transaction ID = {0}", m_Request.getTransactionID());
 
                     m_IO.writeMessage(m_Request);
                     m_Response = null;
                     do {
                         m_Response = m_IO.readResponse();
-                        if (Modbus.debug) {
-                            System.err.println("response transaction ID = " + m_Response.getTransactionID());
+                        Logger.getLogger(ModbusTCPTransaction.class.getName()).log(Level.FINE, "response transaction ID = {0}", m_Response.getTransactionID());
 
-                            if (m_Response.getTransactionID() != m_Request.getTransactionID()) {
-                                System.err.println("expected " + m_Request.getTransactionID()
-                                        + ", got " + m_Response.getTransactionID());
-                            }
+                        if (m_Response.getTransactionID() != m_Request.getTransactionID()) {
+                            Logger.getLogger(ModbusTCPTransaction.class.getName()).log(Level.FINE, "expected {0}, got {1}", new Object[]{m_Request.getTransactionID(), m_Response.getTransactionID()});
                         }
                     } while (m_Response != null
                             && (!isCheckingValidity()

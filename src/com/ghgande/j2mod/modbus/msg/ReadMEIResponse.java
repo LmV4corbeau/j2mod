@@ -111,7 +111,8 @@ public final class ReadMEIResponse
 
     /**
      * Returns the array of strings that were read
-     * @return 
+     *
+     * @return
      */
     public String[] getFields() {
         return m_Fields;

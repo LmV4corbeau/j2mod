@@ -46,6 +46,8 @@ import com.ghgande.j2mod.modbus.msg.WriteFileRecordRequest.RecordRequest;
 import com.ghgande.j2mod.modbus.msg.WriteFileRecordResponse;
 import com.ghgande.j2mod.modbus.msg.WriteFileRecordResponse.RecordResponse;
 import com.ghgande.j2mod.modbus.net.ModbusMasterFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * ReadFileRecordText -- Exercise the "READ FILE RECORD" Modbus message.
@@ -109,7 +111,7 @@ public class WriteFileRecordTest {
             System.err.println("Invalid parameter");
             usage();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(WriteFileRecordTest.class.getName()).log(Level.SEVERE, null, ex);
             usage();
             System.exit(1);
         }
@@ -128,9 +130,7 @@ public class WriteFileRecordTest {
                     record, values);
             request.addRequest(recordRequest);
 
-            if (Modbus.debug) {
-                System.out.println("Request: " + request.getHexMessage());
-            }
+            Logger.getLogger(WriteFileRecordTest.class.getName()).log(Level.FINE, "Request: {0}", request.getHexMessage());
 
             /*
              * Setup the transaction.
@@ -168,9 +168,7 @@ public class WriteFileRecordTest {
             } else if (dummy instanceof WriteFileRecordResponse) {
                 response = (WriteFileRecordResponse) dummy;
 
-                if (Modbus.debug) {
-                    System.out.println("Response: " + response.getHexMessage());
-                }
+                Logger.getLogger(WriteFileRecordTest.class.getName()).log(Level.FINE, "Response: {0}", response.getHexMessage());
 
                 int count = response.getRequestCount();
                 for (int j = 0; j < count; j++) {
@@ -185,13 +183,13 @@ public class WriteFileRecordTest {
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(WriteFileRecordTest.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (transport != null) {
                 try {
                     transport.close();
-                } catch (IOException e) {
-                    // Do nothing.
+                } catch (Exception ex) {
+                    Logger.getLogger(WriteFileRecordTest.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

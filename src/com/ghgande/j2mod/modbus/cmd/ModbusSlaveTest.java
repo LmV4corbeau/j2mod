@@ -41,6 +41,8 @@ import com.ghgande.j2mod.modbus.procimg.SimpleDigitalOut;
 import com.ghgande.j2mod.modbus.procimg.SimpleInputRegister;
 import com.ghgande.j2mod.modbus.procimg.SimpleProcessImage;
 import com.ghgande.j2mod.modbus.procimg.SimpleRegister;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class implementing a simple Modbus/TCP slave. A simple process image is
@@ -132,10 +134,8 @@ public class ModbusSlaveTest {
             }
 
             System.out.println("Done.");
-        } catch (Exception x) {
-            if (Modbus.debug) {
-                x.printStackTrace();
-            }
+        } catch (Exception ex) {
+            Logger.getLogger(ModbusSlaveTest.class.getName()).log(Level.SEVERE, null, ex);
 
             if (listener != null) {
                 listener.stop();

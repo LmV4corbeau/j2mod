@@ -39,6 +39,8 @@ import com.ghgande.j2mod.modbus.msg.ExceptionResponse;
 import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 import com.ghgande.j2mod.modbus.net.SerialConnection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class implementing the <tt>ModbusTransaction</tt>
@@ -184,10 +186,7 @@ public class ModbusSerialTransaction
                         try {
                             Thread.sleep(m_TransDelayMS);
                         } catch (InterruptedException ex) {
-                            if (Modbus.debug) {
-                                System.err.println("InterruptedException: "
-                                        + ex.getMessage());
-                            }
+                            Logger.getLogger(ModbusBINTransport.class.getName()).log(Level.FINE, null, ex);
                         }
                     }
                     //write request message
@@ -199,10 +198,7 @@ public class ModbusSerialTransaction
                     if (++tries >= m_Retries) {
                         throw e;
                     }
-                    if (Modbus.debug) {
-                        System.err.println("Execute try " + tries + " error: "
-                                + e.getMessage());
-                    }
+                    Logger.getLogger(ModbusSerialTransaction.class.getName()).log(Level.FINE, "Execute try {0} error: {1}", new Object[]{tries, e.getMessage()});
                 }
             } while (!finished);
         }

@@ -31,14 +31,14 @@
  */
 package com.ghgande.j2mod.modbus.cmd;
 
-import java.io.IOException;
-
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.io.ModbusTransaction;
 import com.ghgande.j2mod.modbus.io.ModbusTransport;
 import com.ghgande.j2mod.modbus.msg.MaskWriteRegisterRequest;
 import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.net.ModbusMasterFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements a simple command line tool for writing to an analog
@@ -74,7 +74,6 @@ public class MaskWriteRegisterTest {
 
     public static void main(String[] args) {
 
-        ModbusTransport transport = null;
         ModbusRequest req = null;
         ModbusTransaction trans = null;
         int ref = 0;
@@ -90,33 +89,26 @@ public class MaskWriteRegisterTest {
         }
 
         try {
-            try {
-                ref = Integer.parseInt(args[1]);
-                andMask = Integer.parseInt(args[2]);
-                orMask = Integer.parseInt(args[3]);
+            ref = Integer.parseInt(args[1]);
+            andMask = Integer.parseInt(args[2]);
+            orMask = Integer.parseInt(args[3]);
 
-                if (args.length == 5) {
-                    repeat = Integer.parseInt(args[4]);
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                printUsage();
-                System.exit(1);
+            if (args.length == 5) {
+                repeat = Integer.parseInt(args[4]);
             }
+        } catch (Exception ex) {
+            Logger.getLogger(MaskWriteRegisterTest.class.getName()).log(Level.SEVERE, null, ex);
+            printUsage();
+            System.exit(1);
+        }
 
-            // 2. Open the connection
-            transport = ModbusMasterFactory.createModbusMaster(args[0]);
-
-            if (Modbus.debug) {
-                System.out.println("Connected to " + transport);
-            }
+        try (ModbusTransport transport = ModbusMasterFactory.createModbusMaster(args[0])) {
+            Logger.getLogger(MaskWriteRegisterTest.class.getName()).log(Level.FINE, "Connected to {0}", transport);
 
             req = new MaskWriteRegisterRequest(ref, andMask, orMask);
 
             req.setUnitID(unit);
-            if (Modbus.debug) {
-                System.out.println("Request: " + req.getHexMessage());
-            }
+            Logger.getLogger(MaskWriteRegisterTest.class.getName()).log(Level.FINE, "Request: {0}", req.getHexMessage());
 
             // 3. Prepare the transaction
             trans = transport.createTransaction();
@@ -126,23 +118,14 @@ public class MaskWriteRegisterTest {
             for (int count = 0; count < repeat; count++) {
                 trans.execute();
 
-                if (Modbus.debug) {
-                    if (trans.getResponse() != null) {
-                        System.out.println("Response: "
-                                + trans.getResponse().getHexMessage());
-                    } else {
-                        System.out.println("No response.");
-                    }
+                if (trans.getResponse() != null) {
+                    Logger.getLogger(MaskWriteRegisterTest.class.getName()).log(Level.FINE, "Response: {0}", trans.getResponse().getHexMessage());
+                } else {
+                    Logger.getLogger(MaskWriteRegisterTest.class.getName()).log(Level.FINE, "No response");
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                transport.close();
-            } catch (IOException e) {
-                // Do nothing.
-            }
+            Logger.getLogger(MaskWriteRegisterTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

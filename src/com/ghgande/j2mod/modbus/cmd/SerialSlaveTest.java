@@ -35,6 +35,8 @@ import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.net.ModbusSerialListener;
 import com.ghgande.j2mod.modbus.procimg.*;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class implementing a simple Modbus slave. A simple process image is available
@@ -92,9 +94,7 @@ public class SerialSlaveTest {
             unit = Integer.parseInt(args[arg++]);
         }
 
-        if (Modbus.debug) {
-            System.out.println("j2mod ModbusSerial Slave");
-        }
+        Logger.getLogger(SerialSlaveTest.class.getName()).log(Level.FINE, "j2mod ModbusSerial Slave");
 
         try {
 
@@ -147,9 +147,7 @@ public class SerialSlaveTest {
             params.setEncoding("rtu");
             params.setEcho(false);
             params.setUnitId(unit);
-            if (Modbus.debug) {
-                System.out.println("Encoding [" + params.getEncoding() + "]");
-            }
+            Logger.getLogger(SerialSlaveTest.class.getName()).log(Level.FINE, "Encoding [" + params.getEncoding() + "]");
 
             // 4. Set up serial listener
             listener = new ModbusSerialListener(params);
@@ -159,7 +157,7 @@ public class SerialSlaveTest {
             // 5. Start the listener thread.
             new Thread(listener).start();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(SerialSlaveTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

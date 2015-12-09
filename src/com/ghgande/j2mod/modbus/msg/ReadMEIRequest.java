@@ -150,7 +150,7 @@ public final class ReadMEIRequest extends ModbusRequest {
     }
 
     /**
-     * 
+     *
      * @return
      */
     @Override

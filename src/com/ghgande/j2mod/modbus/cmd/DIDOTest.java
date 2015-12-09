@@ -40,6 +40,9 @@ import com.ghgande.j2mod.modbus.msg.ReadInputDiscretesRequest;
 import com.ghgande.j2mod.modbus.msg.ReadInputDiscretesResponse;
 import com.ghgande.j2mod.modbus.msg.WriteCoilRequest;
 import com.ghgande.j2mod.modbus.net.TCPMasterConnection;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements a simple command line tool which demonstrates how a
@@ -95,8 +98,8 @@ public class DIDOTest {
                     addr = InetAddress.getByName(astr);
                     di_ref = Integer.parseInt(args[1]);
                     do_ref = Integer.parseInt(args[2]);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                } catch (NumberFormatException | UnknownHostException ex) {
+                    Logger.getLogger(DIDOTest.class.getName()).log(Level.SEVERE, null, ex);
                     printUsage();
                     System.exit(1);
                 }
@@ -106,10 +109,7 @@ public class DIDOTest {
             con = new TCPMasterConnection(addr);
             con.setPort(port);
             con.connect();
-            if (Modbus.debug) {
-                System.out.println("Connected to " + addr.toString() + ":"
-                        + con.getPort());
-            }
+            Logger.getLogger(DIDOTest.class.getName()).log(Level.FINE, "Connected to {0}:{1}", new Object[]{addr.toString(), con.getPort()});
 
             // 3. Prepare the requests
             di_req = new ReadInputDiscretesRequest(di_ref, 1);
@@ -142,14 +142,12 @@ public class DIDOTest {
                     do_req.setCoil(new_in);
                     do_trans.execute();
                     last_out = new_in;
-                    if (Modbus.debug) {
-                        System.out.println("Updated coil with state from DI.");
-                    }
+                    Logger.getLogger(DIDOTest.class.getName()).log(Level.FINE, "Updated coil with state from DI.");
                 }
             } while (true);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(DIDOTest.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
 
             // 7. Close the connection

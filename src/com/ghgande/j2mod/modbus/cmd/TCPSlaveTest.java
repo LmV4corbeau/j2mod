@@ -42,6 +42,9 @@ import com.ghgande.j2mod.modbus.procimg.SimpleDigitalOut;
 import com.ghgande.j2mod.modbus.procimg.SimpleInputRegister;
 import com.ghgande.j2mod.modbus.procimg.SimpleProcessImage;
 import com.ghgande.j2mod.modbus.procimg.SimpleRegister;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class implementing a simple Modbus/TCP slave. A simple process image is
@@ -122,9 +125,7 @@ public class TCPSlaveTest {
             spi.addInputRegister(new SimpleInputRegister(45));
 
             // 3. create a listener with 3 threads in pool
-            if (Modbus.debug) {
-                System.out.println("Listening...");
-            }
+            Logger.getLogger(TCPSlaveTest.class.getName()).log(Level.FINE, "Listening...");
 
             listener = new ModbusTCPListener(3,
                     Inet4Address.getByName("0.0.0.0"));
@@ -133,8 +134,8 @@ public class TCPSlaveTest {
             listener.setProcessImage(spi);
             listener.listen();
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (NumberFormatException | UnknownHostException ex) {
+            Logger.getLogger(TCPSlaveTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }// main
 

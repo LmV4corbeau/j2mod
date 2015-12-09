@@ -38,6 +38,8 @@ import com.ghgande.j2mod.modbus.io.ModbusTransport;
 import com.ghgande.j2mod.modbus.msg.WriteCoilRequest;
 import com.ghgande.j2mod.modbus.msg.WriteCoilResponse;
 import com.ghgande.j2mod.modbus.net.ModbusMasterFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>
@@ -114,7 +116,7 @@ public class WriteCoilTest {
                     repeat = Integer.parseInt(args[4]);
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                Logger.getLogger(WriteCoilTest.class.getName()).log(Level.SEVERE, null, ex);
                 printUsage();
                 System.exit(1);
             }
@@ -122,9 +124,7 @@ public class WriteCoilTest {
             // 3. Prepare the request
             req = new WriteCoilRequest(ref, value);
             req.setUnitID(unit);
-            if (Modbus.debug) {
-                System.out.println("Request: " + req.getHexMessage());
-            }
+            Logger.getLogger(WriteCoilTest.class.getName()).log(Level.FINE, "Request: {0}", req.getHexMessage());
 
             // 4. Prepare the transaction
             trans = transport.createTransaction();
@@ -134,10 +134,7 @@ public class WriteCoilTest {
             for (int count = 0; count < repeat; count++) {
                 trans.execute();
 
-                if (Modbus.debug) {
-                    System.out.println("Response: "
-                            + trans.getResponse().getHexMessage());
-                }
+                Logger.getLogger(WriteCoilTest.class.getName()).log(Level.FINE, "Response: {0}", trans.getResponse().getHexMessage());
 
                 WriteCoilResponse data = (WriteCoilResponse) trans.getResponse();
                 if (data != null) {
@@ -149,7 +146,7 @@ public class WriteCoilTest {
             transport.close();
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(WriteCoilTest.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         System.exit(0);

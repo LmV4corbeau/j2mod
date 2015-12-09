@@ -48,6 +48,8 @@ import com.ghgande.j2mod.modbus.msg.ReadFileRecordResponse.RecordResponse;
 import com.ghgande.j2mod.modbus.msg.WriteFileRecordRequest;
 import com.ghgande.j2mod.modbus.msg.WriteFileRecordResponse;
 import com.ghgande.j2mod.modbus.net.TCPMasterConnection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * WriteRecordText -- Exercise the "WRITE FILE RECORD" Modbus message.
@@ -127,10 +129,6 @@ public class TCPWriteRecordTest {
         } catch (UnknownHostException x) {
             System.err.println("Unknown host: " + hostName);
             System.exit(1);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            usage();
-            System.exit(1);
         }
 
         try {
@@ -143,10 +141,7 @@ public class TCPWriteRecordTest {
             connection.connect();
             connection.setTimeout(500);
 
-            if (Modbus.debug) {
-                System.out.println("Connected to " + ipAddress.toString() + ":"
-                        + connection.getPort());
-            }
+            Logger.getLogger(WriteFileRecordTest.class.getName()).log(Level.FINE, "Connected to {0}:{1}", new Object[]{ipAddress.toString(), connection.getPort()});
 
             for (int i = 0; i < requestCount; i++) {
                 /*
@@ -160,9 +155,7 @@ public class TCPWriteRecordTest {
                         = rdRequest.new RecordRequest(file, record + i, registers);
                 rdRequest.addRequest(recordRequest);
 
-                if (Modbus.debug) {
-                    System.out.println("Request: " + rdRequest.getHexMessage());
-                }
+                Logger.getLogger(WriteFileRecordTest.class.getName()).log(Level.FINE, "Request: " + rdRequest.getHexMessage());
 
                 /*
                  * Setup the transaction.
@@ -208,10 +201,7 @@ public class TCPWriteRecordTest {
                 } else if (dummy instanceof ReadFileRecordResponse) {
                     rdResponse = (ReadFileRecordResponse) dummy;
 
-                    if (Modbus.debug) {
-                        System.out.println("Response: "
-                                + rdResponse.getHexMessage());
-                    }
+                    Logger.getLogger(TCPWriteRecordTest.class.getName()).log(Level.FINE, "Response: {0}", rdResponse.getHexMessage());
 
                     int count = rdResponse.getRecordCount();
                     for (int j = 0; j < count; j++) {
@@ -271,14 +261,10 @@ public class TCPWriteRecordTest {
 
                     System.err.println(exception);
 
-                    continue;
                 } else if (dummy instanceof WriteFileRecordResponse) {
                     wrResponse = (WriteFileRecordResponse) dummy;
 
-                    if (Modbus.debug) {
-                        System.out.println("Response: "
-                                + wrResponse.getHexMessage());
-                    }
+                    Logger.getLogger(TCPWriteRecordTest.class.getName()).log(Level.FINE, "Response: {0}", wrResponse.getHexMessage());
 
                     int count = wrResponse.getRequestCount();
                     for (int j = 0; j < count; j++) {
@@ -306,7 +292,7 @@ public class TCPWriteRecordTest {
              */
             connection.close();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(TCPWriteRecordTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

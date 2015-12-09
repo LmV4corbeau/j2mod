@@ -104,7 +104,8 @@ public final class ReadFIFOQueueRequest extends ModbusRequest {
 
     /**
      * getResponse -- create an empty response for this request.
-     * @return 
+     *
+     * @return
      */
     @Override
     public ModbusResponse getResponse() {
@@ -130,7 +131,8 @@ public final class ReadFIFOQueueRequest extends ModbusRequest {
 
     /**
      * Create a response using the named register as the queue length count.
-     * @return 
+     *
+     * @return
      */
     @Override
     public ModbusResponse createResponse(ProcessImage procimg) {
@@ -160,6 +162,7 @@ public final class ReadFIFOQueueRequest extends ModbusRequest {
 
     /**
      * writeData -- output this Modbus message to dout.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -169,6 +172,7 @@ public final class ReadFIFOQueueRequest extends ModbusRequest {
 
     /**
      * readData -- read the reference word.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -178,7 +182,8 @@ public final class ReadFIFOQueueRequest extends ModbusRequest {
 
     /**
      * getMessage -- return an empty array as there is no data for this request.
-     * @return 
+     *
+     * @return
      */
     @Override
     public byte[] getMessage() {

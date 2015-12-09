@@ -71,6 +71,8 @@ import java.net.UnknownHostException;
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.procimg.ProcessImage;
 import com.ghgande.j2mod.modbus.util.ThreadPool;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements a ModbusTCPListener.
@@ -162,8 +164,8 @@ public class ModbusTCPListener implements ModbusListener {
         try {
             m_ServerSocket.close();
             m_Listener.join();
-        } catch (Exception ex) {
-            // ?
+        } catch (IOException | InterruptedException ex) {
+            Logger.getLogger(ModbusTCPListener.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -183,10 +185,7 @@ public class ModbusTCPListener implements ModbusListener {
              */
             m_ServerSocket = new ServerSocket(m_Port, m_FloodProtection,
                     m_Address);
-            if (Modbus.debug) {
-                System.out.println("Listenening to "
-                        + m_ServerSocket.toString() + "(Port " + m_Port + ")");
-            }
+            Logger.getLogger(ModbusTCPListener.class.getName()).log(Level.FINE, "Listenening to {0}(Port {1})", new Object[]{m_ServerSocket.toString(), m_Port});
 
             /*
              * Infinite loop, taking care of resources in case of a lot of
@@ -195,10 +194,7 @@ public class ModbusTCPListener implements ModbusListener {
             m_Listening = true;
             while (m_Listening) {
                 Socket incoming = m_ServerSocket.accept();
-                if (Modbus.debug) {
-                    System.out.println("Making new connection "
-                            + incoming.toString());
-                }
+                Logger.getLogger(ModbusTCPListener.class.getName()).log(Level.FINE, "Making new connection {0}", incoming.toString());
 
                 if (m_Listening) {
                     // FIXME: Replace with object pool due to resource issues
@@ -208,14 +204,13 @@ public class ModbusTCPListener implements ModbusListener {
                     incoming.close();
                 }
             }
-        } catch (SocketException iex) {
+        } catch (SocketException ex) {
             if (!m_Listening) {
             } else {
-                if (Modbus.debug) {
-                    iex.printStackTrace();
-                }
+                Logger.getLogger(ModbusTCPListener.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (IOException e) {
+        } catch (IOException ex) {
+            Logger.getLogger(ModbusTCPListener.class.getName()).log(Level.SEVERE, null, ex);
             // FIXME: this is a major failure, how do we handle this
         }
     }
@@ -246,7 +241,8 @@ public class ModbusTCPListener implements ModbusListener {
 
     /**
      * Start the listener thread for this serial interface.
-     * @return 
+     *
+     * @return
      */
     @Override
     public Thread listen() {

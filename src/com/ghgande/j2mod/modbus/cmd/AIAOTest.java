@@ -42,6 +42,10 @@ import com.ghgande.j2mod.modbus.msg.ReadInputRegistersResponse;
 import com.ghgande.j2mod.modbus.msg.WriteSingleRegisterRequest;
 import com.ghgande.j2mod.modbus.net.TCPMasterConnection;
 import com.ghgande.j2mod.modbus.procimg.SimpleRegister;
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>
@@ -94,6 +98,7 @@ public class AIAOTest {
             printUsage();
             System.exit(1);
         }
+
         try {
 
             try {
@@ -113,8 +118,8 @@ public class AIAOTest {
                 addr = InetAddress.getByName(address);
                 ai_ref = Integer.parseInt(args[1]);
                 ao_ref = Integer.parseInt(args[2]);
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (NumberFormatException | UnknownHostException ex) {
+                Logger.getLogger(AIAOTest.class.getName()).log(Level.SEVERE, null, ex);
                 printUsage();
                 System.exit(1);
             }
@@ -123,10 +128,8 @@ public class AIAOTest {
             con = new TCPMasterConnection(addr);
             con.setPort(port);
             con.connect();
-            if (Modbus.debug) {
-                System.out.println("Connected to " + addr.toString() + ":"
-                        + con.getPort());
-            }
+            Logger.getLogger(AIAOTest.class.getName()).log(Level.FINE,
+                    "Connected to " + addr.toString() + ":" + con.getPort());
 
             // 3. Prepare the requests
             ai_req = new ReadInputRegistersRequest(ai_ref, 1);
@@ -158,15 +161,13 @@ public class AIAOTest {
                     new_out.setValue(new_in); // update register
                     ao_trans.execute();
                     last_out = new_in;
-                    if (Modbus.debug) {
-                        System.out
-                                .println("Updated Output Register with value from Input Register.");
-                    }
+                    Logger.getLogger(AIAOTest.class.getName()).log(Level.FINE,
+                            "Updated Output Register with value from Input Register.");
                 }
             } while (true);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(AIAOTest.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             // 6. Close the connection
             con.close();

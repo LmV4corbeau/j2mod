@@ -69,6 +69,7 @@ public class ExceptionResponse extends ModbusResponse {
      * readData()
      *
      * read the single byte of data, which is the exception code.
+     *
      * @throws java.io.IOException
      */
     @Override

@@ -70,6 +70,8 @@ import java.util.TooManyListenersException;
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.io.*;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements a serial connection which can be used for master and
@@ -118,11 +120,8 @@ public class SerialConnection implements SerialPortEventListener {
             m_SerialPort = (SerialPort) m_PortIdentifier.open(
                     "Modbus Serial Master", 30000);
         } catch (PortInUseException e) {
-            if (Modbus.debug) {
-                System.out.println(e.getMessage());
-            }
-
-            throw new Exception(e.getMessage());
+            Logger.getLogger(SerialConnection.class.getName()).log(Level.FINE, e.getMessage());
+            throw new Exception(e);
         } catch (NoSuchPortException e) {
 
             /*
@@ -131,36 +130,33 @@ public class SerialConnection implements SerialPortEventListener {
              */
             try {
                 m_SerialPort = new RXTXPort(m_Parameters.getPortName());
-            } catch (PortInUseException x) {
-                if (Modbus.debug) {
-                    x.printStackTrace();
-                }
-
-                throw new Exception(x.getMessage());
+            } catch (PortInUseException ex) {
+                Logger.getLogger(SerialConnection.class.getName()).log(Level.SEVERE, null, ex);
+                throw new Exception(ex);
             }
         }
         // 3. set the parameters
         try {
             setConnectionParameters();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             // ensure it is closed
             m_SerialPort.close();
-            if (Modbus.debug) {
-                System.out.println(e.getMessage());
-            }
-            throw e;
+            Logger.getLogger(SerialConnection.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
 
-        if (null != m_Parameters.getEncoding()) switch (m_Parameters.getEncoding()) {
-            case Modbus.SERIAL_ENCODING_ASCII:
-                m_Transport = new ModbusASCIITransport(m_Parameters.getUnitId());
-                break;
-            case Modbus.SERIAL_ENCODING_RTU:
-                m_Transport = new ModbusRTUTransport();
-                break;
-            case Modbus.SERIAL_ENCODING_BIN:
-                m_Transport = new ModbusBINTransport(m_Parameters.getUnitId());
-                break;
+        if (null != m_Parameters.getEncoding()) {
+            switch (m_Parameters.getEncoding()) {
+                case Modbus.SERIAL_ENCODING_ASCII:
+                    m_Transport = new ModbusASCIITransport(m_Parameters.getUnitId());
+                    break;
+                case Modbus.SERIAL_ENCODING_RTU:
+                    m_Transport = new ModbusRTUTransport();
+                    break;
+                case Modbus.SERIAL_ENCODING_BIN:
+                    m_Transport = new ModbusBINTransport(m_Parameters.getUnitId());
+                    break;
+            }
         }
         m_Transport.setEcho(m_Parameters.isEcho());
 
@@ -173,10 +169,7 @@ public class SerialConnection implements SerialPortEventListener {
             // m_SerialPort.getOutputStream());
         } catch (IOException e) {
             m_SerialPort.close();
-            if (Modbus.debug) {
-                System.out.println(e.getMessage());
-            }
-
+            Logger.getLogger(SerialConnection.class.getName()).log(Level.FINE, null, e);
             throw new Exception("Error opening i/o streams");
         }
 		// System.out.println("i/o Streams prepared");
@@ -186,9 +179,7 @@ public class SerialConnection implements SerialPortEventListener {
             m_SerialPort.addEventListener(this);
         } catch (TooManyListenersException e) {
             m_SerialPort.close();
-            if (Modbus.debug) {
-                System.out.println(e.getMessage());
-            }
+            Logger.getLogger(SerialConnection.class.getName()).log(Level.FINE, null, e);
             throw new Exception("too many listeners added");
         }
 
@@ -200,10 +191,7 @@ public class SerialConnection implements SerialPortEventListener {
         try {
             m_SerialPort.enableReceiveTimeout(200);
         } catch (UnsupportedCommOperationException e) {
-            if (Modbus.debug) {
-                System.out.println(e.getMessage());
-            }
-
+            Logger.getLogger(SerialConnection.class.getName()).log(Level.FINE, null, e);
         }
         m_Open = true;
     }// open
@@ -238,9 +226,7 @@ public class SerialConnection implements SerialPortEventListener {
             m_Parameters.setParity(oldParity);
             m_Parameters.setFlowControlIn(oldFlowControl);
 
-            if (Modbus.debug) {
-                System.out.println(e.getMessage());
-            }
+            Logger.getLogger(SerialConnection.class.getName()).log(Level.FINE, null, e);
 
             throw new Exception("Unsupported parameter");
         }
@@ -250,10 +236,7 @@ public class SerialConnection implements SerialPortEventListener {
             m_SerialPort.setFlowControlMode(m_Parameters.getFlowControlIn()
                     | m_Parameters.getFlowControlOut());
         } catch (UnsupportedCommOperationException e) {
-            if (Modbus.debug) {
-                System.out.println(e.getMessage());
-            }
-
+            Logger.getLogger(SerialConnection.class.getName()).log(Level.FINE, null, e);
             throw new Exception("Unsupported flow control");
         }
     }
@@ -299,15 +282,10 @@ public class SerialConnection implements SerialPortEventListener {
                 // the serial input stream
                 break;
             case SerialPortEvent.BI:
-                if (Modbus.debug) {
-                    System.out.println("Serial port break detected");
-                }
-
+                Logger.getLogger(SerialConnection.class.getName()).log(Level.FINE, "Serial port break detected");
                 break;
             default:
-                if (Modbus.debug) {
-                    System.out.println("Serial port event: " + e.getEventType());
-                }
+                Logger.getLogger(SerialConnection.class.getName()).log(Level.FINE, "Serial port event: {0}", e.getEventType());
         }
     }
 

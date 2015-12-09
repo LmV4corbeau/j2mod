@@ -78,6 +78,8 @@ import com.ghgande.j2mod.modbus.msg.ReadMultipleRegistersRequest;
 import com.ghgande.j2mod.modbus.msg.ReadMultipleRegistersResponse;
 import com.ghgande.j2mod.modbus.net.ModbusMasterFactory;
 import com.ghgande.j2mod.modbus.procimg.Register;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements a simple command line tool for writing to an analog
@@ -161,7 +163,7 @@ public class ReadHoldingRegistersTest {
                     }
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                Logger.getLogger(ReadHoldingRegistersTest.class.getName()).log(Level.SEVERE, null, ex);
                 printUsage();
                 System.exit(1);
             }
@@ -175,9 +177,7 @@ public class ReadHoldingRegistersTest {
             trans.setRequest(req);
             req.setHeadless(trans instanceof ModbusSerialTransaction);
 
-            if (Modbus.debug) {
-                System.out.println("Request: " + req.getHexMessage());
-            }
+            Logger.getLogger(ReadHoldingRegistersTest.class.getName()).log(Level.FINE, "Request: {0}", req.getHexMessage());
 
             // 5. Execute the transaction repeat times
             for (int i = 0; i < repeat; i++) {
@@ -189,12 +189,10 @@ public class ReadHoldingRegistersTest {
                 }
                 ModbusResponse res = trans.getResponse();
 
-                if (Modbus.debug) {
-                    if (res != null) {
-                        System.out.println("Response: " + res.getHexMessage());
-                    } else {
-                        System.err.println("No response to READ HOLDING request.");
-                    }
+                if (res != null) {
+                    Logger.getLogger(ReadHoldingRegistersTest.class.getName()).log(Level.FINE, "Response: {0}", res.getHexMessage());
+                } else {
+                    Logger.getLogger(ReadHoldingRegistersTest.class.getName()).log(Level.FINE, "No response to READ HOLDING request.");
                 }
                 if (res instanceof ExceptionResponse) {
                     ExceptionResponse exception = (ExceptionResponse) res;
@@ -212,7 +210,7 @@ public class ReadHoldingRegistersTest {
                 System.out.println("Data: " + Arrays.toString(values));
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(ReadHoldingRegistersTest.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         try {
@@ -220,8 +218,8 @@ public class ReadHoldingRegistersTest {
             if (transport != null) {
                 transport.close();
             }
-        } catch (IOException e) {
-            // Do nothing.
+        } catch (Exception ex) {
+            Logger.getLogger(ReadHoldingRegistersTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.exit(0);
     }

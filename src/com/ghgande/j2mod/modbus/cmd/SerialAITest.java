@@ -37,6 +37,8 @@ import com.ghgande.j2mod.modbus.msg.ReadInputRegistersRequest;
 import com.ghgande.j2mod.modbus.msg.ReadInputRegistersResponse;
 import com.ghgande.j2mod.modbus.net.SerialConnection;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements a simple commandline tool for reading an analog input.
@@ -75,7 +77,7 @@ public class SerialAITest {
                         repeat = Integer.parseInt(args[4]);
                     }
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    Logger.getLogger(SerialAITest.class.getName()).log(Level.SEVERE, null, ex);
                     printUsage();
                     System.exit(1);
                 }
@@ -94,9 +96,7 @@ public class SerialAITest {
             params.setEncoding("ascii");
             params.setEcho(false);
             params.setUnitId(unitid);
-            if (Modbus.debug) {
-                System.out.println("Encoding [" + params.getEncoding() + "]");
-            }
+            Logger.getLogger(SerialAITest.class.getName()).log(Level.FINE, "Encoding [{0}]", params.getEncoding());
 
             //4. Open the connection
             con = new SerialConnection(params);
@@ -106,9 +106,7 @@ public class SerialAITest {
             req = new ReadInputRegistersRequest(ref, count);
             req.setUnitID(unitid);
             req.setHeadless(true);
-            if (Modbus.debug) {
-                System.out.println("Request: " + req.getHexMessage());
-            }
+            Logger.getLogger(SerialAITest.class.getName()).log(Level.FINE, "Request: {0}", req.getHexMessage());
 
             //6. Prepare the transaction
             trans = new ModbusSerialTransaction(con);
@@ -120,9 +118,7 @@ public class SerialAITest {
                 trans.execute();
 
                 res = (ReadInputRegistersResponse) trans.getResponse();
-                if (Modbus.debug) {
-                    System.out.println("Response: " + res.getHexMessage());
-                }
+                Logger.getLogger(SerialAITest.class.getName()).log(Level.FINE, "Response: {0}", res.getHexMessage());
                 for (int n = 0; n < res.getWordCount(); n++) {
                     System.out.println("Word " + n + "=" + res.getRegisterValue(n));
                 }
@@ -133,7 +129,7 @@ public class SerialAITest {
             con.close();
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(SerialAITest.class.getName()).log(Level.SEVERE, null, ex);
             // Close the connection
             con.close();
         }

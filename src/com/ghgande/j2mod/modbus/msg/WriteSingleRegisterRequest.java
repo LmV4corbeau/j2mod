@@ -106,7 +106,7 @@ public final class WriteSingleRegisterRequest extends ModbusRequest {
             reg.setValue(m_Register.toBytes());
             response = getResponse();
         } catch (IllegalAddressException iaex) {
-            response =  createExceptionResponse(Modbus.ILLEGAL_ADDRESS_EXCEPTION);
+            response = createExceptionResponse(Modbus.ILLEGAL_ADDRESS_EXCEPTION);
         }
 
         return response;

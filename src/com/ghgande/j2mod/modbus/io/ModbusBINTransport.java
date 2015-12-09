@@ -42,6 +42,8 @@ import com.ghgande.j2mod.modbus.msg.ModbusMessage;
 import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 import com.ghgande.j2mod.modbus.util.ModbusUtil;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements the Modbus/BIN transport flavor.
@@ -63,6 +65,7 @@ public class ModbusBINTransport
 
     /**
      * Constructs a new <tt>MobusBINTransport</tt> instance.
+     *
      * @param unitId
      */
     public ModbusBINTransport(int unitId) {
@@ -160,9 +163,7 @@ public class ModbusBINTransport
             } while (!done);
             return request;
         } catch (Exception ex) {
-            if (Modbus.debug) {
-                System.out.println(ex.getMessage());
-            }
+            Logger.getLogger(ModbusBINTransport.class.getName()).log(Level.FINE, ex.getMessage());
             throw new ModbusIOException("I/O exception - failed to read.");
         }
 
@@ -218,9 +219,7 @@ public class ModbusBINTransport
             } while (!done);
             return response;
         } catch (Exception ex) {
-            if (Modbus.debug) {
-                System.out.println(ex.getMessage());
-            }
+            Logger.getLogger(ModbusBINTransport.class.getName()).log(Level.FINE, ex.getMessage());
             throw new ModbusIOException("I/O exception - failed to read.");
         }
     }//readResponse

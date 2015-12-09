@@ -38,6 +38,8 @@ import java.net.Socket;
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.io.ModbusTCPTransport;
 import com.ghgande.j2mod.modbus.io.ModbusTransport;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements a TCPMasterConnection.
@@ -85,9 +87,7 @@ public class TCPMasterConnection {
      */
     public synchronized void connect() throws Exception {
         if (!isConnected()) {
-            if (Modbus.debug) {
-                System.out.println("connect()");
-            }
+            Logger.getLogger(TCPMasterConnection.class.getName()).log(Level.FINE, "connect()");
 
             m_Socket = new Socket(m_Address, m_Port);
             m_Socket.setReuseAddress(true);
@@ -141,9 +141,7 @@ public class TCPMasterConnection {
             try {
                 m_ModbusTransport.close();
             } catch (IOException ex) {
-                if (Modbus.debug) {
-                    System.out.println("close()");
-                }
+                Logger.getLogger(TCPMasterConnection.class.getName()).log(Level.FINE, "close()");
             }
             m_Connected = false;
         }
@@ -162,6 +160,7 @@ public class TCPMasterConnection {
     /**
      * Set the <tt>ModbusTransport</tt> associated with this
      * <tt>TCPMasterConnection</tt>
+     *
      * @param trans
      */
     public void setModbusTransport(ModbusTCPTransport trans) {

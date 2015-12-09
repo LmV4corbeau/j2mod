@@ -36,6 +36,8 @@ import java.io.InputStream;
 import java.io.FilterInputStream;
 
 import com.ghgande.j2mod.modbus.Modbus;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class implementing a specialized <tt>InputStream</tt> which decodes
@@ -98,9 +100,7 @@ public class ASCIIInputStream
                     return Integer.parseInt(sbuf.toString().toLowerCase(), 16);
                 } catch (NumberFormatException ex) {
                     //malformed stream
-                    if (Modbus.debug) {
-                        System.out.println(sbuf.toString());
-                    }
+                    Logger.getLogger(ASCIIInputStream.class.getName()).log(Level.FINE, sbuf.toString());
                     throw new IOException("Malformed Stream - Wrong Characters");
                 }
             }

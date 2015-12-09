@@ -32,9 +32,9 @@ package com.ghgande.j2mod.modbus.procimg;
 
 /**
  * @author Julie
-
- ModbusFile -- an abstraction of a Modbus File, as supported by the READ FILE RECORD
- and WRITE FILE RECORD commands.
+ *
+ * ModbusFile -- an abstraction of a Modbus File, as supported by the READ FILE
+ * RECORD and WRITE FILE RECORD commands.
  */
 public class ModbusFile {
 

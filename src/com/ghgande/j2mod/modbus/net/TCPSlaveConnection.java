@@ -38,6 +38,8 @@ import java.net.Socket;
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.io.ModbusTCPTransport;
 import com.ghgande.j2mod.modbus.io.ModbusTransport;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements a TCPSlaveConnection.
@@ -64,10 +66,7 @@ public class TCPSlaveConnection {
         try {
             setSocket(socket);
         } catch (IOException ex) {
-            if (Modbus.debug) {
-                System.out.println("TCPSlaveConnection::Socket invalid.");
-            }
-
+            Logger.getLogger(TCPSlaveConnection.class.getName()).log(Level.FINE, "TCPSlaveConnection::Socket invalid.");
             throw new IllegalStateException("Socket invalid.");
         }
     }
@@ -85,10 +84,7 @@ public class TCPSlaveConnection {
         try {
             setSocket(socket);
         } catch (IOException ex) {
-            if (Modbus.debug) {
-                System.out.println("TCPSlaveConnection::Socket invalid.");
-            }
-
+            Logger.getLogger(TCPSlaveConnection.class.getName()).log(Level.FINE, "TCPSlaveConnection::Socket invalid.");
             throw new IllegalStateException("Socket invalid.");
         }
     }
@@ -102,9 +98,7 @@ public class TCPSlaveConnection {
                 m_ModbusTransport.close();
                 m_Socket.close();
             } catch (IOException ex) {
-                if (Modbus.debug) {
-                    ex.printStackTrace();
-                }
+                Logger.getLogger(TCPSlaveConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
             m_Connected = false;
         }

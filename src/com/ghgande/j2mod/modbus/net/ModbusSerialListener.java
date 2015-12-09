@@ -68,6 +68,8 @@ import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 import com.ghgande.j2mod.modbus.procimg.ProcessImage;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements a ModbusSerialListener.<br>
@@ -134,13 +136,8 @@ public class ModbusSerialListener implements ModbusListener {
                          * Log the Request and Response messages.
                          */
                         try {
-                            if (Modbus.debug) {
-                                System.out.println("Request (" + request.getClass().getName() + "): "
-                                        + request.getHexMessage());
-
-                                System.out.println("Response (" + response.getClass().getName() + "): "
-                                        + response.getHexMessage());
-                            }
+                            Logger.getLogger(ModbusSerialListener.class.getName()).log(Level.FINE, "Request ({0}): {1}", new Object[]{request.getClass().getName(), request.getHexMessage()});
+                            Logger.getLogger(ModbusSerialListener.class.getName()).log(Level.FINE, "Response ({0}): {1}", new Object[]{response.getClass().getName(), response.getHexMessage()});
                         } catch (RuntimeException x) {
                             // Ignore.
                         }
@@ -150,11 +147,7 @@ public class ModbusSerialListener implements ModbusListener {
                          */
                         transport.writeMessage(response);
                     } catch (ModbusIOException ex) {
-                        if (Modbus.debug) {
-                            ex.printStackTrace();
-                        }
-
-                        continue;
+                        Logger.getLogger(ModbusSerialListener.class.getName()).log(Level.FINE, null, ex);
                     }
                 } else {
                     /*
@@ -164,12 +157,12 @@ public class ModbusSerialListener implements ModbusListener {
                     transport.readRequest();
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
             /*
              * TODO -- Make sure methods are throwing reasonable exceptions, and
              * not just throwing "Exception".
              */
-            e.printStackTrace();
+            Logger.getLogger(ModbusSerialListener.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             m_Listening = false;
 

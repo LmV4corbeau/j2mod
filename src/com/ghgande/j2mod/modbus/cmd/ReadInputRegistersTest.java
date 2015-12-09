@@ -80,6 +80,8 @@ import com.ghgande.j2mod.modbus.msg.ReadInputRegistersRequest;
 import com.ghgande.j2mod.modbus.msg.ReadInputRegistersResponse;
 import com.ghgande.j2mod.modbus.net.ModbusMasterFactory;
 import com.ghgande.j2mod.modbus.procimg.InputRegister;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements a simple command line tool for reading an analog input
@@ -171,7 +173,7 @@ public class ReadInputRegistersTest {
                     }
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                Logger.getLogger(ReadInputRegistersTest.class.getName()).log(Level.SEVERE, null, ex);;
                 printUsage();
                 System.exit(1);
             }
@@ -190,9 +192,7 @@ public class ReadInputRegistersTest {
                 trans.setRetries(1);
                 req.setHeadless(trans instanceof ModbusSerialTransaction);
 
-                if (Modbus.debug) {
-                    System.out.println("Request: " + req.getHexMessage());
-                }
+                Logger.getLogger(ReadInputRegistersTest.class.getName()).log(Level.FINE, "Request: " + req.getHexMessage());
 
                 if (trans instanceof ModbusSerialTransaction) {
                     /*
@@ -213,12 +213,10 @@ public class ReadInputRegistersTest {
                 }
                 ModbusResponse res = trans.getResponse();
 
-                if (Modbus.debug) {
-                    if (res != null) {
-                        System.out.println("Response: " + res.getHexMessage());
-                    } else {
-                        System.err.println("No response to READ INPUT request.");
-                    }
+                if (res != null) {
+                    Logger.getLogger(ReadInputRegistersTest.class.getName()).log(Level.FINE, "Response: " + res.getHexMessage());
+                } else {
+                    Logger.getLogger(ReadInputRegistersTest.class.getName()).log(Level.FINE, "No response to READ INPUT request.");
                 }
 
                 if (res == null) {
@@ -241,7 +239,7 @@ public class ReadInputRegistersTest {
                 System.out.println("Data: " + Arrays.toString(values));
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(ReadInputRegistersTest.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         try {
@@ -249,7 +247,7 @@ public class ReadInputRegistersTest {
             if (transport != null) {
                 transport.close();
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             // Do nothing.
         }
         System.exit(0);

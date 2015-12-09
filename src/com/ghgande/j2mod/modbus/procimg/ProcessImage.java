@@ -202,14 +202,15 @@ public interface ProcessImage {
     public ModbusFile getFile(int ref) throws IllegalAddressException;
 
     /**
-     * Returns the <tt>ModbusFile</tt> instance having the specified file number.
+     * Returns the <tt>ModbusFile</tt> instance having the specified file
+     * number.
      *
      * @param ref The file number for the ModbusFile object to be returned.
      *
      * @return the <tt>ModbusFile</tt> instance having the given number.
      *
-     * @throws IllegalAddressException if a ModbusFile with the given number does not
- exist.
+     * @throws IllegalAddressException if a ModbusFile with the given number
+     * does not exist.
      */
     public ModbusFile getFileByNumber(int ref) throws IllegalAddressException;
 
@@ -226,7 +227,7 @@ public interface ProcessImage {
 
     /**
      * Returns the <tt>FIFO</tt> instance in the list of all FIFO objects in
- this ProcessImage.
+     * this ProcessImage.
      *
      * @param ref the reference.
      *
@@ -243,8 +244,8 @@ public interface ProcessImage {
      *
      * @return the <tt>FIFO</tt> instance having the given base address
      *
-     * @throws IllegalAddressException if a ModbusFile with the given number does not
- exist.
+     * @throws IllegalAddressException if a ModbusFile with the given number
+     * does not exist.
      */
     public FIFO getFIFOByAddress(int ref) throws IllegalAddressException;
 

@@ -48,6 +48,8 @@ import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 import com.ghgande.j2mod.modbus.net.TCPMasterConnection;
 import com.ghgande.j2mod.modbus.util.ModbusUtil;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements the Modbus transport flavor.
@@ -142,10 +144,8 @@ public class ModbusTCPTransport implements ModbusTransport {
 
             m_Output.write(m_ByteOut.toByteArray());
             m_Output.flush();
-            if (Modbus.debug) {
-                System.err.println("Sent: "
-                        + ModbusUtil.toHex(m_ByteOut.toByteArray()));
-            }
+            Logger.getLogger(ModbusTCPTransport.class.getName()).log(Level.FINE, "Sent: {0}", ModbusUtil.toHex(m_ByteOut.toByteArray()));
+
             // write more sophisticated exception handling
         } catch (SocketException ex) {
             if (!m_Master.isConnected()) {
@@ -197,10 +197,7 @@ public class ModbusTCPTransport implements ModbusTransport {
                                 "Premature end of stream (Message truncated).");
                     }
 
-                    if (Modbus.debug) {
-                        System.err.println("Read: "
-                                + ModbusUtil.toHex(buffer, 0, count + 6));
-                    }
+                    Logger.getLogger(ModbusTCPTransport.class.getName()).log(Level.FINE, "Read: {0}", ModbusUtil.toHex(buffer, 0, count + 6));
 
                     m_ByteIn.reset(buffer, (6 + count));
                     m_ByteIn.skip(6);
@@ -237,9 +234,7 @@ public class ModbusTCPTransport implements ModbusTransport {
                      * proper error correction and recovery.
                      */
                     m_Input.readShort();
-                    if (Modbus.debug) {
-                        System.err.println("Read: " + req.getHexMessage());
-                    }
+                    Logger.getLogger(ModbusTCPTransport.class.getName()).log(Level.FINE, "Read: " + req.getHexMessage());
                 }
             }
             return req;
@@ -264,10 +259,7 @@ public class ModbusTCPTransport implements ModbusTransport {
             synchronized (m_ByteIn) {
                 // use same buffer
                 byte[] buffer = m_ByteIn.getBuffer();
-                if (Modbus.debug) {
-                    System.err.println("Read: "
-                            + ModbusUtil.toHex(buffer, 0, m_ByteIn.count));
-                }
+                Logger.getLogger(ModbusTCPTransport.class.getName()).log(Level.FINE, "Read: {0}", ModbusUtil.toHex(buffer, 0, m_ByteIn.count));
 
                 if (!headless) {
                     /*
@@ -394,9 +386,7 @@ public class ModbusTCPTransport implements ModbusTransport {
             setSocket(socket);
             socket.setSoTimeout(m_Timeout);
         } catch (IOException ex) {
-            if (Modbus.debug) {
-                System.out.println("ModbusTCPTransport::Socket invalid.");
-            }
+            Logger.getLogger(ModbusTCPTransport.class.getName()).log(Level.FINE, "ModbusTCPTransport::Socket invalid.");
 
             throw new IllegalStateException("Socket invalid.");
         }

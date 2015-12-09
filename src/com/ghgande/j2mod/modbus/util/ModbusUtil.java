@@ -131,7 +131,8 @@ public final class ModbusUtil {
      * Converts the register (a 16 bit value) into an unsigned short. The value
      * returned is:
      * <p>
-     * <pre><code>(((a &amp; 0xff) &lt;&lt; 8) | (b &amp; 0xff))
+     * <
+     * pre><code>(((a &amp; 0xff) &lt;&lt; 8) | (b &amp; 0xff))
      * </code></pre>
      * <p/>
      * This conversion has been taken from the documentation of the
@@ -149,7 +150,8 @@ public final class ModbusUtil {
      * Converts the given unsigned short into a register (2 bytes). The byte
      * values in the register, in the order shown, are:
      * <p/>
-     * <pre><code>
+     * <
+     * pre><code>
      * (byte)(0xff &amp; (v &gt;&gt; 8))
      * (byte)(0xff &amp; v)
      * </code></pre>
@@ -172,7 +174,8 @@ public final class ModbusUtil {
      * Converts the given register (16-bit value) into a <tt>short</tt>. The
      * value returned is:
      * <p/>
-     * <pre><code>
+     * <
+     * pre><code>
      * (short)((a &lt;&lt; 8) | (b &amp; 0xff))
      * </code></pre>
      * <p/>
@@ -190,7 +193,8 @@ public final class ModbusUtil {
      * Converts the register (16-bit value) at the given index into a
      * <tt>short</tt>. The value returned is:
      * <p/>
-     * <pre><code>
+     * <
+     * pre><code>
      * (short)((a &lt;&lt; 8) | (b &amp; 0xff))
      * </code></pre>
      * <p/>
@@ -209,7 +213,8 @@ public final class ModbusUtil {
      * Converts the given <tt>short</tt> into a register (2 bytes). The byte
      * values in the register, in the order shown, are:
      * <p/>
-     * <pre><code>
+     * <
+     * pre><code>
      * (byte)(0xff &amp; (v &gt;&gt; 8))
      * (byte)(0xff &amp; v)
      * </code></pre>
@@ -228,7 +233,8 @@ public final class ModbusUtil {
      * Converts a byte[4] binary int value to a primitive int.<br>
      * The value returned is:
      * <p>
-     * <pre>
+     * <
+     * pre>
      * <code>
      * (((a &amp; 0xff) &lt;&lt; 24) | ((b &amp; 0xff) &lt;&lt; 16) |
      * &#32;((c &amp; 0xff) &lt;&lt; 8) | (d &amp; 0xff))
@@ -364,7 +370,8 @@ public final class ModbusUtil {
      * public static final InetAddress getBroadcastAddress() { byte[] addr = new
      * byte[4]; try { addr = InetAddress.getLocalHost().getAddress(); addr[3] =
      * -1; return getAddressFromBytes(addr); } catch (Exception ex) {
-     * ex.printStackTrace(); return null; } }//getBroadcastAddress
+     * Logger.getLogger(ModbusUtil.class.getName()).log(Level.SEVERE, null, ex);
+     * return null; } }//getBroadcastAddress
      */
 
     /*

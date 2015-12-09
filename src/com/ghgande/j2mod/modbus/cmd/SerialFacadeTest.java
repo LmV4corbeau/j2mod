@@ -60,6 +60,8 @@ import com.ghgande.j2mod.modbus.procimg.Register;
 import com.ghgande.j2mod.modbus.util.BitVector;
 import com.ghgande.j2mod.modbus.util.ModbusUtil;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SerialFacadeTest {
 
@@ -85,7 +87,7 @@ public class SerialFacadeTest {
                 portname = args[0];
                 slaveId = Integer.parseInt(args[1]);
             } catch (Exception ex) {
-                ex.printStackTrace();
+                Logger.getLogger(SerialFacadeTest.class.getName()).log(Level.SEVERE, null, ex);
                 printUsage();
                 System.exit(1);
             }
@@ -114,9 +116,7 @@ public class SerialFacadeTest {
             params.setEncoding("rtu");
             params.setEcho(false);
 
-            if (Modbus.debug) {
-                System.out.println("Encoding [" + params.getEncoding() + "]");
-            }
+            Logger.getLogger(SerialFacadeTest.class.getName()).log(Level.FINE, "Encoding [{0}]", params.getEncoding());
 
             // 3. Create the master facade
             msm = new ModbusSerialMaster(params);
@@ -216,9 +216,8 @@ public class SerialFacadeTest {
                     }
                 }
             } while (!finished);
-        } catch (Exception e) {
-            System.err.println("SerialFacadeTest driver: " + e);
-            e.printStackTrace();
+        } catch (Exception ex) {
+            Logger.getLogger(SerialFacadeTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         msm.disconnect();
     }

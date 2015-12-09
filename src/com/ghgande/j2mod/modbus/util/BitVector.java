@@ -214,7 +214,7 @@ public final class BitVector {
             int idx = doTranslateIndex(i);
             sbuf.append(
                     ((((m_Data[byteIndex(idx)]
-                            & (0x01 << bitIndex(idx))) != 0)) ? '1' : '0')
+                    & (0x01 << bitIndex(idx))) != 0)) ? '1' : '0')
             );
             if (((i + 1) % 8) == 0) {
                 sbuf.append(" ");
