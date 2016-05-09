@@ -4,3 +4,4 @@ dist
 build
 bin
 
+/j2mod/target/
